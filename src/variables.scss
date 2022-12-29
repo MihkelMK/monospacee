@@ -1,0 +1,32 @@
+/* Variables and mixins declared here will be available in all other SCSS files */
+
+$font-mono: 'Share Tech Mono', monospace;
+
+$column-width: 42rem;
+$column-margin-top: 4rem;
+
+$radius-0: 50%;
+$radius-1: 0.5rem;
+$radius-2: 1rem;
+$radius-3: 2rem;
+$radius-4: 5rem;
+$radius-5: 10rem;
+
+$color-text: hsl(214, 14%, 90%);
+$color-bg-0: hsl(220, 13%, 18%);
+$color-bg-1: hsl(221, 16%, 16%);
+$color-bg-2: hsl(236, 8%, 11%);
+
+$color-theme-1: hsl(355, 65%, 65%);
+$color-theme-2: hsl(95, 38%, 62%);
+$color-theme-3: hsl(39, 67%, 69%);
+$color-theme-4: hsl(207, 82%, 66%);
+$color-theme-5: hsl(286, 60%, 67%);
+$color-theme-6: hsl(187, 47%, 55%);
+
+$color-theme-1-glow: hsl(355, 65%, 65%, 0.7);
+$color-theme-2-glow: hsl(95, 38%, 62%, 0.7);
+$color-theme-3-glow: hsl(39, 67%, 69%, 0.7);
+$color-theme-4-glow: hsl(207, 82%, 66%, 0.7);
+$color-theme-5-glow: hsl(286, 60%, 67%, 0.7);
+$color-theme-6-glow: hsl(187, 47%, 55%, 0.7);
