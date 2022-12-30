@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Keydown from 'svelte-keydown';
 	import * as Terminal from 'javascript-terminal';
+	// https://github.com/rohanchandra/javascript-terminal
 
 	export const promptChar = '➜';
 	let input = '';
@@ -29,7 +30,9 @@
 	const clearInput = () => {
 		input = '';
 	};
+
 	// Execution
+	// TO-DO add functional commands
 	const emulator = new Terminal.Emulator();
 
 	let emulatorState = Terminal.EmulatorState.createEmpty();
