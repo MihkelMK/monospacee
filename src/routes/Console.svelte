@@ -1,7 +1,8 @@
 <script lang="ts">
+	
 	import Keydown from 'svelte-keydown';
 	import * as Terminal from 'javascript-terminal';
-	import { prevent_default } from 'svelte/internal';
+	// https://github.com/rohanchandra/javascript-terminal
 
 	export const promptChar = '➜';
 	let input = '';
@@ -30,7 +31,9 @@
 	const clearInput = () => {
 		input = '';
 	};
+
 	// Execution
+	// TO-DO add functional commands
 	const emulator = new Terminal.Emulator();
 
 	let emulatorState = Terminal.EmulatorState.createEmpty();
