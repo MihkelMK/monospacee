@@ -1,82 +1,111 @@
-<script>
-	/**
-	 * @type {String[]}
-	 */
-	let history = [];
+<script lang="ts">
+	import Keydown from 'svelte-keydown';
+	import * as Terminal from 'javascript-terminal';
+	import { prevent_default } from 'svelte/internal';
 
-	// @ts-ignore
-	const addHelp = (event) => {
-		history = [...history, '</br>'];
-		if (event) {
-			const command = event.target[0].value;
-			const program = event.target[0].value.split(' ')[0];
-			const flags = event.target[0].value.replace(program, '');
-			if (command == 'monosp') {
-				history = [
-					...history,
-					'<span class="delay-0" style="color: var(--color-theme-2">➜ ' +
-						program +
-						'</span><span class="delay-0" style="color: var(--color-theme-4)">' +
-						flags +
-						'</span>',
-					'<p class="delay-1" style="margin:0">type monosp --help for more info</p>'
-				];
-			} else if (
-				command == 'monosp --help' ||
-				command == 'monosp -h' ||
-				program == 'help' ||
-				program == '?'
-			) {
-				history = [
-					...history,
-					'<span class="delay-0" style="color: var(--color-theme-2)">➜ ' +
-						program +
-						'</span><span class="delay-0" style="color: var(--color-theme-4)">' +
-						flags +
-						'</span>',
-					'<p class="delay-1" style="margin:0">Website for the DJ duo called monospacee.</p><a class="delay-1" style="margin:0" href="https://dysaster.ee">Part of Dysaster collective</a><p class="delay-1" style="margin: 1em 0 0 4ch"><strong>--help:</strong> The only command right now.</p><p class="delay-1" style="margin: 0 0 0 12.4ch">More features in the near future.</p>'
-				];
-			} else {
-				const program = event.target[0].value.split(' ')[0];
-				const flags = event.target[0].value.replace(program, '');
-				history = [
-					...history,
-					'<span class="delay-0" style="color: var(--color-theme-1)">➜ ' +
-						program +
-						'</span><span class="delay-0" style="color: var(--color-theme-4)">' +
-						flags +
-						'</span>',
-					'<p class="delay-1" style="margin:0">command not found: ' + program + '</p>'
-				];
-			}
-			event.target[0].value = '';
-		} else {
-			history = [
-				...history,
-				'<span style="color: var(--color-theme-2)">➜ monosp</span><span style="color: var(--color-theme-4)"> --help</span>',
-				'<p style="margin:0">Website for the DJ duo called monospacee.</p><a style="margin:0" href="https://dysaster.ee">Part of Dysaster the collective</a><p style="margin: 1em 0 0 4ch"><strong>--help:</strong> The only command right now.</p><p style="margin: 0 0 0 12.4ch">More features in the near future.</p>'
-			];
-		}
+	export const promptChar = '➜';
+	let input = '';
+	let output: { class: string; body: string }[] = [];
+
+	// Utilities
+
+	const addOutput = (className: string, textContent: string) => {
+		output = [...output, { class: className, body: textContent }];
 	};
-	addHelp(false);
+
+	const parseOutput = {
+		[Terminal.OutputType.TEXT_OUTPUT_TYPE]: (content: string) => addOutput('text-output', content),
+		[Terminal.OutputType.TEXT_ERROR_OUTPUT_TYPE]: (content: string) =>
+			addOutput('error-output', content.replace('emulator:', 'mono:')),
+		[Terminal.OutputType.HEADER_OUTPUT_TYPE]: (content: { command: any }) =>
+			addOutput('header-output', `${content.command}`)
+	};
+
+	const displayOutputs = (outputs: any[]) => {
+		output = [];
+
+		outputs.map((output) => parseOutput[output.type](output.content));
+	};
+
+	const clearInput = () => {
+		input = '';
+	};
+	// Execution
+	const emulator = new Terminal.Emulator();
+
+	let emulatorState = Terminal.EmulatorState.createEmpty();
+	const historyKeyboardPlugin = new Terminal.HistoryKeyboardPlugin(emulatorState);
+	const plugins = [historyKeyboardPlugin];
 </script>
 
-<div class="console">
-	<form on:submit={addHelp} class="console-viewport">
+<Keydown
+	pauseOnInput
+	on:ArrowRight={(e) => {
+		e.preventDefault();
+		const autoCompletionStr = emulator.autocomplete(emulatorState, input);
+
+		input = autoCompletionStr;
+	}}
+	on:ArrowDown={(e) => {
+		e.preventDefault();
+		input = historyKeyboardPlugin.completeDown();
+	}}
+	on:ArrowUp={(e) => {
+		e.preventDefault();
+		input = historyKeyboardPlugin.completeUp();
+	}}
+	on:Enter={(e) => {
+		e.preventDefault();
+		emulatorState = emulator.execute(emulatorState, input, plugins);
+		displayOutputs(emulatorState.getOutputs());
+		clearInput();
+	}}
+	on:Backspace={(e) => {
+		e.preventDefault();
+		input = input.slice(0, -1);
+	}}
+	on:key={(e) => {
+		e.preventDefault();
+		if (e.detail.length == 1) input += e.detail;
+	}}
+/>
+
+<section class="console">
+	<div class="console-viewport">
 		<div class="console-history">
-			{#each history as line}
-				<p>{@html line}</p>
+			{#each output as command, index}
+				{#if command.class == 'header-output'}
+					{#if output[index + 1] && output[index + 1].class == 'error-output'}
+						<p class={command.class}>
+							<span class="prompt error">{promptChar} </span><span class="command error"
+								>{command.body.split(' -')[0]}</span
+							><span class="flags error">
+								{command.body.replace(command.body.split(' -')[0], '')}</span
+							>
+						</p>
+					{:else}
+						<p class={command.class}>
+							<span class="prompt">{promptChar} </span><span class="command"
+								>{command.body.split(' -')[0]}</span
+							><span class="flags"> {command.body.replace(command.body.split(' -')[0], '')}</span>
+						</p>
+					{/if}
+				{:else}
+					<p class={command.class}>{command.body}</p>
+				{/if}
 			{/each}
 		</div>
-		<label class="console-input-label" for="text">➜</label>
-		<!-- svelte-ignore a11y-autofocus -->
-		<input class="console-input" autofocus type="text" />
-	</form>
-</div>
+		<div class="console-input">
+			<p>
+				<span class="prompt">{promptChar} </span><span class="command">{input.split(' -')[0]}</span
+				><span class="flags"> {input.replace(input.split(' -')[0], '')}</span>
+			</p>
+		</div>
+	</div>
+</section>
 
 <style lang="scss">
 	.console {
-		display: flex;
 		background-color: $color-bg-1;
 		border-radius: $radius-2;
 		border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -84,8 +113,28 @@
 		margin: 1rem 0;
 		width: 80%;
 		overflow-y: scroll;
-		height: 40vh;
+		height: 45vh;
 		transform: rotateX(180deg);
+
+		& p {
+			margin-bottom: 0em;
+		}
+
+		& .prompt {
+			color: $color-theme-2;
+		}
+
+		& .command {
+			color: $color-theme-2;
+		}
+
+		& .flags {
+			color: $color-theme-4;
+		}
+
+		& .error {
+			color: $color-theme-1 !important;
+		}
 
 		&-viewport {
 			transform: rotateX(180deg);
@@ -95,26 +144,11 @@
 		}
 
 		&-input {
-			height: 3em;
 			width: 100%;
 			box-sizing: border-box;
-			background-color: $color-bg-2;
 			color: $color-text;
-			border: 0;
-			opacity: 0.8;
-			padding: 0.5em 2em;
-			border-radius: $radius-2;
-
-			&-label {
-				position: absolute;
-				z-index: 999;
-				padding: 0.3975em 0.5em;
-				font-size: 1.5em;
-				display: block;
-				color: $color-theme-2;
-				margin-right: -1em;
-				font-weight: bold;
-			}
+			padding-inline: 1em;
+			padding-bottom: 1em;
 
 			&:focus-visible {
 				opacity: 1;
@@ -127,22 +161,8 @@
 			padding-inline: 1em;
 			margin-block-end: 1em;
 
-			.delay-0 {
-				animation: fadeIn 0s forwards;
-			}
-
-			.delay-1 {
-				animation: fadeIn 0.15s forwards;
-				animation-delay: 0.1s;
-			}
-
-			p {
-				line-height: 1.5em;
-				margin: 0;
-
-				* {
-					line-height: 1em;
-				}
+			& .header-output {
+				margin-top: 1em;
 			}
 		}
 	}
