@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Keydown from 'svelte-keydown';
 	import * as Terminal from 'javascript-terminal';
-	import { prevent_default } from 'svelte/internal';
 
 	export const promptChar = '➜';
 	let input = '';
@@ -106,14 +105,13 @@
 
 <style lang="scss">
 	.console {
-		background-color: $color-bg-1;
+		box-shadow: 2px -4px 8px 3px var(--color-bg-0-glow);
+		background-color: var(--color-bg-1);
 		border-radius: $radius-2;
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		margin: 1rem 0;
 		width: 80%;
 		overflow-y: scroll;
-		height: 45vh;
+		height: 50vh;
 		transform: rotateX(180deg);
 
 		& p {
@@ -121,19 +119,19 @@
 		}
 
 		& .prompt {
-			color: $color-theme-2;
+			color: var(--color-theme-2);
 		}
 
 		& .command {
-			color: $color-theme-2;
+			color: var(--color-theme-2);
 		}
 
 		& .flags {
-			color: $color-theme-4;
+			color: var(--color-theme-4);
 		}
 
 		& .error {
-			color: $color-theme-1 !important;
+			color: var(--color-theme-1) !important;
 		}
 
 		&-viewport {
@@ -146,7 +144,7 @@
 		&-input {
 			width: 100%;
 			box-sizing: border-box;
-			color: $color-text;
+			color: var(--color-text);
 			padding-inline: 1em;
 			padding-bottom: 1em;
 
@@ -165,16 +163,9 @@
 				margin-top: 1em;
 			}
 		}
-	}
 
-	@keyframes fadeIn {
-		0% {
-			height: 0;
-			opacity: 0;
-		}
-		100% {
-			height: unset;
-			opacity: 1;
+		@media (hover: none) {
+			overflow-y: hidden;
 		}
 	}
 </style>

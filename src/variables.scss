@@ -1,5 +1,4 @@
 /* Variables and mixins declared here will be available in all other SCSS files */
-
 $font-mono: 'Share Tech Mono', monospace;
 
 $column-width: 42rem;
@@ -12,21 +11,116 @@ $radius-3: 2rem;
 $radius-4: 5rem;
 $radius-5: 10rem;
 
-$color-text: hsl(214, 14%, 90%);
-$color-bg-0: hsl(220, 13%, 18%);
-$color-bg-1: hsl(221, 16%, 16%);
-$color-bg-2: hsl(236, 8%, 11%);
+html {
+	// Colors for selector preview
+	--mono-text: hsl(214, 14%, 90%);
+	--mono-bg: hsl(221, 16%, 16%);
+	--drakula-text: hsl(60, 30%, 96%);
+	--drakula-bg: hsl(231, 15%, 18%);
+	--pink-text: hsl(150, 2%, 21%);
+	--pink-bg: hsl(0, 0%, 96%);
+	--seafoam-text: hsl(141, 8%, 59%);
+	--seafoam-bg: hsl(187, 19%, 17%);
 
-$color-theme-1: hsl(355, 65%, 65%);
-$color-theme-2: hsl(95, 38%, 62%);
-$color-theme-3: hsl(39, 67%, 69%);
-$color-theme-4: hsl(207, 82%, 66%);
-$color-theme-5: hsl(286, 60%, 67%);
-$color-theme-6: hsl(187, 47%, 55%);
+	// Default/Mono Dark
+	--color-text: hsl(214, 14%, 90%);
+	--color-bg-0: hsl(220, 13%, 18%);
+	--color-bg-1: hsl(221, 16%, 16%);
 
-$color-theme-1-glow: hsl(355, 65%, 65%, 0.7);
-$color-theme-2-glow: hsl(95, 38%, 62%, 0.7);
-$color-theme-3-glow: hsl(39, 67%, 69%, 0.7);
-$color-theme-4-glow: hsl(207, 82%, 66%, 0.7);
-$color-theme-5-glow: hsl(286, 60%, 67%, 0.7);
-$color-theme-6-glow: hsl(187, 47%, 55%, 0.7);
+	--color-text-glow: hsl(214, 14%, 100%, 0.15);
+	--color-bg-0-glow: hsl(220, 13%, 8%, 0.15);
+	--color-bg-1-glow: hsl(221, 16%, 6%, 0.15);
+
+	--color-theme-1: hsl(355, 65%, 65%);
+	--color-theme-2: hsl(95, 38%, 62%);
+	--color-theme-3: hsl(39, 67%, 69%);
+	--color-theme-4: hsl(207, 82%, 66%);
+	--color-theme-5: hsl(286, 60%, 67%);
+	--color-theme-6: hsl(187, 47%, 55%);
+
+	--color-theme-1-glow: hsl(355, 65%, 65%, 0.7);
+	--color-theme-2-glow: hsl(95, 38%, 62%, 0.7);
+	--color-theme-3-glow: hsl(39, 67%, 69%, 0.7);
+	--color-theme-4-glow: hsl(207, 82%, 66%, 0.7);
+	--color-theme-5-glow: hsl(286, 60%, 67%, 0.7);
+	--color-theme-6-glow: hsl(187, 47%, 55%, 0.7);
+
+	--color-heading: var(--color-theme-2);
+	--color-heading-glow: var(--color-theme-2-glow);
+}
+
+[data-theme='drakula'] {
+	--color-text: hsl(60, 30%, 96%);
+	--color-bg-0: hsl(231, 13%, 14%);
+	--color-bg-1: hsl(231, 15%, 18%);
+
+	--color-text-glow: hsl(60, 30%, 100%, 0.15);
+	--color-bg-0-glow: hsl(231, 13%, 4%, 0.15);
+	--color-bg-1-glow: hsl(231, 15%, 8%, 0.15);
+
+	--color-theme-1: hsl(0, 100%, 67%);
+	--color-theme-2: hsl(135, 94%, 65%);
+	--color-theme-3: hsl(31, 100%, 71%);
+	--color-theme-4: hsl(326, 100%, 74%);
+	--color-theme-5: hsl(265, 89%, 78%);
+	--color-theme-6: hsl(191, 97%, 77%);
+
+	--color-theme-1-glow: hsl(0, 100%, 67%, 0.7);
+	--color-theme-2-glow: hsl(135, 94%, 65%, 0.7);
+	--color-theme-3-glow: hsl(31, 100%, 71%, 0.7);
+	--color-theme-4-glow: hsl(326, 100%, 74%, 0.7);
+	--color-theme-5-glow: hsl(265, 89%, 78%, 0.7);
+	--color-theme-6-glow: hsl(191, 97%, 77%, 0.7);
+}
+[data-theme='pink'] {
+	--color-text: hsl(150, 2%, 21%);
+	--color-bg-0: hsl(328, 73%, 92%);
+	--color-bg-1: hsl(0, 0%, 96%);
+
+	--color-text-glow: hsl(150, 2%, 11%, 0.15);
+	--color-bg-0-glow: hsl(328, 43%, 62%, 0.15);
+	--color-bg-1-glow: hsl(0, 0%, 66%, 0.15);
+
+	--color-theme-1: hsl(335, 100%, 73%);
+	--color-theme-2: hsl(330, 29%, 43%);
+	--color-theme-3: hsl(45, 24%, 50%);
+	--color-theme-4: hsl(180, 23%, 32%);
+	--color-theme-5: hsl(344, 95%, 86%);
+	--color-theme-6: hsl(295, 8%, 67%);
+
+	--color-theme-1-glow: hsl(335, 100%, 87%, 0.7);
+	--color-theme-2-glow: hsl(330, 29%, 57%, 0.7);
+	--color-theme-3-glow: hsl(45, 24%, 64%, 0.7);
+	--color-theme-4-glow: hsl(180, 23%, 46%, 0.7);
+	--color-theme-5-glow: hsl(344, 95%, 100%, 0.7);
+	--color-theme-6-glow: hsl(295, 8%, 81%, 0.7);
+
+	--color-heading: var(--color-theme-4);
+	--color-heading-glow: var(--color-theme-4-glow);
+}
+[data-theme='seafoam'] {
+	--color-text: hsl(141, 8%, 59%);
+	--color-bg-0: hsl(187, 15%, 13%);
+	--color-bg-1: hsl(187, 19%, 17%);
+
+	--color-text-glow: hsl(141, 8%, 69%, 0.15);
+	--color-bg-0-glow: hsl(187, 15%, 3%, 0.15);
+	--color-bg-1-glow: hsl(187, 19%, 7%, 0.15);
+
+	--color-theme-1: hsl(19, 26%, 40%);
+	--color-theme-2: hsl(98, 17%, 46%);
+	--color-theme-3: hsl(49, 28%, 55%);
+	--color-theme-4: hsl(188, 26%, 40%);
+	--color-theme-5: hsl(18, 15%, 47%);
+	--color-theme-6: hsl(180, 14%, 51%);
+
+	--color-theme-1-glow: hsl(19, 26%, 40%, 0.7);
+	--color-theme-2-glow: hsl(98, 17%, 46%, 0.7);
+	--color-theme-3-glow: hsl(49, 28%, 55%, 0.7);
+	--color-theme-4-glow: hsl(188, 26%, 40%, 0.7);
+	--color-theme-5-glow: hsl(18, 15%, 47%, 0.7);
+	--color-theme-6-glow: hsl(180, 14%, 51%, 0.7);
+
+	--color-heading: var(--color-theme-3);
+	--color-heading-glow: var(--color-theme-3-glow);
+}

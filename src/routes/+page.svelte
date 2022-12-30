@@ -1,9 +1,15 @@
 <script>
-	import Console from './Console.svelte';
+	import ThemePicker from './ThemePicker.svelte';
 	import Kern from './Kern.svelte';
+	import Console from './Console.svelte';
 
-	let kernSilm = 0;
-	let kernSuu = '-';
+	const consoleTargetRegex = new RegExp('console');
+
+	let kernSilmNurk = 0;
+	let silmadPaigal = false;
+	let kernSilmV = "'";
+	let kernSilmP = "'";
+	let kernSuu = '◡';
 
 	/**
 	 * @param {{ (e: MouseEvent): void; apply?: any; }} func
@@ -41,12 +47,28 @@
 
 	const muudaSuud = (/** @type {MouseEvent} */ e) => {
 		// @ts-ignore
-		if (e.target.localName == 'a') {
-			kernSuu = '。';
-		} else kernSuu = '-';
+		if (consoleTargetRegex.test(e.target.className)) {
+			kernSuu = 'ₒ';
+			kernSilmV = "'";
+			kernSilmP = "'";
+			silmadPaigal = false;
+			// @ts-ignore
+		} else if (e.target.localName == 'select' || e.target.localName == 'option') {
+			kernSuu = '◡';
+			kernSilmV = "˶'";
+			kernSilmP = "'˶";
+			silmadPaigal = true;
+			kernSilmNurk = 0;
+		} else {
+			kernSuu = '◡';
+			kernSilmV = "'";
+			kernSilmP = "'";
+			silmadPaigal = false;
+		}
 	};
 
 	const liigutaSilmi = (/** @type {MouseEvent} */ e) => {
+		if (silmadPaigal) return;
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
 
@@ -56,7 +78,7 @@
 		const ankury = rect.top + rect.height / 2;
 
 		const nurk = arvutaNurk(hiirX, hiirY, ankurX, ankury) + 90;
-		kernSilm = Math.round(nurk / 30) * 30;
+		kernSilmNurk = Math.round(nurk / 30) * 30;
 	};
 </script>
 
@@ -65,15 +87,19 @@
 	<meta name="description" content="SoonTM to a terminal near you" />
 </svelte:head>
 
-<section
+<div
+	class="wrapper"
 	on:mousemove={liigutaSilmi}
 	on:mousemove={throttle(function (e) {
 		muudaSuud(e);
 	}, 100)}
 >
-	<Kern silmaNurk={kernSilm} suu={kernSuu} />
-	<Console />
-</section>
+	<ThemePicker />
+	<section>
+		<Kern silmaNurk={kernSilmNurk} vasakSilm={kernSilmV} paremSilm={kernSilmP} suu={kernSuu} />
+		<Console />
+	</section>
+</div>
 
 <style lang="scss">
 	section {
@@ -81,7 +107,12 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		flex: 1;
-		margin-top: 5vh;
+		width: 100%;
+	}
+
+	div.wrapper {
+		display: flex;
+		flex-direction: column;
+		row-gap: clamp(1rem, 4vh, 3rem);
 	}
 </style>
