@@ -1,6 +1,6 @@
 <select data-choose-theme>
-	<option value="">Dark Mono</option>
-	<option value="drakula">Drakula</option>
+	<option value="">Dracula</option>
+	<option value="onedark">One Dark</option>
 	<option value="seafoam">Seafoam Pastel</option>
 	<option value="pink">Light Pink</option>
 </select>
@@ -17,12 +17,13 @@
 		border-radius: $radius-1;
 
 		[value=''] * {
+			color: var(--dracula-text);
+			background-color: var(--dracula-bg);
+		}
+
+		[value='onedark'] * {
 			color: var(--mono-text);
 			background-color: var(--mono-bg);
-		}
-		[value='drakula'] * {
-			color: var(--drakula-text);
-			background-color: var(--drakula-bg);
 		}
 
 		[value='pink'] * {
