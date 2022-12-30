@@ -3,7 +3,7 @@
 </script>
 
 <section>
-	<Kern suu="-" silmaNurk={0} silm="ˣ" />
+	<Kern suu="-" silmaNurk={0} vasakSilm="ˣ" paremSilm="ˣ" />
 	<p>Page not found</p>
 </section>
 
