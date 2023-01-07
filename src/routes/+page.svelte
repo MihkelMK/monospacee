@@ -3,7 +3,9 @@
 	import Kern from './Kern.svelte';
 	import Console from './Console.svelte';
 
-	const consoleTargetRegex = new RegExp('console');
+	const consoleTargetRegex = new RegExp('.*console.*');
+	const outputTargetRegex = new RegExp('.*output.*');
+	const commandTargetRegex = new RegExp('.*command.*');
 
 	let kernSilmNurk = 0;
 	let silmadPaigal = false;
@@ -46,8 +48,14 @@
 	};
 
 	const muudaSuud = (/** @type {MouseEvent} */ e) => {
-		// @ts-ignore
-		if (consoleTargetRegex.test(e.target.className)) {
+		if (
+			// @ts-ignore
+			consoleTargetRegex.test(e.target.className) ||
+			// @ts-ignore
+			outputTargetRegex.test(e.target.className) ||
+			// @ts-ignore
+			commandTargetRegex.test(e.target.className)
+		) {
 			kernSuu = 'ₒ';
 			kernSilmV = "'";
 			kernSilmP = "'";

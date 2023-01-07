@@ -1,8 +1,8 @@
 <select data-choose-theme>
 	<option value="">Dracula</option>
 	<option value="onedark">One Dark</option>
-	<option value="seafoam">Seafoam Pastel</option>
-	<option value="pink">Light Pink</option>
+	<option value="seafoam">Seafoam</option>
+	<option value="lightpink">Light Pink</option>
 </select>
 
 <style lang="scss">

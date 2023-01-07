@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Keydown from 'svelte-keydown';
 	import * as Terminal from 'javascript-terminal';
+	import customCommandMapping from './CustomCommands';
 	// https://github.com/rohanchandra/javascript-terminal
 
 	export const promptChar = '➜';
@@ -10,7 +11,8 @@
 	// Utilities
 
 	const addOutput = (className: string, textContent: string) => {
-		output = [...output, { class: className, body: textContent }];
+		const textContentFixedNewlines = textContent.replaceAll('\n', '</br>');
+		output = [...output, { class: className, body: textContentFixedNewlines }];
 	};
 
 	const parseOutput = {
@@ -35,7 +37,7 @@
 	// TO-DO add functional commands
 	const emulator = new Terminal.Emulator();
 
-	let emulatorState = Terminal.EmulatorState.createEmpty();
+	let emulatorState = Terminal.EmulatorState.create({ commandMapping: customCommandMapping });
 	const historyKeyboardPlugin = new Terminal.HistoryKeyboardPlugin(emulatorState);
 	const plugins = [historyKeyboardPlugin];
 </script>
@@ -93,7 +95,7 @@
 						</p>
 					{/if}
 				{:else}
-					<p class={command.class}>{command.body}</p>
+					<p class={command.class}>{@html command.body}</p>
 				{/if}
 			{/each}
 		</div>
