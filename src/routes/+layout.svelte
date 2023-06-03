@@ -1,8 +1,13 @@
-<script>
+<script lang="ts">
+	import '@fontsource/share-tech-mono';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import '@picocss/pico';
 	import '../app.scss';
+	import PageTransition from './transition.svelte';
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
 
 	onMount(() => {
 		themeChange(false);
@@ -12,7 +17,9 @@
 
 <div class="app">
 	<main>
-		<slot />
+		<PageTransition url={data.url}>
+			<slot />
+		</PageTransition>
 	</main>
 </div>
 

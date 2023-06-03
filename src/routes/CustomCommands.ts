@@ -50,5 +50,15 @@ export default Terminal.CommandMapping.create({
 			}
 		},
 		optDef: {}
+	},
+	socials: {
+		function: (state: any, opts: string[]) => {
+			return {
+				output: Terminal.OutputFactory.makeTextOutput(
+					'Please enter a theme name or add -h as a flag to view help.'
+				)
+			};
+		},
+		optDef: {}
 	}
 });

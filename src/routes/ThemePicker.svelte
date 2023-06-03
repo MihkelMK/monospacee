@@ -1,5 +1,5 @@
 <select data-choose-theme>
-	<option value="">Dracula</option>
+	<option value="dracula">Dracula</option>
 	<option value="onedark">One Dark</option>
 	<option value="seafoam">Seafoam</option>
 	<option value="lightpink">Light Pink</option>
