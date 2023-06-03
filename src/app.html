@@ -4,15 +4,17 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
-			rel="stylesheet"
-		/>
+		<link rel="alternate" type="application/atom+xml" href="/rss.xml" />
 		%sveltekit.head%
+		<script type="module">
+			const theme = localStorage.getItem('theme');
+
+			theme
+				? document.documentElement.setAttribute('data-theme', theme)
+				: localStorage.setItem('theme', 'dracula');
+		</script>
 		<script>
-			const asdjsaodj = 'dansdäoasindoqi';
+			const thisDisables = 'LayoutShift';
 		</script>
 	</head>
 	<body data-sveltekit-preload-data="hover">

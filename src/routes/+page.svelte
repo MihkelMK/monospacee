@@ -3,6 +3,8 @@
 	import Kern from './Kern.svelte';
 	import Console from './Console.svelte';
 
+	import BrusselsImg from '$lib/assets/brussels.jpg?run&imagetools';
+
 	const consoleTargetRegex = new RegExp('.*console.*');
 	const outputTargetRegex = new RegExp('.*output.*');
 	const commandTargetRegex = new RegExp('.*command.*');
