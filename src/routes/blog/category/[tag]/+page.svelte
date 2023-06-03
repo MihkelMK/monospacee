@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-	<title>{config.title + ' - ' + data.category}</title>
+	<title>{config.title + ' | ' + data.category}</title>
 </svelte:head>
 
 <ArticleList posts={data.posts} />

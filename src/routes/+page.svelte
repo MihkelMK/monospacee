@@ -1,9 +1,8 @@
 <script>
+	import * as config from '$lib/config';
 	import ThemePicker from './ThemePicker.svelte';
 	import Kern from './Kern.svelte';
 	import Console from './Console.svelte';
-
-	import BrusselsImg from '$lib/assets/brussels.jpg?run&imagetools';
 
 	const consoleTargetRegex = new RegExp('.*console.*');
 	const outputTargetRegex = new RegExp('.*output.*');
@@ -93,8 +92,11 @@
 </script>
 
 <svelte:head>
-	<title>monospacee</title>
-	<meta name="description" content="SoonTM to a terminal near you" />
+	<title>{config.title}</title>
+	<meta name="description" content={config.description} />
+	<meta property="og:description" content={config.description} />
+	<meta property="og:url" content={config.url} />
+	<meta property="og:site_name" content={config.site_name} />
 </svelte:head>
 
 <div
