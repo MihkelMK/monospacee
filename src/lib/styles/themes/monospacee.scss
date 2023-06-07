@@ -1,0 +1,25 @@
+/**
+ * Theme: default
+ */
+
+// Variables
+@import '@picocss/pico/scss/variables';
+@import 'monospacee/colors';
+
+// Commons styles
+@import 'monospacee/styles';
+
+// Dark theme (Auto)
+// Automatically enabled if user has Dark mode enabled
+@import 'monospacee/dark';
+@media only screen and (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		@include dark;
+	}
+}
+
+// Dark theme (Forced)
+// Enabled if forced with data-theme="dark"
+[data-theme='dark'] {
+	@include dark;
+}

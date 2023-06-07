@@ -11,12 +11,11 @@
 <style lang="scss">
 	section {
 		text-align: center;
-		min-height: 96svh;
+		min-height: 90svh;
 		display: grid;
 		place-content: center;
 
 		p {
-			color: var(--color-text);
 		}
 	}
 </style>

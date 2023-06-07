@@ -1,24 +1,14 @@
 /* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
 @use './variables.scss' as *;
+@import '/src/lib/styles/pico';
 
 :root {
-	--font-family: $font-mono;
-	font-family: $font-mono;
-	color: var(--color-text);
+	font-family: var(--font-family);
 }
 
 body {
 	min-height: 100vh;
 	margin: 0;
-	background-color: var(--color-bg-0);
-}
-
-a {
-	color: var(--color-theme-1);
-}
-
-a:hover {
-	text-decoration: underline;
 }
 
 .visually-hidden {
@@ -31,4 +21,26 @@ a:hover {
 	position: absolute;
 	width: 1px;
 	white-space: nowrap;
+}
+
+.player_button {
+	border: none;
+	padding: 0;
+	margin: 0;
+	background-color: transparent;
+	line-height: normal;
+	font-size: 2.3rem;
+	width: 2.4rem;
+	color: var(--color);
+
+	transition: opacity var(--transition);
+
+	&:hover,
+	&:focus-within {
+		opacity: 0.85;
+	}
+
+	&:active {
+		opacity: 0.6;
+	}
 }

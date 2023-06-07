@@ -20,8 +20,8 @@
 
 <style lang="scss">
 	h1 {
-		color: var(--color-heading);
 		font-size: 4em;
+		color: var(--secondary);
 		font-weight: bold;
 		letter-spacing: -0.4em;
 		text-align: center;

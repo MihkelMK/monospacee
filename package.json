@@ -42,6 +42,7 @@
 	"dependencies": {
 		"@fontsource/share-tech-mono": "^5.0.2",
 		"@sveltejs/adapter-node": "^1.2.4",
+		"iconify-icon": "^1.0.7",
 		"rehype-shift-heading": "^1.0.2",
 		"rehype-slug": "^5.1.0",
 		"remark-normalize-headings": "^3.0.1",
