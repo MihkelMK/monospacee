@@ -1,0 +1,84 @@
+//    Primary: hsl(0, 0%, 100%)
+//    Secondary: hsl(180, 20%, 2%
+//    Primary Button:  hsl(276, 56%, 74%)
+//    Secondary Button: hsl(283, 54%, 95%)
+//    Accent: hsl(197, 71%, 56%)
+
+// Dark purple
+$grey-hue: 215 !default;
+$grey-50: hsl($grey-hue, 16%, 92%) !default;
+$grey-100: hsl($grey-hue, 14%, 86%) !default;
+$grey-200: hsl($grey-hue, 12%, 77%) !default;
+$grey-300: hsl($grey-hue, 10%, 68%) !default;
+$grey-400: hsl($grey-hue, 8%, 59%) !default;
+$grey-500: hsl($grey-hue, 6%, 50%) !default;
+$grey-600: hsl($grey-hue, 11%, 41%) !default;
+$grey-700: hsl($grey-hue, 16%, 32%) !default;
+$grey-800: hsl($grey-hue, 21%, 23%) !default;
+$grey-900: hsl($grey-hue, 16%, 15%) !default;
+
+// Teal
+$secondary-hue: 197 !default;
+$secondary-50: hsl($secondary-hue, 91%, 94%) !default;
+$secondary-100: hsl($secondary-hue, 86%, 86%) !default;
+$secondary-200: hsl($secondary-hue, 81%, 77%) !default;
+$secondary-300: hsl($secondary-hue, 76%, 68%) !default;
+$secondary-400: hsl($secondary-hue, 71%, 56%) !default;
+$secondary-500: hsl($secondary-hue, 76%, 50%) !default;
+$secondary-600: hsl($secondary-hue, 85%, 41%) !default;
+$secondary-700: hsl($secondary-hue, 90%, 32%) !default;
+$secondary-800: hsl($secondary-hue, 95%, 23%) !default;
+$secondary-900: hsl($secondary-hue, 100%, 15%) !default;
+
+// Plurple
+$primary-hue: 276 !default;
+$primary-50: hsl($primary-hue, 60%, 94%) !default;
+$primary-100: hsl($primary-hue, 58%, 86%) !default;
+$primary-200: hsl($primary-hue, 56%, 74%) !default;
+$primary-300: hsl($primary-hue, 54%, 68%) !default;
+$primary-400: hsl($primary-hue, 52%, 59%) !default;
+$primary-500: hsl($primary-hue, 60%, 50%) !default;
+$primary-600: hsl($primary-hue, 70%, 41%) !default;
+$primary-700: hsl($primary-hue, 80%, 32%) !default;
+$primary-800: hsl($primary-hue, 90%, 23%) !default;
+$primary-900: hsl($primary-hue, 100%, 15%) !default;
+
+// Black & White
+$black: #000 !default;
+$white: #fff !default;
+
+// Amber
+$amber-50: #fff8e1 !default;
+$amber-100: #ffecb3 !default;
+$amber-200: #ffe082 !default;
+$amber-300: #ffd54f !default;
+$amber-400: #ffca28 !default;
+$amber-500: #ffc107 !default;
+$amber-600: #ffb300 !default;
+$amber-700: #ffa000 !default;
+$amber-800: #ff8f00 !default;
+$amber-900: #ff6f00 !default;
+
+// Green
+$green-50: #e8f5e9 !default;
+$green-100: #c8e6c9 !default;
+$green-200: #a5d6a7 !default;
+$green-300: #81c784 !default;
+$green-400: #66bb6a !default;
+$green-500: #4caf50 !default;
+$green-600: #43a047 !default;
+$green-700: #388e3c !default;
+$green-800: #2e7d32 !default;
+$green-900: #1b5e20 !default;
+
+// Red
+$red-50: #ffebee !default;
+$red-100: #ffcdd2 !default;
+$red-200: #ef9a9a !default;
+$red-300: #e57373 !default;
+$red-400: #ef5350 !default;
+$red-500: #f44336 !default;
+$red-600: #e53935 !default;
+$red-700: #d32f2f !default;
+$red-800: #c62828 !default;
+$red-900: #b71c1c !default;

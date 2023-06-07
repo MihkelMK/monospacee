@@ -5,14 +5,22 @@
 	export let posts: Post[];
 </script>
 
-<section>
-	<ul class="posts">
-		{#each posts as post}
-			<li class="post">
-				<a href={'/blog/' + post.slug} class="title">{post.title}</a>
-				<p class="data">{formatDate(post.date)}</p>
+<div class="grid">
+	{#each posts as post}
+		<a href={'/blog/' + post.slug} class="title">
+			<article class="post">
+				<header>
+					<strong>{post.title}</strong>
+					{formatDate(post.date)}
+				</header>
 				<p class="description">{post.description}</p>
-			</li>
-		{/each}
-	</ul>
-</section>
+			</article>
+		</a>
+	{/each}
+</div>
+
+<style lang="scss">
+	header {
+		display: flex;
+	}
+</style>

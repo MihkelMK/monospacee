@@ -26,14 +26,14 @@ const mdsvexOptions = {
 			return `{@html \`${html}\`}`;
 		}
 	},
+	rehypePlugins: [rehypeSlug, [rehypeShiftHeading, { shift: 1 }]],
 	remarkPlugins: [
 		[remarkToc, { tight: true, heading: 'Sisukord' }],
 		remarkUnwrapImages,
 		remarkNormalizeHeadings,
 		remarkStripBadges,
 		remarkSqueezeParagraphs
-	],
-	rehypePlugins: [rehypeSlug, [rehypeShiftHeading, { shift: -1 }]]
+	]
 };
 
 /** @type {import('@sveltejs/kit').Config} */

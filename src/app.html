@@ -6,13 +6,6 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="alternate" type="application/atom+xml" href="/rss.xml" />
 		%sveltekit.head%
-		<script type="module">
-			const theme = localStorage.getItem('theme');
-
-			theme
-				? document.documentElement.setAttribute('data-theme', theme)
-				: localStorage.setItem('theme', 'dracula');
-		</script>
 		<script>
 			const thisDisables = 'LayoutShift';
 		</script>

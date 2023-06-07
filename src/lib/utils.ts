@@ -5,3 +5,21 @@ export function formatDate(date: string, dateStyle: DateStyle = 'medium', locale
 
 	return formatter.format(new Date(date));
 }
+
+export function throttle(func, duration) {
+	let shouldWait = false;
+
+	return function (...args) {
+		if (!shouldWait) {
+			func.apply(this, args);
+			shouldWait = true;
+
+			setTimeout(function () {
+				shouldWait = false;
+			}, duration);
+		}
+	};
+}
+
+export const trimString = (str: string, len: number) =>
+	str.length > len ? str.substring(0, len - 3) + '...' : str.substring(0, len);
