@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  svelte:
+    container_name: monospacee
+    image: monospacee
+    build: .
+    user: 'node'
+    restart: unless-stopped
+    ports:
+      - 8888:3000
