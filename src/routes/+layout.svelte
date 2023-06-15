@@ -1,24 +1,14 @@
 <script lang="ts">
 	import '@fontsource/share-tech-mono';
-	import { onMount } from 'svelte';
-	import { themeChange } from 'theme-change';
 	import '../app.scss';
 	import PageTransition from './transition.svelte';
 	import type { LayoutData } from './$types';
 	import 'iconify-icon';
 	import Player from '$lib/components/player/Player.svelte';
+	import { angleToMouse, throttle } from '$lib/utils';
 	import Kern from './Kern.svelte';
 
 	export let data: LayoutData;
-
-	onMount(() => {
-		themeChange(false);
-		// 👆 false parameter is required for svelte
-	});
-
-	const consoleTargetRegex = new RegExp('.*console.*');
-	const outputTargetRegex = new RegExp('.*output.*');
-	const commandTargetRegex = new RegExp('.*command.*');
 
 	let kernSilmNurk = 0;
 	let silmadPaigal = false;
@@ -26,53 +16,13 @@
 	let kernSilmP = "'";
 	let kernSuu = '◡';
 
-	/**
-	 * @param {{ (e: MouseEvent): void; apply?: any; }} func
-	 * @param {number} duration
-	 */
-	function throttle(func, duration) {
-		let shouldWait = false;
-
-		return function (/** @type {any[]} */ ...args) {
-			if (!shouldWait) {
-				// @ts-ignore
-				func.apply(this, args);
-
-				shouldWait = true;
-
-				setTimeout(function () {
-					shouldWait = false;
-				}, duration);
-			}
-		};
-	}
-
-	const arvutaNurk = (
-		/** @type {number} */ cx,
-		/** @type {number} */ cy,
-		/** @type {number} */ ex,
-		/** @type {number} */ ey
-	) => {
-		const dy = ey - cy;
-		const dx = ex - cx;
-		const rad = Math.atan2(dy, dx); // (-Pie, Pie]
-		const deg = (rad * 180) / Math.PI; // rads to degs, (-180, 180]
-		return deg;
-	};
-
-	const muudaSuud = (/** @type {MouseEvent} */ e) => {
-		if (getComputedStyle(e.target).cursor === 'pointer') {
+	const muudaSuud = (e: MouseEvent) => {
+		if (!e) return;
+		if (getComputedStyle(e.target as Element).cursor === 'pointer') {
 			kernSuu = 'ₒ';
 			kernSilmV = "'";
 			kernSilmP = "'";
 			silmadPaigal = false;
-			// @ts-ignore
-		} else if (e.target.localName == 'select' || e.target.localName == 'option') {
-			kernSuu = '◡';
-			kernSilmV = "˶'";
-			kernSilmP = "'˶";
-			silmadPaigal = true;
-			kernSilmNurk = 0;
 		} else {
 			kernSuu = '◡';
 			kernSilmV = "'";
@@ -81,17 +31,18 @@
 		}
 	};
 
-	const liigutaSilmi = (/** @type {MouseEvent} */ e) => {
-		if (silmadPaigal) return;
+	const liigutaSilmi = (e: MouseEvent) => {
+		if (silmadPaigal || !e) return;
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
 
-		// @ts-ignore
-		const rect = document.querySelector('h1').getBoundingClientRect();
+		const rect = document.querySelector('h1')?.getBoundingClientRect();
+		if (!rect) return;
+
 		const ankurX = rect.left + rect.width / 2;
 		const ankury = rect.top + rect.height / 2;
 
-		const nurk = arvutaNurk(hiirX, hiirY, ankurX, ankury) + 90;
+		const nurk = angleToMouse(hiirX, hiirY, ankurX, ankury) + 90;
 		kernSilmNurk = Math.round(nurk / 30) * 30;
 	};
 </script>
@@ -151,11 +102,16 @@
 	nav {
 		width: 75%;
 		margin-inline: auto;
-
 		a {
 			padding: calc(var(--nav-link-spacing-vertical) * 0.5)
 				calc(var(--nav-link-spacing-horizontal) * 1.5);
 			border-radius: calc(var(--border-radius) * 2);
+		}
+	}
+
+	@media (max-width: 576px) {
+		nav {
+			width: 90%;
 		}
 	}
 </style>
