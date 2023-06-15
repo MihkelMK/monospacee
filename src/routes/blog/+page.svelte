@@ -10,4 +10,4 @@
 	<title>{config.title}</title>
 </svelte:head>
 
-<ArticleList posts={data.posts} />
+<ArticleList posts={data.posts} lazyPosts={data.lazy.posts} />

@@ -9,7 +9,7 @@
 </script>
 
 {#if !minimized}
-	<div class="player_controls" transition:fly={{ y: -50, duration: 200, opacity: 0 }}>
+	<div class="player_controls" transition:fly={{ y: 50, duration: 200, opacity: 0 }}>
 		<button class="player_button player_button_rewind" on:click={() => dispatch('rewind')}>
 			<iconify-icon inline icon="pixelarticons:arrow-left" />
 		</button>

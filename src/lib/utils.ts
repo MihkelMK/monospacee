@@ -6,12 +6,13 @@ export function formatDate(date: string, dateStyle: DateStyle = 'medium', locale
 	return formatter.format(new Date(date));
 }
 
-export function throttle(func, duration) {
+export const throttle = (func: { (e: MouseEvent): void; apply?: any }, duration: number) => {
 	let shouldWait = false;
 
-	return function (...args) {
+	return (...args: any[]) => {
 		if (!shouldWait) {
-			func.apply(this, args);
+			func.apply(args);
+
 			shouldWait = true;
 
 			setTimeout(function () {
@@ -19,7 +20,15 @@ export function throttle(func, duration) {
 			}, duration);
 		}
 	};
-}
+};
+
+export const angleToMouse = (cx: number, cy: number, ex: number, ey: number) => {
+	const dy = ey - cy;
+	const dx = ex - cx;
+	const rad = Math.atan2(dy, dx); // (-Pie, Pie]
+	const deg = (rad * 180) / Math.PI; // rads to degs, (-180, 180]
+	return deg;
+};
 
 export const trimString = (str: string, len: number) =>
 	str.length > len ? str.substring(0, len - 3) + '...' : str.substring(0, len);

@@ -1,5 +1,7 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
-const theme = writable('system');
+export const selectedRecording = writable('latest');
 
-export { theme };
+// export const selectedRecordingData = derived(selectedRecording, (selectedRecording) => {
+
+// });

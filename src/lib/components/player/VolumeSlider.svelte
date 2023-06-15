@@ -11,7 +11,7 @@
 
 {#if !minimized}
 	<input
-		transition:fly={{ x: 100, duration: 200, opacity: 0 }}
+		transition:fly={{ x: -50, duration: 200, opacity: 0 }}
 		type="range"
 		min="0"
 		max="100"
@@ -40,7 +40,7 @@
 	$input-w: 4rem; // input width
 	$input-h: 1.35rem; // input height
 
-	$thumb-d: 0.7rem; // thumb diameter
+	$thumb-d: 0.8rem; // thumb diameter
 
 	$track-h: $input-h - 2 * $input-p; // track height
 
@@ -50,14 +50,12 @@
 	   if thumb radius > track radius */
 		height: $track-h;
 		border-radius: calc(var(--border-radius) * 0.25);
-		background: var(--switch-background-color);
 	}
 
 	@mixin thumb() {
 		border: none; // for cross-browser consistency
 		width: $thumb-d;
 		height: $thumb-d;
-		border-radius: calc(var(--border-radius) * 0.5);
 		box-shadow: -1px 0 2px var(--color-text-glow);
 		background: var(--secondary);
 		cursor: ns-resize;

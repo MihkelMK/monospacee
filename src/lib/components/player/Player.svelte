@@ -8,6 +8,34 @@
 	import { onMount } from 'svelte';
 	import ProgressBar from './ProgressBar.svelte';
 
+	const meta = [
+		['help_urself 2', 'Ezekiel Siiickbrain', '00:00:00'],
+		['All Over You', 'The Upbeats', '02:02:43'],
+		['Hold Me Close', 'Fourward', '02:49:54']
+	];
+
+	const getTrack = () => {
+		const currentTime = new Date();
+		currentTime.setMinutes(Math.floor(audioFile.currentTime / 60));
+		currentTime.setSeconds(
+			Math.floor(audioFile.currentTime - Math.floor(audioFile.currentTime / 60) * 60)
+		);
+
+		let playingNow;
+
+		meta.forEach((track) => {
+			const timestring = track[2].split(':');
+			const trackTime = new Date();
+			trackTime.setMinutes(Number(timestring[0]));
+			trackTime.setSeconds(Number(timestring[1]));
+
+			if (currentTime.valueOf() - trackTime.valueOf() >= 0) playingNow = track;
+		});
+
+		if (!playingNow) return;
+		trackTitle = playingNow[0];
+	};
+
 	const loadTrack = () => {
 		audioFile = new Audio(audioData[trackIndex].url);
 
@@ -32,6 +60,7 @@
 	};
 
 	function updateTime() {
+		getTrack();
 		progress = audioFile.currentTime * (100 / totalTrackTime);
 
 		let currHrs = Math.floor(audioFile.currentTime / 60 / 60);
@@ -82,8 +111,6 @@
 	const forwardAudio = () => (audioFile.currentTime += 10);
 	const updateVolume = () => (audioFile.volume = vol / 100);
 	const mute = () => {
-		console.log(muted, audioFile.muted, vol);
-
 		if (muted) {
 			audioFile.muted = false;
 			muted = false;
@@ -113,7 +140,6 @@
 	let trackTitle = 'Loading...';
 
 	let totalTrackTime: number;
-	$: console.log(totalTrackTime);
 
 	// 28 => only 1 line of text before mobile breakpoint
 	const titleMaxLength = 28;
