@@ -2,13 +2,12 @@
 	import '@fontsource/share-tech-mono';
 	import '../app.scss';
 	import PageTransition from './transition.svelte';
-	import type { LayoutData } from './$types';
 	import 'iconify-icon';
 	import Player from '$lib/components/player/Player.svelte';
 	import { angleToMouse, throttle } from '$lib/utils';
 	import Kern from './Kern.svelte';
 
-	export let data: LayoutData;
+	export let data;
 
 	let kernSilmNurk = 0;
 	let silmadPaigal = false;

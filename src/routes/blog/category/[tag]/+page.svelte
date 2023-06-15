@@ -1,9 +1,8 @@
 <script lang="ts">
 	import * as config from '$lib/config';
-	import type { PageData } from './$types';
 	import ArticleList from '$lib/components/ArticleList.svelte';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <svelte:head>
