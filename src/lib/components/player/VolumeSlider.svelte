@@ -6,7 +6,7 @@
 
 	export let vol: number;
 	export let minimized: boolean;
-	export let muted: boolean;
+	export let muted = false;
 </script>
 
 {#if !minimized}
@@ -24,7 +24,11 @@
 	/>
 {/if}
 
-<button class="player_button player_button_mute" on:click={() => dispatch('mute')}>
+<button
+	class="player_button player_button_mute"
+	on:click={() => dispatch('mute')}
+	data-tooltip="Vaigista"
+>
 	<iconify-icon
 		inline
 		icon={muted
@@ -64,9 +68,15 @@
 	button {
 		grid-area: mute;
 		place-self: center;
-		font-size: 1.1rem;
-		width: 1.1rem;
+		font-size: 1.2rem;
+		width: 1.2rem;
 		margin-left: 0.1rem;
+
+		@media screen and (max-width: 768px) {
+			font-size: 2rem;
+			width: 2rem;
+			min-height: 2.1rem;
+		}
 	}
 
 	input[type='range'] {
@@ -116,6 +126,10 @@
 			&::-webkit-slider-thumb {
 				background: var(--secondary-hover);
 			}
+		}
+
+		@media screen and (max-width: 768px) {
+			display: none;
 		}
 	}
 </style>

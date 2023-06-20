@@ -2,11 +2,11 @@
 	export let progress: number;
 	export let isPlaying: boolean;
 
-	$: background = isPlaying ? 'var(--secondary)' : 'var(--secondary-focus)';
+	$: opacity = isPlaying ? '1' : '0.6';
 </script>
 
 <div class="player_progress">
-	<span class="player_progress_bar" style="width: {progress}%; background:{background}" />
+	<span class="player_progress_bar" style="width: {progress}%; opacity:{opacity}" />
 </div>
 
 <style lang="scss">
@@ -23,7 +23,16 @@
 			position: absolute;
 			height: 100%;
 			border-radius: calc(var(--border-radius) * 0.25);
-			transition: background var(--transition);
+			transition: opacity var(--transition);
+			background-image: linear-gradient(to right, var(--secondary), var(--primary));
+			/*                ↓ same as container width */
+			background-size: 100vw 100%;
+			border-radius: 0 var(--border-radius) var(--border-radius) 0;
+		}
+
+		@media screen and (max-width: 768px) {
+			place-self: end center;
+			height: 0.75rem;
 		}
 	}
 </style>
