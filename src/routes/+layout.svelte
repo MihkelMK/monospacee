@@ -1,11 +1,14 @@
 <script lang="ts">
 	import '@fontsource/share-tech-mono';
 	import '../app.scss';
-	import PageTransition from './transition.svelte';
+
 	import 'iconify-icon';
-	import Player from '$lib/components/player/Player.svelte';
+	import PageTransition from './transition.svelte';
+
 	import { angleToMouse, throttle } from '$lib/utils';
+
 	import Kern from './Kern.svelte';
+	import Player from '$lib/components/player/Player.svelte';
 
 	export let data;
 
@@ -60,7 +63,7 @@
 					<a class="secondary" href="/">~/</a>
 				</li>
 			</ul>
-			<ul>
+			<ul class="kern">
 				<Kern silmaNurk={kernSilmNurk} vasakSilm={kernSilmV} paremSilm={kernSilmP} suu={kernSuu} />
 			</ul>
 			<ul>
@@ -70,47 +73,66 @@
 			</ul>
 		</nav>
 	</header>
-	<PageTransition url={data.url}>
-		<main>
+
+	<div class="container">
+		<PageTransition url={data.url}>
 			<slot />
-		</main>
-	</PageTransition>
+		</PageTransition>
+	</div>
+
 	<Player />
 </div>
 
 <style lang="scss">
 	.app {
-		display: flex;
-		flex-direction: column;
 		min-height: 100vh;
+		display: grid;
 	}
 
-	main {
-		padding: 1rem;
-		width: 100%;
-		box-sizing: border-box;
+	.container {
+		margin-bottom: calc(var(--block-spacing-vertical) * 4);
+
+		@media screen and (max-width: 625px) {
+			max-width: 85vw;
+		}
 	}
 
 	header {
-		margin-top: var(--block-spacing-vertical);
+		width: min(36rem, 100%);
+		margin: calc(var(--block-spacing-vertical) * 2) auto;
+		height: fit-content;
+
 		& :global(h1) {
 			margin-bottom: 0;
+		}
+
+		@media screen and (max-width: 768px) {
+			margin-block: var(--block-spacing-vertical);
+
+			nav {
+				display: grid;
+				grid: auto auto / 1fr 1fr;
+				place-items: center;
+
+				.kern {
+					grid-area: 1/1/2/3;
+				}
+			}
 		}
 	}
 
 	nav {
 		width: 75%;
 		margin-inline: auto;
-		a {
-			padding: calc(var(--nav-link-spacing-vertical) * 0.5)
-				calc(var(--nav-link-spacing-horizontal) * 1.5);
-			border-radius: calc(var(--border-radius) * 2);
-		}
-	}
-
-	@media (max-width: 576px) {
-		nav {
-			width: 90%;
+		li {
+			min-width: 4.7em;
+			text-align: center;
+			a {
+				margin-inline: auto;
+				padding: calc(var(--nav-link-spacing-vertical) * 0.5)
+					calc(var(--nav-link-spacing-horizontal) * 1.5);
+				border-radius: calc(var(--border-radius) * 2);
+			}
 		}
 	}
 </style>

@@ -23,12 +23,27 @@
 			margin-bottom: -0.5rem;
 			margin-top: 0.5rem;
 			margin-inline: 0.75em;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
 
 			transition: color var(--transition);
+
+			@media screen and (max-width: 768px) {
+				font-size: 1.3em;
+				word-wrap: white-space;
+				max-width: 30ch;
+				white-space: pre-wrap;
+        margin: 0;
+			}
 		}
 		&_time {
 			width: fit-content;
 			margin-bottom: -0.5rem;
+
+			@media screen and (max-width: 768px) {
+				display: none;
+			}
 
 			&_current {
 				grid-area: current;

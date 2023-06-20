@@ -4,7 +4,7 @@
 	--font-family: 'Share Tech Mono', 'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace',
 		'Noto Mono', 'Oxygen Mono', 'Liberation Mono', monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
 		'Segoe UI Symbol', 'Noto Color Emoji';
-	--line-height: 1.5;
+	--line-height: 1.6;
 	--font-weight: 400;
 	--font-size: 16px;
 
@@ -70,6 +70,7 @@
 
 	// Transitions
 	--transition: 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+	--transition-slow: 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
 
 	// Modal (<dialog>)
 	--modal-overlay-backdrop-filter: blur(0.25rem);

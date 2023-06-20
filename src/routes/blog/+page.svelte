@@ -9,4 +9,11 @@
 	<title>{config.title}</title>
 </svelte:head>
 
-<ArticleList posts={data.posts} lazyPosts={data.lazy.posts} />
+<main>
+<ArticleList posts={data.posts} />
+{#await data.lazy.posts}
+  <article class="post" aria-busy=true />
+{:then posts}
+  <ArticleList posts={posts} />
+{/await}
+</main>

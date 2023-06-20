@@ -1,7 +1,7 @@
-import { writable, derived } from 'svelte/store';
+import type { Cue } from '$lib/types';
+import type { Writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
-export const selectedRecording = writable('latest');
+export const selectedRecording = writable('2023-06-08');
 
-// export const selectedRecordingData = derived(selectedRecording, (selectedRecording) => {
-
-// });
+export const selectedCue: Writable<Cue> = writable();

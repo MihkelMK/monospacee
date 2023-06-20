@@ -9,4 +9,6 @@
 	<title>{config.title + ' | ' + data.category}</title>
 </svelte:head>
 
+<main>
 <ArticleList posts={data.posts} />
+</main>

@@ -1,4 +1,4 @@
-FILE "2023-06-08_16h22m37s.wav" WAVE
+FILE "2023-06-08.wav" WAVE
   TRACK 01 AUDIO
     TITLE "help_urself 2"
     PERFORMER "Ezekiel Siiickbrain"
