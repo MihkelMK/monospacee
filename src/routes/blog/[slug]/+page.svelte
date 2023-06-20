@@ -16,9 +16,9 @@
 	<header>
 		<hgroup>
 			<h1>{data.meta.title}</h1>
-			<h4>Published at: {formatDate(data.meta.date)}</h4>
+			<h4>{formatDate(data.meta.date)}</h4>
 		</hgroup>
-		<nav class="tags">
+		<nav>
 			<ul>
 				{#each data.meta.categories as category}
 					<li>
@@ -40,9 +40,10 @@
 	hgroup {
 		margin-bottom: calc(var(--typography-spacing-vertical) * 0.75);
 	}
-	nav.tags {
+
+	nav {
 		li {
-			padding-top: 0;
+			padding-block: 0;
 			a {
 				padding-block: calc(var(--nav-link-spacing-vertical) * 0.125);
 				border-radius: calc(var(--border-radius) * 1.5);

@@ -6,12 +6,12 @@
 
 	export let vol: number;
 	export let minimized: boolean;
-	export let muted: boolean;
+	export let muted = false;
 </script>
 
 {#if !minimized}
 	<input
-		transition:fly={{ x: 100, duration: 200, opacity: 0 }}
+		transition:fly={{ x: -50, duration: 200, opacity: 0 }}
 		type="range"
 		min="0"
 		max="100"
@@ -24,7 +24,11 @@
 	/>
 {/if}
 
-<button class="player_button player_button_mute" on:click={() => dispatch('mute')}>
+<button
+	class="player_button player_button_mute"
+	on:click={() => dispatch('mute')}
+	data-tooltip="Vaigista"
+>
 	<iconify-icon
 		inline
 		icon={muted
@@ -40,7 +44,7 @@
 	$input-w: 4rem; // input width
 	$input-h: 1.35rem; // input height
 
-	$thumb-d: 0.7rem; // thumb diameter
+	$thumb-d: 0.8rem; // thumb diameter
 
 	$track-h: $input-h - 2 * $input-p; // track height
 
@@ -50,14 +54,12 @@
 	   if thumb radius > track radius */
 		height: $track-h;
 		border-radius: calc(var(--border-radius) * 0.25);
-		background: var(--switch-background-color);
 	}
 
 	@mixin thumb() {
 		border: none; // for cross-browser consistency
 		width: $thumb-d;
 		height: $thumb-d;
-		border-radius: calc(var(--border-radius) * 0.5);
 		box-shadow: -1px 0 2px var(--color-text-glow);
 		background: var(--secondary);
 		cursor: ns-resize;
@@ -66,9 +68,15 @@
 	button {
 		grid-area: mute;
 		place-self: center;
-		font-size: 1.1rem;
-		width: 1.1rem;
+		font-size: 1.2rem;
+		width: 1.2rem;
 		margin-left: 0.1rem;
+
+		@media screen and (max-width: 768px) {
+			font-size: 2rem;
+			width: 2rem;
+			min-height: 2.1rem;
+		}
 	}
 
 	input[type='range'] {
@@ -118,6 +126,10 @@
 			&::-webkit-slider-thumb {
 				background: var(--secondary-hover);
 			}
+		}
+
+		@media screen and (max-width: 768px) {
+			display: none;
 		}
 	}
 </style>

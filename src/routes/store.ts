@@ -1,5 +1,7 @@
+import type { Cue } from '$lib/types';
+import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 
-const theme = writable('system');
+export const selectedRecording = writable('2023-06-08');
 
-export { theme };
+export const selectedCue: Writable<Cue> = writable();
