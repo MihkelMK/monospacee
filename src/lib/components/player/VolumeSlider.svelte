@@ -76,6 +76,7 @@
 			font-size: 2rem;
 			width: 2rem;
 			min-height: 2.1rem;
+			place-self: start center;
 		}
 	}
 

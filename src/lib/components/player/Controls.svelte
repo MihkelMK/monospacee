@@ -10,6 +10,8 @@
 	export let isPlaying = false;
 	export let minimized: boolean;
 	export let blogSlug: string | null;
+  export let songIndex: number;
+  export let lastSong: number;
 </script>
 
 {#if !minimized}
@@ -27,7 +29,8 @@
 		<button
 			class="player_button player_button_rewind"
 			on:click={() => dispatch('rewind')}
-			data-tooltip="Tagasi 15 sec"
+			data-tooltip="Eelmine lugu"
+			disabled={!isPlaying || songIndex===0}
 		>
 			<iconify-icon inline icon="pixelarticons:arrow-left" />
 		</button>
@@ -43,7 +46,8 @@
 		<button
 			class="player_button player_button_forward"
 			on:click={() => dispatch('forward')}
-			data-tooltip="Edasi 15 sec"
+			data-tooltip="Järgmine lugu"
+			disabled={!isPlaying || songIndex===lastSong}
 		>
 			<iconify-icon inline icon="pixelarticons:arrow-right" />
 		</button>
@@ -67,7 +71,7 @@
 		display: flex;
 		justify-content: space-around;
 		text-align: center;
-	  align-self: center;
+		align-self: center;
 
 		.player_button {
 			&_replace {

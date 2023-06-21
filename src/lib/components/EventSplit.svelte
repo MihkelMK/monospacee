@@ -40,6 +40,7 @@
 		}
 
 		.image {
+			max-width: 45rem;
 			z-index: -1;
 			grid-area: 1/1/2/2;
 			border-radius: calc(var(--border-radius) * 2);

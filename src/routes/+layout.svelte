@@ -90,7 +90,11 @@
 	}
 
 	.container {
-		margin-bottom: calc(var(--block-spacing-vertical) * 4);
+		margin-bottom: 4rem;
+
+		@media screen and (max-width: 768px) {
+			margin-bottom: 6.5rem;
+		}
 
 		@media screen and (max-width: 625px) {
 			max-width: 85vw;

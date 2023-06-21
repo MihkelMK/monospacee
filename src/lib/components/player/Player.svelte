@@ -2,7 +2,8 @@
 	import { navigating, page } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	import type { Cue } from '$lib/types';
+	import type { Cue, Song } from '$lib/types';
+	import { timeStringFromSeconds } from '$lib/utils';
 	import { selectedRecording } from '../../../routes/store';
 
 	import TrackInfo from './TrackInfo.svelte';
@@ -10,13 +11,57 @@
 	import VolumeSlider from './VolumeSlider.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 
-	const getTrack = () => {
-		if (!selectedCue || !selectedCue.songs) return;
-		if (audioFile.currentTime >= selectedCue.songs.at(trackIndex + 1)?.start) {
-			trackIndex += 1;
-			lastProgress = audioFile.currentTime;
-		} else if (lastProgress > audioFile.currentTime && audioFile.currentTime <= lastProgress)
-			trackIndex -= 1;
+	const getPlayingSong = (time = audioFile.currentTime) => {
+		if (!songs || !time) return;
+
+		if (!songIndex) songIndex = 0;
+
+		const next = songs.at(songIndex + 1);
+		if (next && time >= next.start) {
+			songIndex += 1;
+			refreshTitle();
+		} else {
+			const current = songs.at(songIndex);
+			if (current && time < current.start - 15) {
+				songIndex -= 1;
+				refreshTitle();
+			}
+		}
+	};
+
+	const updateTime = () => {
+		if (!audioFile) return;
+		getPlayingSong();
+
+    progress = audioFile.currentTime * (100 / totalTrackTime)
+		currTimeDisplay = timeStringFromSeconds(audioFile.currentTime);
+
+		if (audioFile.ended) {
+			toggleTimeRunning();
+		}
+	};
+
+	const toggleTimeRunning = () => {
+		if (audioFile.ended) {
+			isPlaying = false;
+			clearInterval(trackTimer);
+		} else {
+			trackTimer = setInterval(updateTime, 100);
+		}
+	};
+
+	const seekToSong = (index: number) => {
+		if (index < 0 || !songs.at(index)) return;
+		songIndex = index;
+		audioFile.currentTime = songs.at(index)?.start ?? audioFile.currentTime;
+		refreshTitle();
+	};
+
+	const refreshTitle = () => {
+		const song = songs.at(songIndex);
+		if (!song) return;
+
+		trackTitle = `${song.title} - ${song.artist}` ?? 'Loading...';
 	};
 
 	const getCue = async () => {
@@ -25,43 +70,34 @@
 		return cue;
 	};
 
-	function updateTime() {
-		getTrack();
-		progress = audioFile.currentTime * (100 / totalTrackTime);
+	const replaceAudio = async (slug: string | null) => {
+		if (slug) {
+			if (audioFile) audioFile.pause();
+			totalTimeDisplay = timeStringFromSeconds(0);
+			songIndex = 0;
 
-		let currHrs = Math.floor(audioFile.currentTime / 60 / 60);
-		let currMins = Math.floor(audioFile.currentTime / 60);
-		let currSecs = Math.floor(audioFile.currentTime - currMins * 60);
+			selectedRecording.set(slug);
 
-		let durHrs = Math.floor(totalTrackTime / 60 / 60);
-		let durMins = Math.floor((totalTrackTime / 60) % 60);
-		let durSecs = Math.floor(totalTrackTime - durHrs * 60 * 60 - durMins * 60);
+			const selectedCue: Cue = await getCue();
+			songs = selectedCue.songs;
+			audioFile = selectedCue ? new Audio(`/recordings/${selectedCue.slug}`) : new Audio();
 
-		currTimeDisplay = `${String(currHrs).padStart(2, '0')}:${String(currMins).padStart(
-			2,
-			'0'
-		)}:${String(currSecs).padStart(2, '0')}`;
-		totalTimeDisplay = `${String(durHrs).padStart(2, '0')}:${String(durMins).padStart(
-			2,
-			'0'
-		)}:${String(durSecs).padStart(2, '0')}`;
+			// Track Duration and Progress Bar
+			audioFile.onloadedmetadata = () => {
+				if (!audioFile) return;
 
-		if (audioFile.ended) {
-			toggleTimeRunning();
-		}
-	}
+				totalTrackTime = audioFile.duration;
+				totalTimeDisplay = timeStringFromSeconds(totalTrackTime);
+				refreshTitle();
 
-	const toggleTimeRunning = () => {
-		if (audioFile.ended) {
-			isPlaying = false;
-			clearInterval(trackTimer);
-			console.log(`Ended = ${audioFile.ended}`);
-		} else {
-			trackTimer = setInterval(updateTime, 100);
+				if (blogSlug !== slug) audioFile.play();
+			};
 		}
 	};
 
 	const playPauseAudio = () => {
+		if (audioFile.ended) audioFile.currentTime = 0;
+
 		if (audioFile.paused) {
 			toggleTimeRunning();
 			audioFile.play();
@@ -73,29 +109,8 @@
 		}
 	};
 
-	const replaceAudio = async () => {
-		if (blogSlug) {
-			audioFile.pause();
-
-			selectedRecording.set(blogSlug);
-
-			const cueRes = await fetch(`/api/cues/${$selectedRecording}.cue`);
-      selectedCue = await cueRes.json();
-			audioFile = selectedCue ? new Audio(`/recordings/${selectedCue.slug}`) : new Audio();
-
-			// Track Duration and Progress Bar
-			audioFile.onloadedmetadata = () => {
-				if (!audioFile) return;
-				totalTrackTime = audioFile.duration;
-				updateTime();
-				
-        audioFile.play();
-			};
-		}
-	};
-
-	const rewindAudio = () => (audioFile.currentTime -= 15);
-	const forwardAudio = () => (audioFile.currentTime += 15);
+	const rewindAudio = () => seekToSong(songIndex - 1);
+	const forwardAudio = () => seekToSong(songIndex + 1);
 	const updateVolume = () => (audioFile.volume = vol / 100);
 	const mute = () => (audioFile.muted = !audioFile.muted);
 
@@ -104,9 +119,9 @@
 
 	let totalTimeDisplay = '00:00:00';
 	let currTimeDisplay = '00:00:00';
-	let progress = 0;
-	let lastProgress = 0;
 	let trackTimer: NodeJS.Timeout;
+  let progress = 0;
+
 	let minimized = true;
 	let blogSlug: string | null;
 
@@ -116,33 +131,21 @@
 	let isPlaying = false;
 
 	// Get Audio track
-	let trackIndex = 0;
 	let vol = 50;
 
-	let selectedCue: Cue;
+	let songIndex = 0;
+	let songs: Song[];
 
 	let audioFile: HTMLAudioElement;
-	let trackTitle = 'Loading...';
+	let trackTitle: string;
 
 	let totalTrackTime: number;
-
-	$: trackTitle = selectedCue
-		? `${selectedCue.songs.at(trackIndex)?.title} - ${selectedCue.songs.at(trackIndex)?.artist}`
-		: 'Loading...';
 
 	onMount(async () => {
 		blogSlug = getBlogPostFromPath($page.url.pathname);
 		minimized = !blogSlug;
 
-		selectedCue = await getCue();
-		audioFile = selectedCue ? new Audio(`/recordings/${selectedCue.slug}`) : new Audio();
-
-		// Track Duration and Progress Bar
-		audioFile.onloadedmetadata = () => {
-			if (!audioFile) return;
-			totalTrackTime = audioFile.duration;
-			updateTime();
-		};
+		blogSlug && replaceAudio(blogSlug);
 	});
 </script>
 
@@ -162,7 +165,9 @@
 		{isPlaying}
 		{minimized}
 		{blogSlug}
-		on:replaceAudio={replaceAudio}
+		{songIndex}
+		lastSong={songs ? songs.length - 1 : 0}
+		on:replaceAudio={() => replaceAudio(blogSlug)}
 		on:rewind={rewindAudio}
 		on:playPause={playPauseAudio}
 		on:forward={forwardAudio}
@@ -170,7 +175,11 @@
 
 	<TrackInfo {isPlaying} {currTimeDisplay} {trackTitle} {totalTimeDisplay} />
 
-	<ProgressBar {progress} {isPlaying} />
+	{#if audioFile}
+		<ProgressBar bind:currentTime={audioFile.currentTime} {progress} {isPlaying} {totalTrackTime} />
+	{:else}
+		<ProgressBar currentTime={0} {isPlaying} {totalTrackTime} {progress} />
+	{/if}
 
 	<VolumeSlider
 		{minimized}
@@ -193,7 +202,7 @@
 		grid-template-columns: 3rem auto auto auto 3.5rem;
 		position: fixed;
 		bottom: 0;
-		padding: 1rem 0.75rem 0.75em 0.7em;
+		padding: 1rem 0.75rem 1rem 0.75rem;
 		border-radius: var(--border-radius) var(--border-radius) 0 0;
 
 		@media screen and (max-width: 768px) {
@@ -203,7 +212,7 @@
 				'progress progress progress progress progress';
 			grid-template-columns: 4rem auto auto auto 4.5rem;
 			grid-template-rows: auto 4rem 0.75rem;
-			gap: 0.4rem 0;
+			gap: 0.55rem 0;
 			padding: 0;
 
 			min-height: 12rem;
@@ -226,6 +235,7 @@
 			font-size: 2.3rem;
 			width: 2.3rem;
 			min-height: 2.4rem;
+			place-self: start center;
 		}
 
 		iconify-icon {

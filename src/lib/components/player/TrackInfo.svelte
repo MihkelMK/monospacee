@@ -20,26 +20,23 @@
 			margin: 0;
 			text-align: center;
 			place-self: end center;
-			margin-bottom: -0.5rem;
+			margin-bottom: -1rem;
 			margin-top: 0.5rem;
 			margin-inline: 0.75em;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			overflow: hidden;
+			white-space: pre-wrap;
 
 			transition: color var(--transition);
 
 			@media screen and (max-width: 768px) {
+				margin: 0;
 				font-size: 1.3em;
-				word-wrap: white-space;
-				max-width: 30ch;
-				white-space: pre-wrap;
-        margin: 0;
+				word-wrap: normal;
+				place-self: center;
 			}
 		}
 		&_time {
 			width: fit-content;
-			margin-bottom: -0.5rem;
+			margin-bottom: -1rem;
 
 			@media screen and (max-width: 768px) {
 				display: none;

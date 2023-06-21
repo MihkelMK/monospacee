@@ -32,6 +32,14 @@ export const angleToMouse = (cx: number, cy: number, ex: number, ey: number) => 
 export const trimString = (str: string, len: number) =>
 	str.length > len ? str.substring(0, len - 3) + '...' : str.substring(0, len);
 
-export const parseCue = (cue: string) => {
-  return cue;
+export const timeStringFromSeconds = (seconds: number) => {
+  	let hour = Math.floor(seconds / 60 / 60);
+		let min = Math.floor(seconds / 60);
+		let sec = Math.floor(seconds - min * 60);
+
+  	return `${String(hour).padStart(2, '0')}:${String(min).padStart(
+			2,
+			'0'
+		)}:${String(sec).padStart(2, '0')}`;
+
 }
