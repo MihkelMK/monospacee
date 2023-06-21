@@ -33,7 +33,7 @@
 		if (!audioFile) return;
 		getPlayingSong();
 
-    progress = audioFile.currentTime * (100 / totalTrackTime)
+		progress = audioFile.currentTime * (100 / totalTrackTime);
 		currTimeDisplay = timeStringFromSeconds(audioFile.currentTime);
 
 		if (audioFile.ended) {
@@ -90,7 +90,7 @@
 				totalTimeDisplay = timeStringFromSeconds(totalTrackTime);
 				refreshTitle();
 
-				if (blogSlug !== slug) audioFile.play();
+				if (slug !== $selectedRecording) audioFile.play();
 			};
 		}
 	};
@@ -120,7 +120,7 @@
 	let totalTimeDisplay = '00:00:00';
 	let currTimeDisplay = '00:00:00';
 	let trackTimer: NodeJS.Timeout;
-  let progress = 0;
+	let progress = 0;
 
 	let minimized = true;
 	let blogSlug: string | null;
@@ -145,7 +145,7 @@
 		blogSlug = getBlogPostFromPath($page.url.pathname);
 		minimized = !blogSlug;
 
-		blogSlug && replaceAudio(blogSlug);
+		replaceAudio($selectedRecording);
 	});
 </script>
 

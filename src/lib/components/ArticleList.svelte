@@ -4,8 +4,6 @@
 	import { page } from '$app/stores';
 
 	export let posts: Post[];
-
-	console.log($page.params.tag);
 </script>
 
 {#each posts as post}
