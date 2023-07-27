@@ -2,47 +2,21 @@
 @use './variables.scss' as *;
 @import '/src/lib/styles/pico';
 
-:root {
-	font-family: var(--font-family);
-}
-
 body {
 	min-height: 100vh;
+	min-height: 100dvh;
 	margin: 0;
 }
 
-.visually-hidden {
-	border: 0;
+.hidden-visually {
 	clip: rect(0 0 0 0);
-	height: auto;
-	margin: 0;
+	border: 0;
+	height: 1px;
+	margin: -1px;
 	overflow: hidden;
 	padding: 0;
 	position: absolute;
 	width: 1px;
-	white-space: nowrap;
-}
-
-.player_button {
-	border: none;
-	padding: 0;
-	margin: 0;
-	background-color: transparent;
-	line-height: normal;
-	font-size: 2.3rem;
-	width: 2.4rem;
-	color: var(--color);
-
-	transition: opacity var(--transition);
-
-	&:hover,
-	&:focus-within {
-		opacity: 0.85;
-	}
-
-	&:active {
-		opacity: 0.6;
-	}
 }
 
 img.better-blur::after {
@@ -51,4 +25,194 @@ img.better-blur::after {
 	inset: 0;
 	backdrop-filter: blur(30px);
 	pointer-events: none;
+}
+
+nav.tags {
+	ul {
+		flex-wrap: wrap;
+		li {
+			vertical-align: middle;
+			font-family: var(--font-accent);
+			padding: calc(var(--nav-element-spacing-vertical) * 0.1)
+				calc(var(--nav-element-spacing-horizontal) * 1.25);
+			--color: var(--muted-color);
+		}
+	}
+}
+
+article.post {
+	--accent-color: var(--contrast);
+	--accent-hover: var(--color);
+	--accent-focus: var(--muted-color);
+	--accordion-active-summary-color: var(--accent-hover);
+	--accordion-open-summary-color: color-mix(
+		in srgb,
+		var(--accent-color) 70%,
+		rgba(255, 255, 255, 0.8)
+	);
+
+	&.primary {
+		--accent-color: var(--primary);
+		--accent-hover: var(--primary-hover);
+		--accent-focus: var(--primary-focus);
+	}
+	&.secondary {
+		--accent-color: var(--secondary);
+		--accent-hover: var(--secondary-hover);
+		--accent-focus: var(--secondary-focus);
+	}
+  &.contrast {
+    & .toc-level-2 li,
+.toc-level-2 li a {
+	--color: color-mix(in srgb, var(--accent-color) 80%, #000);
+	--accent-focus: color-mix(in srgb, var(--accent-color) 30%, rgba(155, 155, 155, 0));
+	--accent-hover: color-mix(in srgb, var(--accent-color) 90%, rgba(0, 0, 0, 0.8));
+}
+
+& .toc-level-3 li,
+.toc-level-3 li a {
+	--color: color-mix(in srgb, var(--accent-color) 60%, #000);
+	--accent-focus: color-mix(in srgb, var(--accent-color) 20%, rgba(0, 0, 0, 0));
+	--accent-hover: color-mix(in srgb, var(--accent-color) 40%, rgba(0, 0, 0, 0.9));
+}
+
+  }
+
+	&.playable {
+		& header {
+			display: grid;
+			grid-template-columns: 4fr 1fr;
+		}
+	}
+
+	& p {
+		width: min(100% - 3rem, 60ch);
+	}
+
+	& a {
+		--color: var(--accent-color);
+
+		&.contrast {
+			--accent-color: var(--contrast);
+			--accent-hover: var(--color);
+			--accent-focus: var(--muted-color);
+		}
+		&.primary {
+			--accent-color: var(--primary);
+			--accent-hover: var(--primary-hover);
+			--accent-focus: var(--primary-focus);
+		}
+		&.secondary {
+			--accent-color: var(--secondary);
+			--accent-hover: var(--secondary-hover);
+			--accent-focus: var(--secondary-focus);
+		}
+		&:is([aria-current], :hover, :active, :focus),
+		[role='link']:is([aria-current], :hover, :active, :focus) {
+			--color: var(--accent-hover);
+			--background-color: var(--accent-focus);
+		}
+	}
+
+	header {
+		& :is(button, input[type='submit'], input[type='button'], [role='button']) {
+			place-self: center;
+			margin: 0;
+			padding: 0;
+
+			--icon_size: 2.2rem;
+			height: var(--icon_size);
+			width: var(--icon_size);
+
+			border-color: transparent;
+			background-color: transparent;
+			--color: var(--accent-color);
+
+			& iconify-icon {
+				line-height: normal;
+				font-size: var(--icon_size);
+				height: var(--icon_size);
+				width: var(--icon_size);
+			}
+
+			&:is([aria-current], :hover, :active, :focus) {
+				--color: var(--accent-hover);
+			}
+
+			&:focus {
+				--box-shadow: var(--button-hover-box-shadow, 0 0 0 rgba(0, 0, 0, 0)),
+					0 0 0 var(--outline-width) var(--accent-hover);
+			}
+		}
+
+		& hgroup {
+			margin-bottom: 0;
+			& h2,
+			h1 {
+				--color: var(--accent-color);
+				margin-bottom: calc(var(--typography-spacing-vertical) * 0.05);
+			}
+		}
+
+		& a {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.toc {
+	margin-bottom: var(--block-spacing-vertical);
+}
+
+.toc li {
+	color: var(--color);
+	font-weight: bold;
+
+	display: list-item;
+	font-family: var(--font-accent);
+	padding: calc(var(--nav-element-spacing-vertical) * 0.25)
+		calc(var(--nav-element-spacing-horizontal) * 1.25);
+}
+
+.toc li::marker {
+	color: color-mix(in srgb, var(--color) 70%, rgba(0, 0, 0, 0.4));
+	counter-increment: item;
+	content: counters(list-item, '_') '_';
+
+	font-weight: normal;
+}
+
+.toc a {
+	color: var(--color);
+	padding-block: calc(var(--nav-link-spacing-vertical) * 0.5);
+	padding-inline: 0.5em calc(var(--nav-link-spacing-horizontal) * 0.5);
+}
+
+.toc ol {
+	counter-reset: list-item;
+	list-style-type: none;
+	list-style-position: inside;
+}
+
+.toc ol ol {
+	margin-left: 0.25rem;
+}
+
+.toc-level-1 li,
+.toc-level-1 li a {
+	--color: var(--accent-color);
+}
+
+.toc-level-2 li,
+.toc-level-2 li a {
+	--color: color-mix(in srgb, var(--accent-color) 80%, #fff);
+	--accent-focus: color-mix(in srgb, var(--accent-color) 30%, rgba(155, 155, 155, 0));
+	--accent-hover: color-mix(in srgb, var(--accent-color) 90%, rgba(255, 255, 255, 0.8));
+}
+
+.toc-level-3 li,
+.toc-level-3 li a {
+	--color: color-mix(in srgb, var(--accent-color) 60%, #fff);
+	--accent-focus: color-mix(in srgb, var(--accent-color) 20%, rgba(255, 255, 255, 0));
+	--accent-hover: color-mix(in srgb, var(--accent-color) 40%, rgba(255, 255, 255, 0.9));
 }

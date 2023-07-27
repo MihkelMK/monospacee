@@ -1,94 +1,99 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { fly } from 'svelte/transition';
-
-	import { selectedRecording } from '../../../routes/store';
 
 	let dispatch = createEventDispatcher();
 
 	export let isPlaying = false;
-	export let minimized: boolean;
-	export let blogSlug: string | null;
-  export let songIndex: number;
-  export let lastSong: number;
+	export let songIndex: number;
+	export let lastSong: number;
+  export let loading: boolean;
+  export let ended: boolean;
+	export let muted = false;
 </script>
 
-{#if !minimized}
-	<div class="player_controls" transition:fly={{ y: 50, duration: 200, opacity: 0 }}>
-		{#if blogSlug && blogSlug !== $selectedRecording}
-			<button
-				transition:fly|local={{ y: 50, duration: 200, opacity: 0 }}
-				data-tooltip="Mängi seda saadet"
-				class="player_button player_button_replace"
-				on:click={() => dispatch('replaceAudio')}
-			>
-				<iconify-icon inline icon="pixelarticons:forwardburger" />
-			</button>
-		{/if}
-		<button
-			class="player_button player_button_rewind"
-			on:click={() => dispatch('rewind')}
-			data-tooltip="Eelmine lugu"
-			disabled={!isPlaying || songIndex===0}
-		>
-			<iconify-icon inline icon="pixelarticons:arrow-left" />
-		</button>
+<button
+	class="player_button player_button_rewind"
+	on:click={() => dispatch('rewind')}
+	disabled={songIndex === 0 || loading}
+>
+	<iconify-icon inline icon="pixelarticons:prev" />
+</button>
 
-		<button
-			class="player_button player_button_play"
-			on:click={() => dispatch('playPause')}
-			data-tooltip={isPlaying ? 'Muusika pausile' : 'Muusika käima'}
-		>
-			<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
-		</button>
+<button class="player_button player_button_play" on:click={() => dispatch('playPause')}>
+	<iconify-icon inline icon={ended ? 'pixelarticons:reload' : isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
+</button>
 
-		<button
-			class="player_button player_button_forward"
-			on:click={() => dispatch('forward')}
-			data-tooltip="Järgmine lugu"
-			disabled={!isPlaying || songIndex===lastSong}
-		>
-			<iconify-icon inline icon="pixelarticons:arrow-right" />
-		</button>
+<button
+	class="player_button player_button_forward"
+	on:click={() => dispatch('forward')}
+	disabled={songIndex === lastSong || loading}
+>
+	<iconify-icon inline icon="pixelarticons:next" />
+</button>
 
-		{#if !(blogSlug === $selectedRecording)}
-			<button
-				transition:fly|local={{ y: 50, duration: 200, opacity: 0 }}
-				data-tooltip="Mängiva saate postitus"
-				class="player_button player_button_openblog"
-				on:click={() => goto(`/blog/${$selectedRecording}`)}
-			>
-				<iconify-icon inline icon="pixelarticons:open" />
-			</button>
-		{/if}
-	</div>
-{/if}
+<button
+	class="player_button player_button_mute {muted ? 'unactive' : ''}"
+	on:click={() => dispatch('mute')}
+	disabled={loading}
+>
+	<iconify-icon inline icon={muted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'} />
+</button>
 
 <style lang="scss">
-	.player_controls {
-		grid-area: controls;
-		display: flex;
-		justify-content: space-around;
-		text-align: center;
-		align-self: center;
+	.player_button {
+		place-self: center;
+		padding: 0;
+		margin: 0;
 
-		.player_button {
-			&_replace {
-				font-size: 2.3em;
-			}
-			&_openblog {
-				font-size: 1.8em;
-			}
+		--icon_size: 2.2rem;
+		height: var(--icon_size);
+		width: var(--icon_size);
+
+		background-color: transparent;
+		border: none;
+
+		transition: color var(--transition);
+
+		& iconify-icon {
+			line-height: normal;
+			font-size: var(--icon_size);
+			height: var(--icon_size);
+			width: var(--icon_size);
+		}
+
+		&:hover,
+		&:focus-within {
+			color: inherit;
+		}
+		&:active {
+			color: var(--contrast);
+		}
+		&.unactive {
+			color: var(--muted-color);
+		}
+
+		&_rewind {
+			grid-area: 1/1/2/2;
+			z-index: 1;
+		}
+		&_forward {
+			grid-area: 1/5/2/6;
+			z-index: 1;
+		}
+		&_mute {
+			grid-area: mute;
+			--icon_size: 1.5rem;
 
 			@media screen and (max-width: 768px) {
-				font-size: 3rem;
-				&_replace {
-					font-size: 3em;
-				}
-				&_openblog {
-					font-size: 2.4em;
-				}
+				--icon_size: 1.7rem;
+			}
+		}
+		&_play {
+			grid-area: play;
+			--icon_size: 1.9rem;
+
+			@media screen and (max-width: 768px) {
+				--icon_size: 2.1rem;
 			}
 		}
 	}

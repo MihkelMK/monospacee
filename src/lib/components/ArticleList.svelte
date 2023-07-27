@@ -1,72 +1,54 @@
 <script lang="ts">
-	import type { Post } from '$lib/types';
+	import type { Post, PostType } from '$lib/types';
 	import { formatDate } from '$lib/utils';
-	import { page } from '$app/stores';
+	import { fly } from 'svelte/transition';
+	import { selectedRecording, visiblePostTypes } from '../../routes/store';
+	import { cubicOut } from 'svelte/easing';
 
 	export let posts: Post[];
+
+	const loadToPlayer = (slug: string) => {
+		selectedRecording.set(slug);
+	};
+
+	const getClass = (type: PostType) => {
+		if (type === 'event') return 'secondary';
+		if (type === 'project') return 'primary';
+		return 'contrast';
+	};
 </script>
 
 {#each posts as post}
-	<article class="post">
-		<header>
-			<hgroup>
-				<a href={'/blog/' + post.date} class="title">
-					<h2>{post.title}</h2>
-				</a>
-				<h3>{formatDate(post.date)}</h3>
-			</hgroup>
-			<nav>
-				<ul>
-					{#each post.categories as category}
-						<li>
-							<a
-								data-tooltip={`Kõik ${category} postitused`}
-								role="button"
-								class={category === $page.params.tag ? 'secondary' : 'contrast outline'}
-								href={'/blog/category/' + category}
-							>
-								<small>&num;{category}</small>
-							</a>
-						</li>
-					{/each}
-				</ul>
-			</nav>
-		</header>
-		<p class="description">{post.description}</p>
-	</article>
+	{#if $visiblePostTypes.includes(post.type)}
+		<article
+			transition:fly={{ y: 75, duration: 200, easing: cubicOut }}
+			class="post {getClass(post.type)} {post.duration ? 'playable' : ''}"
+		>
+			<header>
+				<hgroup>
+					<a href={'/' + post.date} data-sveltekit-preload-data="tap" class="title">
+						<h2 class="glow-sm">{post.title}</h2>
+					</a>
+					<h4>{formatDate(post.date)} [{post.type.slice(0, 1).toUpperCase()}]</h4>
+				</hgroup>
+				{#if post.duration}
+					<button
+						disabled={$selectedRecording === post.date}
+						data-tooltip="Load to player"
+						on:click={() => loadToPlayer(post.date)}
+					>
+						<iconify-icon icon="pixelarticons:playlist" />
+					</button>
+				{/if}
+			</header>
+			<p class="description">{post.description}</p>
+		</article>
+	{/if}
 {/each}
 
 <style lang="scss">
-	header {
-		display: grid;
-		grid-template-columns: 4fr 1fr;
-	}
-
-	hgroup {
-		margin-bottom: 0;
-	}
-
-	a {
-		margin-bottom: 0;
-		h2 {
-			margin-bottom: calc(var(--typography-spacing-vertical) / 15);
-			color: var(--primary);
-		}
-	}
-
-	nav {
-		place-self: center;
-		li {
-			padding-block: 0;
-			a {
-				padding-block: calc(var(--nav-link-spacing-vertical) * 0.125);
-				border-radius: calc(var(--border-radius) * 1.5);
-
-				@media screen and (max-width: 768px) {
-					padding-block: calc(var(--nav-link-spacing-vertical) * 0.5);
-					border-radius: calc(var(--border-radius) * 1.5);
-				}
-			}
-		}
+	article {
+		max-width: 45rem;
+		margin-inline: auto;
 	}
 </style>

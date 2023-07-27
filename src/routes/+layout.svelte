@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '@fontsource/share-tech-mono';
+	import '@fontsource-variable/roboto-mono';
 	import '../app.scss';
 
 	import 'iconify-icon';
@@ -9,6 +10,7 @@
 
 	import Kern from './Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
+	import { selectedRecording } from './store';
 
 	export let data;
 
@@ -17,6 +19,7 @@
 	let kernSilmV = "'";
 	let kernSilmP = "'";
 	let kernSuu = '◡';
+	let kern: HTMLElement;
 
 	const muudaSuud = (e: MouseEvent) => {
 		if (!e) return;
@@ -38,7 +41,7 @@
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
 
-		const rect = document.querySelector('h1')?.getBoundingClientRect();
+		const rect = kern.getBoundingClientRect();
 		if (!rect) return;
 
 		const ankurX = rect.left + rect.width / 2;
@@ -50,6 +53,7 @@
 </script>
 
 <div
+	role="application"
 	class="app"
 	on:mousemove={liigutaSilmi}
 	on:mousemove={throttle(function (e) {
@@ -59,84 +63,88 @@
 	<header>
 		<nav>
 			<ul>
-				<li>
-					<a class="secondary" href="/">~/</a>
-				</li>
+				<li><a class="secondary glow" href="/">/home/page</a></li>
 			</ul>
-			<ul class="kern">
-				<Kern silmaNurk={kernSilmNurk} vasakSilm={kernSilmV} paremSilm={kernSilmP} suu={kernSuu} />
+			<ul id="kernList">
+				<li bind:this={kern}>
+					<Kern
+						silmaNurk={kernSilmNurk}
+						vasakSilm={kernSilmV}
+						paremSilm={kernSilmP}
+						suu={kernSuu}
+					/>
+				</li>
 			</ul>
 			<ul>
-				<li>
-					<a class="secondary" href="/blog">~/blog</a>
-				</li>
+				<li><a class="secondary glow" href={`/${$selectedRecording}`}>/mnt/current</a></li>
 			</ul>
 		</nav>
 	</header>
-
 	<div class="container">
 		<PageTransition url={data.url}>
 			<slot />
 		</PageTransition>
 	</div>
-
 	<Player />
 </div>
 
 <style lang="scss">
 	.app {
 		min-height: 100vh;
-		display: grid;
-	}
-
-	.container {
-		margin-bottom: 4rem;
-
-		@media screen and (max-width: 768px) {
-			margin-bottom: 6.5rem;
-		}
-
-		@media screen and (max-width: 625px) {
-			max-width: 85vw;
-		}
 	}
 
 	header {
-		width: min(36rem, 100%);
-		margin: calc(var(--block-spacing-vertical) * 2) auto;
-		height: fit-content;
+		--mask: linear-gradient(
+				to bottom,
+				rgba(0, 0, 0, 1) 0,
+				rgba(0, 0, 0, 1) 40%,
+				rgba(0, 0, 0, 0) 95%,
+				rgba(0, 0, 0, 0) 0
+			)
+			100% 50% / 100% 100% repeat-x;
+		position: sticky;
+		top: 0;
+		padding-block: var(--nav-element-spacing-vertical) calc(var(--block-spacing-vertical) * 2);
+		margin-bottom: calc(var(--block-spacing-vertical) * -1);
+		backdrop-filter: blur(2px);
+		background-color: transparentize($color: #000, $amount: 0.9);
+		background-blend-mode: darken;
+		background-size: 100% 100%;
+		pointer-events: none;
 
-		& :global(h1) {
-			margin-bottom: 0;
-		}
+		-webkit-mask: var(--mask);
+		mask: var(--mask);
+
+		z-index: 999;
 
 		@media screen and (max-width: 768px) {
-			margin-block: var(--block-spacing-vertical);
+			padding-block: 0 calc(var(--block-spacing-vertical) * 5);
+			margin-bottom: calc(var(--block-spacing-vertical) * -4);
 
-			nav {
+			& nav {
 				display: grid;
-				grid: auto auto / 1fr 1fr;
+				grid-template-rows: auto auto;
+				grid-template-columns: 1fr 1fr;
 				place-items: center;
 
-				.kern {
-					grid-area: 1/1/2/3;
+				ul:not(#kernList) li {
+					padding: 0;
+				}
+
+				#kernList {
+					grid-column: span 2;
+					grid-row: 1;
+					padding: calc(var(--nav-element-spacing-vertical) * 0.5)
+						calc(var(--nav-element-spacing-horizontal) * 0.5);
+					padding-bottom: 0;
 				}
 			}
 		}
-	}
 
-	nav {
-		width: 75%;
-		margin-inline: auto;
-		li {
-			min-width: 4.7em;
-			text-align: center;
-			a {
-				margin-inline: auto;
-				padding: calc(var(--nav-link-spacing-vertical) * 0.5)
-					calc(var(--nav-link-spacing-horizontal) * 1.5);
-				border-radius: calc(var(--border-radius) * 2);
-			}
+		& nav {
+			pointer-events: auto;
+			max-width: 50ch;
+			margin-inline: auto;
 		}
 	}
 </style>

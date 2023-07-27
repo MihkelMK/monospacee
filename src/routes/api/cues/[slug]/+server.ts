@@ -25,7 +25,7 @@ async function parseCue(cueFile: string) {
 				.map((line) =>
 					line.includes('"')
 						? line.split('"').at(1)
-						: timecodeToSeconds(line.match('[0-9][0-9]:[0-9][0-9]:[0-9][0-9]')?.at(0))
+						: timecodeToSeconds(line.match('[0-9]+:[0-9]+:[0-9]+')?.at(0))
 				)
 		);
 
@@ -39,7 +39,11 @@ async function parseCue(cueFile: string) {
 	return cue;
 }
 
-export async function GET({ params }) {
+export async function GET({ params, setHeaders }) {
+	setHeaders({
+		'cache-control': 'max-age=60'
+	});
+
 	const file = `/static/recordings/${params.slug}`;
 	const cues = import.meta.glob('/static/recordings/*.cue', { as: 'raw' });
 	const cueStream = cues[file];

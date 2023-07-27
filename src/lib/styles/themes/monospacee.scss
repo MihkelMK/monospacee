@@ -23,3 +23,27 @@
 [data-theme='dark'] {
 	@include dark;
 }
+
+.glow {
+	--glow_color: #{transparentize($primary-300, 0.4)};
+	text-shadow: var(--glow_color) 0px 0px 20px;
+
+	&.secondary {
+		--glow_color: #{transparentize($secondary-300, 0.4)};
+	}
+	&.contrast {
+		--glow_color: #{transparentize($grey-300, 0.4)};
+	}
+
+	&-sm {
+		--glow_color: #{transparentize($primary-300, 0.7)};
+		text-shadow: var(--glow_color) 0px 0px 15px;
+
+		&.secondary {
+			--glow_color: #{transparentize($secondary-300, 0.7)};
+		}
+		&.contrast {
+			--glow_color: #{transparentize($grey-300, 0.7)};
+		}
+	}
+}

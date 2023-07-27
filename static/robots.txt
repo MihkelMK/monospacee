@@ -1,3 +1,10 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+
+Disallow: /api/cues
+Disallow: /api/post
+Disallow: /api/posts
+Disallow: /*.json
+Disallow: /*.js
+Disallow: /rss.xml
+

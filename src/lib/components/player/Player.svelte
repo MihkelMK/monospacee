@@ -1,49 +1,53 @@
 <script lang="ts">
-	import { navigating, page } from '$app/stores';
 	import { onMount } from 'svelte';
 
 	import type { Cue, Song } from '$lib/types';
-	import { timeStringFromSeconds } from '$lib/utils';
-	import { selectedRecording } from '../../../routes/store';
+	import { timeStringFromSeconds, keybind } from '$lib/utils';
+	import {
+		selectedRecording,
+		cueJump,
+		recordingPlaying,
+		feed,
+		streamingData
+	} from '../../../routes/store';
 
 	import TrackInfo from './TrackInfo.svelte';
 	import Controls from './Controls.svelte';
-	import VolumeSlider from './VolumeSlider.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 
 	const getPlayingSong = (time = audioFile.currentTime) => {
-		if (!songs || !time) return;
+		if (!songs || typeof time !== 'number') return;
 
-		if (!songIndex) songIndex = 0;
+		const closest = songs.reduce((prev, curr) => {
+			return curr.start <= time && curr.start > prev.start ? curr : prev;
+		});
 
-		const next = songs.at(songIndex + 1);
-		if (next && time >= next.start) {
-			songIndex += 1;
-			refreshTitle();
-		} else {
-			const current = songs.at(songIndex);
-			if (current && time < current.start - 15) {
-				songIndex -= 1;
-				refreshTitle();
-			}
-		}
+		songIndex = songs.indexOf(closest);
 	};
 
 	const updateTime = () => {
 		if (!audioFile) return;
-		getPlayingSong();
-
-		progress = audioFile.currentTime * (100 / totalTrackTime);
+		currentTime = audioFile.currentTime;
 		currTimeDisplay = timeStringFromSeconds(audioFile.currentTime);
 
 		if (audioFile.ended) {
 			toggleTimeRunning();
 		}
+
+		if (
+			audioFile.ended ||
+			!$streamingData[$selectedRecording].progress ||
+			Math.abs(audioFile.currentTime - $streamingData[$selectedRecording].progress) > 2
+		) {
+			$streamingData[$selectedRecording].progress = audioFile.currentTime;
+		}
+
+		refreshTrack();
 	};
 
 	const toggleTimeRunning = () => {
 		if (audioFile.ended) {
-			isPlaying = false;
+			recordingPlaying.set(false);
 			clearInterval(trackTimer);
 		} else {
 			trackTimer = setInterval(updateTime, 100);
@@ -51,17 +55,41 @@
 	};
 
 	const seekToSong = (index: number) => {
-		if (index < 0 || !songs.at(index)) return;
+		if (index < 0 || !songs || !songs.at(index)) return;
 		songIndex = index;
 		audioFile.currentTime = songs.at(index)?.start ?? audioFile.currentTime;
-		refreshTitle();
+		refreshTrack();
 	};
 
-	const refreshTitle = () => {
+	const scrubToTime = (time: number) => {
+		if (!audioFile) return;
+
+		getPlayingSong(time);
+		audioFile.currentTime = time;
+		$streamingData[$selectedRecording].progress = time;
+	};
+
+	const scrubToTimeOnEvent = (event: CustomEvent) => {
+		const time: number = event.detail ?? currentTime ?? 0;
+		audioFile.currentTime = time;
+		currentTime = time;
+		$streamingData[$selectedRecording].progress = time;
+		getPlayingSong(time);
+	};
+
+	const refreshTrack = () => {
+		if (!songs) return;
 		const song = songs.at(songIndex);
 		if (!song) return;
 
-		trackTitle = `${song.title} - ${song.artist}` ?? 'Loading...';
+		if (
+			audioFile &&
+			songIndex + 1 < songs.length &&
+			songs.at(songIndex + 1)?.start < audioFile.currentTime
+		)
+			songIndex = songIndex + 1;
+
+		trackTitle = `${song.title} / ${song.artist}` ?? 'Loading...';
 	};
 
 	const getCue = async () => {
@@ -73,14 +101,19 @@
 	const replaceAudio = async (slug: string | null) => {
 		if (slug) {
 			if (audioFile) audioFile.pause();
+
 			totalTimeDisplay = timeStringFromSeconds(0);
-			songIndex = 0;
 
-			selectedRecording.set(slug);
+			if (audioFile) {
+				audioFile.pause();
+				audioFile.src = `/recordings/${audioUrl}`;
+				audioFile.load();
+			} else {
+				audioFile = audioUrl ? new Audio(`/recordings/${audioUrl}`) : new Audio();
+				audioFile.load();
+			}
 
-			const selectedCue: Cue = await getCue();
-			songs = selectedCue.songs;
-			audioFile = selectedCue ? new Audio(`/recordings/${selectedCue.slug}`) : new Audio();
+			if (currentTime) audioFile.currentTime = currentTime;
 
 			// Track Duration and Progress Bar
 			audioFile.onloadedmetadata = () => {
@@ -88,84 +121,149 @@
 
 				totalTrackTime = audioFile.duration;
 				totalTimeDisplay = timeStringFromSeconds(totalTrackTime);
-				refreshTitle();
+				refreshTrack();
 
 				if (slug !== $selectedRecording) audioFile.play();
+
+				if ($streamingData[$selectedRecording]?.duration !== audioFile.duration) {
+					$streamingData[$selectedRecording].duration = audioFile.duration;
+				}
 			};
 		}
 	};
 
 	const playPauseAudio = () => {
-		if (audioFile.ended) audioFile.currentTime = 0;
+		if (!audioFile) {
+			loading = true;
+			replaceAudio(audioUrl);
+			loading = false;
+		}
+
+		if (audioFile.ended || currentTime === totalTrackTime) {
+			audioFile.currentTime = 0;
+			songIndex = 0;
+		}
 
 		if (audioFile.paused) {
+			recordingPlaying.set(true);
 			toggleTimeRunning();
 			audioFile.play();
-			isPlaying = true;
 		} else {
+			recordingPlaying.set(false);
 			toggleTimeRunning();
 			audioFile.pause();
-			isPlaying = false;
 		}
 	};
 
-	const rewindAudio = () => seekToSong(songIndex - 1);
-	const forwardAudio = () => seekToSong(songIndex + 1);
-	const updateVolume = () => (audioFile.volume = vol / 100);
-	const mute = () => (audioFile.muted = !audioFile.muted);
+	const reloadPlayer = async (slug: string | null) => {
+		if (!slug) return;
 
-	const getBlogPostFromPath = (path: string) =>
-		path.match('/blog/[0-9-]*$')?.at(0)?.replace('/blog/', '').replace('.cue', '') ?? null;
+		let progressWasSaved = false;
+		if ($streamingData[slug]?.progress) progressWasSaved = true;
+		else $streamingData[slug] = { progress: 0 };
+
+		totalTrackTime = $streamingData[slug]?.duration ?? 0;
+		currentTime = $streamingData[slug]?.progress ?? 0;
+		totalTimeDisplay = timeStringFromSeconds(totalTrackTime);
+		currTimeDisplay = timeStringFromSeconds(currentTime);
+
+		const selectedCue: Cue = await getCue();
+		songs = selectedCue.songs;
+		audioUrl = selectedCue.slug;
+
+		if (!$streamingData[slug]?.title) {
+			$streamingData[slug].title = $feed.find((post) => post.date === slug)?.title ?? '';
+		}
+		recTitle = $streamingData[slug].title;
+
+		if (progressWasSaved) getPlayingSong(currentTime);
+		refreshTrack();
+
+		if (!firstLoad) {
+			replaceAudio(audioUrl);
+			playPauseAudio();
+
+			if (scrubToTime !== null && $cueJump) scrubToTime($cueJump);
+		} else firstLoad = false;
+	};
+
+	const rewindAudio = () => {
+		if (!audioFile) return;
+		seekToSong(songIndex - 1);
+	};
+	const forwardAudio = () => {
+		if (!audioFile) return;
+		seekToSong(songIndex + 1);
+	};
+	const mute = () => {
+		if (!audioFile) return;
+		audioFile.muted = !audioFile.muted;
+	};
 
 	let totalTimeDisplay = '00:00:00';
 	let currTimeDisplay = '00:00:00';
 	let trackTimer: NodeJS.Timeout;
-	let progress = 0;
+	let currentTime = 0;
+	let loading = true;
 
-	let minimized = true;
 	let blogSlug: string | null;
 
-	$: if ($navigating && $navigating.to) blogSlug = getBlogPostFromPath($navigating.to.url.pathname);
-
 	// Controls
-	let isPlaying = false;
-
-	// Get Audio track
-	let vol = 50;
+	let firstLoad = true;
 
 	let songIndex = 0;
 	let songs: Song[];
+	let audioUrl = '';
 
 	let audioFile: HTMLAudioElement;
 	let trackTitle: string;
+	let recTitle: string;
 
 	let totalTrackTime: number;
 
 	onMount(async () => {
-		blogSlug = getBlogPostFromPath($page.url.pathname);
-		minimized = !blogSlug;
+		selectedRecording.subscribe((slug: string) => {
+			loading = true;
+			reloadPlayer(slug).then(() => (loading = false));
+		});
 
-		replaceAudio($selectedRecording);
+		cueJump.subscribe((time: number | undefined) => {
+			if (time !== undefined && !loading) {
+				scrubToTime(time);
+				cueJump.set(undefined);
+				if (!$recordingPlaying) playPauseAudio();
+			}
+		});
 	});
 </script>
 
-<span class="player_background {minimized ? '' : ' player_open'}" />
-<footer class:minimized>
-	<button
-		data-tooltip={minimized ? 'Ava menüü' : 'Sulge menüü'}
-		class="player_button player_button_minimize player_button_minimize_{minimized
-			? 'closed'
-			: 'open'}"
-		on:click={() => (minimized = !minimized)}
-	>
-		<iconify-icon inline icon="pixelarticons:chevron-up" />
-	</button>
+<svelte:window
+	use:keybind={{
+		binds: ['Control', 'k'],
+		on_bind: playPauseAudio
+	}}
+	use:keybind={{
+		binds: ['Control', 'j'],
+		on_bind: rewindAudio
+	}}
+	use:keybind={{
+		binds: ['Control', 'l'],
+		on_bind: forwardAudio
+	}}
+	use:keybind={{
+		binds: ['Control', 'm'],
+		on_bind: mute
+	}}
+/>
 
+<footer class="container">
 	<Controls
-		{isPlaying}
-		{minimized}
-		{blogSlug}
+		bind:isPlaying={$recordingPlaying}
+		loading={loading || !audioFile}
 		{songIndex}
+		on:mute={mute}
+		muted={audioFile?.muted}
+		ended={totalTrackTime - currentTime < 0.1}
 		lastSong={songs ? songs.length - 1 : 0}
 		on:replaceAudio={() => replaceAudio(blogSlug)}
 		on:rewind={rewindAudio}
@@ -173,103 +271,55 @@
 		on:forward={forwardAudio}
 	/>
 
-	<TrackInfo {isPlaying} {currTimeDisplay} {trackTitle} {totalTimeDisplay} />
+	<TrackInfo
+		bind:loading
+		isPlaying={$recordingPlaying}
+		{currTimeDisplay}
+		{trackTitle}
+		{recTitle}
+		{totalTimeDisplay}
+	/>
 
-	{#if audioFile}
-		<ProgressBar bind:currentTime={audioFile.currentTime} {progress} {isPlaying} {totalTrackTime} />
-	{:else}
-		<ProgressBar currentTime={0} {isPlaying} {totalTrackTime} {progress} />
-	{/if}
-
-	<VolumeSlider
-		{minimized}
-		bind:vol
-		on:updateVolume={updateVolume}
-		on:mute={mute}
-		muted={audioFile?.muted}
+	<ProgressBar
+		isPlaying={$recordingPlaying}
+		{totalTrackTime}
+		{currentTime}
+		audioNotLoaded={!audioFile}
+		bind:songIndex
+		{songs}
+		on:scrub={scrubToTimeOnEvent}
+		on:seekToSong={({ detail }) => seekToSong(detail)}
 	/>
 </footer>
 
 <style lang="scss">
 	footer {
 		display: grid;
-		z-index: 10;
 		width: 100%;
+		min-width: min(100%, 30rem);
 		grid-template-areas:
-			'openblog controls controls controls volume'
-			'. current title total volume'
-			'minimize progress progress progress mute';
-		grid-template-columns: 3rem auto auto auto 3.5rem;
-		position: fixed;
+			'track track track track track'
+			'. current title total .'
+			'play progress progress progress mute';
+		grid-template-columns: 3.5rem 1fr 1fr 1fr 3.5rem;
+		position: sticky;
 		bottom: 0;
-		padding: 1rem 0.75rem 1rem 0.75rem;
+		gap: 0;
+		padding-bottom: 1rem;
 		border-radius: var(--border-radius) var(--border-radius) 0 0;
+		background: var(--card-background-color);
+		box-shadow: var(--card-box-shadow);
 
 		@media screen and (max-width: 768px) {
 			grid-template-areas:
-				'controls controls controls controls controls'
-				'minimize title title title mute'
+				'track track track track track'
+				'play current title total mute'
 				'progress progress progress progress progress';
-			grid-template-columns: 4rem auto auto auto 4.5rem;
-			grid-template-rows: auto 4rem 0.75rem;
+			grid-template-columns: 4.5rem auto auto auto 4.5rem;
 			gap: 0.55rem 0;
 			padding: 0;
-
-			min-height: 12rem;
-
-			&.minimized {
-				min-height: unset;
-			}
-		}
-	}
-
-	.player_button_minimize {
-		grid-area: minimize;
-		place-self: center;
-		font-size: 1.4rem;
-		width: 1.4rem;
-
-		min-height: 1.6rem;
-
-		@media screen and (max-width: 768px) {
-			font-size: 2.3rem;
-			width: 2.3rem;
-			min-height: 2.4rem;
-			place-self: start center;
-		}
-
-		iconify-icon {
-			transition: rotate var(--transition);
-		}
-
-		&_open {
-			iconify-icon {
-				rotate: 180deg;
-			}
-		}
-	}
-
-	.player_background {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		height: 100%;
-		max-height: 4.7rem;
-		background: var(--card-background-color);
-		transition: max-height var(--transition);
-		border-radius: calc(var(--border-radius) * 0.25);
-		box-shadow: var(--card-box-shadow);
-
-		&.player_open {
-			max-height: 7.5rem;
-		}
-
-		@media screen and (max-width: 768px) {
-			max-height: 6rem;
-
-			&.player_open {
-				max-height: 13rem;
-			}
+			min-width: 100%;
+			border-radius: 0;
 		}
 	}
 </style>
