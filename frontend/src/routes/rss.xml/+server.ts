@@ -27,7 +27,7 @@ export async function GET({ fetch }) {
 				</itunes:owner>
 				<itunes:type>episodic</itunes:type>
 				<itunes:image href="${encodeURI(
-					`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`
+					`${config.ogUrl}/?date=monospac.ee&title=${config.description.split('.')[0]}&type=main`
 				).replaceAll('&', '&amp;')}"/>
 				<image>
 					<url>
