@@ -16,13 +16,7 @@
 >
 {#if displayTitle}
 	<span class="player_song">
-		<Marquee
-			class="player_song_scrolling"
-			repeat={5}
-			duration={18}
-			paused={!isPlaying}
-			pauseOnHover
-		>
+		<Marquee class="player_song_scrolling" repeat={5} duration={18} paused={!isPlaying} pauseOnHover>
 			<span class="player_song_text">
 				<strong class="glow-sm {isPlaying ? 'contrast' : 'muted'}"
 					>{trackTitle.split('/')[0]}</strong
@@ -32,7 +26,9 @@
 			</span>
 		</Marquee>
 	</span>
-	<span class="player_title glow-sm {isPlaying ? 'secondary' : 'contrast'}">{recTitle}</span>
+	<span class="player_title glow-sm {isPlaying ? 'secondary' : 'contrast'}"
+		>{recTitle}</span
+	>
 {:else}
 	<span class="player_title glow-sm contrast" aria-busy={loading} />
 {/if}
@@ -47,11 +43,10 @@
 			place-self: center;
 			z-index: -1;
 
-			margin-bottom: -0.8rem;
-			margin-top: 1rem;
-			font-size: 1.1em;
+			margin-bottom: -1.1rem;
+			margin-top: 1.1rem;
+			font-size: 0.9em;
 			font-weight: bold;
-			text-align: center;
 
 			transition: color var(--transition);
 
@@ -76,11 +71,10 @@
 			padding-block: calc(var(--typography-spacing-vertical) * 0.5);
 			border-radius: var(--border-radius);
 			box-shadow: var(--card-box-shadow);
-			font-size: 1.1em;
 
 			@media screen and (max-width: 768px) {
 				max-width: 100%;
-				font-size: 1.2em;
+				border-radius: var(--border-radius) var(--border-radius) 0 0;
 			}
 			&_text {
 				padding-inline: 2.5em;
@@ -95,14 +89,14 @@
 		}
 		&_time {
 			width: fit-content;
-			margin-bottom: -0.8rem;
-			margin-top: 1rem;
-			font-size: 1.1rem;
+			margin-bottom: -1.1rem;
+			margin-top: 1.1rem;
+			font-size: 0.9rem;
 			align-self: end;
 
 			@media screen and (max-width: 768px) {
 				margin: 0;
-				font-size: 1.2em;
+				font-size: 1em;
 				align-self: center;
 			}
 
@@ -113,12 +107,10 @@
 			&_current {
 				grid-area: current;
 				justify-self: start;
-				text-align: start;
 			}
 			&_total {
 				grid-area: total;
 				justify-self: end;
-				text-align: end;
 			}
 		}
 	}

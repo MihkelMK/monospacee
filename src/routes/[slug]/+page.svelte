@@ -14,7 +14,7 @@
 
 	const getClass = (type: PostType) => {
 		if (type === 'event') return 'secondary';
-		if (type === 'stream') return 'primary';
+		if (type === 'project') return 'primary';
 		return 'contrast';
 	};
 
@@ -31,23 +31,43 @@
 	<title>{config.title + ' | ' + data.meta.title}</title>
 	<meta property="og:type" content="article" />
 	<meta property="og:title" content={data.meta.title} />
-	<meta property="og:description" content={data.meta.description} />
-
 	<meta
 		name="og:image"
 		content={encodeURI(
-			`${config.url}/api/og?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`
+			`${config.url}/api/og/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`
 		)}
 	/>
 </svelte:head>
 
-<article class="post {getClass(data.meta.type)}">
+<article class="post {getClass(data.meta.type)} {data.meta.duration ? 'playable' : ''}">
 	<header>
 		<hgroup>
 			<h1 class="glow-sm">{data.meta.title}</h1>
 			<h4>{formatDate(data.meta.date)} [{data.meta.type.slice(0, 1).toUpperCase()}]</h4>
 		</hgroup>
-
+		{#if data.meta.duration || data.meta.youtube}
+			<div style="place-self: center; grid-row: span 2;">
+				{#if data.meta.youtube}
+					<a
+						role="button"
+						class="contrast"
+						href={`https://www.youtube.com/live/${data.meta.youtube}`}
+						data-tooltip="Watch on youtube"
+					>
+						<iconify-icon inline icon="mdi-youtube" />
+					</a>
+				{/if}
+				{#if data.meta.duration}
+					<button
+						disabled={$selectedRecording === data.meta.date}
+						data-tooltip="Load to player"
+						on:click={() => loadToPlayer(data.meta.date)}
+					>
+						<iconify-icon inline icon="pixelarticons:playlist" />
+					</button>
+				{/if}
+			</div>
+		{/if}
 		<nav class="tags">
 			<ul>
 				{#each data.meta.tags as tag}
@@ -60,29 +80,7 @@
 	</header>
 
 	<main>
-		<h3 id="sisukord">
-			Sisukord
-			{#if data.meta.duration}
-				<button
-					disabled={$selectedRecording === data.meta.date}
-					data-tooltip="Load to player"
-					on:click={() => loadToPlayer(data.meta.date)}
-				>
-					<iconify-icon inline icon="pixelarticons:playlist" />
-				</button>
-			{/if}
-			{#if data.meta.youtube}
-				<a
-					role="button"
-					class="contrast"
-					href={`https://www.youtube.com/live/${data.meta.youtube}`}
-					data-tooltip="Watch on youtube"
-				>
-					<iconify-icon inline icon="mdi-youtube" />
-				</a>
-			{/if}
-		</h3>
-
+		<h3 id="sisukord">Sisukord</h3>
 		<svelte:component this={data.content} />
 	</main>
 
@@ -105,10 +103,6 @@
 </article>
 
 <style lang="scss">
-	.headerButtons {
-		place-self: center;
-		grid-row: span 2;
-	}
 	hgroup {
 		margin-bottom: calc(var(--typography-spacing-vertical) * 0.5);
 
@@ -180,15 +174,7 @@
 		}
 
 		#sisukord {
-			color: var(--accent-color);
 			margin-bottom: calc(var(--typography-spacing-vertical) * 0.25);
-
-			& button,
-			a {
-				display: inline-block;
-				width: fit-content;
-				vertical-align: middle;
-			}
 		}
 
 		:global(section) {
@@ -197,11 +183,11 @@
 		}
 
 		:global(section.hasGallery) {
-			@media screen and (min-width: 992px) {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				min-width: 100%;
-			}
+      			@media screen and (min-width: 992px) {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			min-width: 100%;
+      }
 		}
 
 		:global(section.hasGallery *:first-child) {

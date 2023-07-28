@@ -15,7 +15,7 @@ export async function load({ params, fetch, setHeaders }) {
 		return {
 			content: post.default,
 			meta: post.metadata,
-			cue: cue
+			cue: cue,
 		};
 	} catch (e) {
 		throw error(404, `Could not find ${params.slug}`);

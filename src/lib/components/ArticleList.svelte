@@ -13,7 +13,7 @@
 
 	const getClass = (type: PostType) => {
 		if (type === 'event') return 'secondary';
-		if (type === 'stream') return 'primary';
+		if (type === 'project') return 'primary';
 		return 'contrast';
 	};
 </script>

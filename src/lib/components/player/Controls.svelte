@@ -6,7 +6,8 @@
 	export let isPlaying = false;
 	export let songIndex: number;
 	export let lastSong: number;
-	export let loading: boolean;
+  export let loading: boolean;
+  export let ended: boolean;
 	export let muted = false;
 </script>
 
@@ -19,7 +20,7 @@
 </button>
 
 <button class="player_button player_button_play" on:click={() => dispatch('playPause')}>
-	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
+	<iconify-icon inline icon={ended ? 'pixelarticons:reload' : isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
 </button>
 
 <button
@@ -53,10 +54,6 @@
 
 		transition: color var(--transition);
 
-		@media screen and (max-width: 768px) {
-			--icon_size: 2.7rem;
-		}
-
 		& iconify-icon {
 			line-height: normal;
 			font-size: var(--icon_size);
@@ -88,7 +85,7 @@
 			--icon_size: 1.5rem;
 
 			@media screen and (max-width: 768px) {
-				--icon_size: 2.3rem;
+				--icon_size: 1.7rem;
 			}
 		}
 		&_play {
@@ -96,7 +93,7 @@
 			--icon_size: 1.9rem;
 
 			@media screen and (max-width: 768px) {
-				--icon_size: 2.55rem;
+				--icon_size: 2.1rem;
 			}
 		}
 	}

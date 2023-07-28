@@ -41,7 +41,7 @@ async function parseCue(cueFile: string) {
 
 export async function GET({ params, setHeaders }) {
 	setHeaders({
-		'cache-control': 'public, immutable, no-transform, max-age=3600'
+		'cache-control': 'max-age=60'
 	});
 
 	const file = `/static/recordings/${params.slug}`;

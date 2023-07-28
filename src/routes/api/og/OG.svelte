@@ -1,25 +1,13 @@
-<script lang='ts'>
+<script lang="ts">
 	export let title: string;
 	export let postType: string;
 	export let date: string;
 
 	const accentColor =
-		postType === 'main'
-			? '#a160cd'
-			: postType === 'event'
-			? '#95d9f4'
-			: postType === 'stream'
-			? '#a160cd'
-			: '#88898c';
+		postType === 'event' ? '#95d9f4' : postType === 'project' ? '#a160cd' : '#88898c';
 
 	const accentColorLow =
-		postType === 'main'
-			? '#95d9f4'
-			: postType === 'event'
-			? '#bfe8f8'
-			: postType === 'stream'
-			? '#b480d7'
-			: '#e7eaee';
+		postType === 'event' ? '#bfe8f8' : postType === 'project' ? '#b480d7' : '#e7eaee';
 </script>
 
 <div
@@ -45,9 +33,8 @@
 	>
 		<span style="color: {accentColor}">monospacee</span>
 		:
-		<span style="color: {accentColorLow}; margin-left: 1em;"
-			>~/{postType.toLowerCase()}{postType === 'main' ? '' : 's'}</span
-		>
+		<span style="color: {accentColorLow}; margin-left: 1em;">~/{postType.toLowerCase()}s</span>
+		$
 	</div>
 	<div
 		style="
@@ -65,7 +52,6 @@
 
 	<div
 		style="
-		display: flex;
     position: absolute;
       letter-spacing: -0.025em;
     font-size: 18rem;

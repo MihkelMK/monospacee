@@ -58,10 +58,14 @@
 			const newLimit = limit + 1;
 
 			if (newLimit <= $feed.length) {
+				// load more images from store
+
 				limit = newLimit;
 			} else if (nextFrom) {
 				loading = true;
-				const response = await fetch(`/api/posts?start=${nextFrom}&end=10`, {
+				// get another page from IG if there is another page available
+
+				const response = await fetch(`/api/posts/${nextFrom}`, {
 					method: 'GET',
 					credentials: 'same-origin'
 				});
@@ -113,8 +117,8 @@
 			<span> monospacee </span>
 			<ul>
 				<li>
-					<a href="https://soundcloud.com/monospacee">
-						<iconify-icon inline icon="mdi:soundcloud" />
+					<a href="https://www.feed.com/mono_spacee/">
+						<iconify-icon inline icon="mdi:feed" />
 					</a>
 				</li>
 				<li>
@@ -123,13 +127,13 @@
 					</a>
 				</li>
 				<li>
-					<a href="https://github.com/MihkelMK/monospacee">
-						<iconify-icon inline={true} icon="mdi:github" />
+					<a href="https://soundcloud.com/monospacee">
+						<iconify-icon inline icon="mdi:soundcloud" />
 					</a>
 				</li>
 				<li>
-					<a target="_blank" referrerpolicy="no-referrer" href={`${config.url}/rss.xml`}>
-						<iconify-icon inline icon="mdi:rss-box" />
+					<a href="https://github.com/MihkelMK/monospacee">
+						<iconify-icon inline={true} icon="mdi:github" />
 					</a>
 				</li>
 			</ul>

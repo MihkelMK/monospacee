@@ -29,12 +29,13 @@ export const trimString = (str: string, len: number) =>
 export const timeStringFromSeconds = (seconds: number) => {
 	const hour = Math.floor(seconds / 60 / 60);
 	const allMin = Math.floor(seconds / 60);
-	const minInThisHour = allMin - hour * 60;
+  const minInThisHour = allMin - hour * 60;
 	const sec = Math.floor(seconds - allMin * 60);
 
-	return `${String(hour).padStart(2, '0')}:${String(minInThisHour).padStart(2, '0')}:${String(
-		sec
-	).padStart(2, '0')}`;
+	return `${String(hour).padStart(2, '0')}:${String(minInThisHour).padStart(2, '0')}:${String(sec).padStart(
+		2,
+		'0'
+	)}`;
 };
 
 export function keybind(element, options) {

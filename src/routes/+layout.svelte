@@ -10,7 +10,7 @@
 
 	import Kern from './Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
-	import { recordingPlaying, selectedRecording } from './store';
+	import { selectedRecording } from './store';
 
 	export let data;
 
@@ -21,23 +21,23 @@
 	let kernSuu = '◡';
 	let kern: HTMLElement;
 
-	let innerWidth: number;
-
 	const muudaSuud = (e: MouseEvent) => {
-		if (innerWidth < 768) return;
 		if (!e) return;
 		if (getComputedStyle(e.target as Element).cursor === 'pointer') {
 			kernSuu = 'ₒ';
+			kernSilmV = "'";
+			kernSilmP = "'";
 			silmadPaigal = false;
 		} else {
 			kernSuu = '◡';
+			kernSilmV = "'";
+			kernSilmP = "'";
 			silmadPaigal = false;
 		}
 	};
 
 	const liigutaSilmi = (e: MouseEvent) => {
-		if (innerWidth < 768) return;
-		if (silmadPaigal || !e || $recordingPlaying) return;
+		if (silmadPaigal || !e) return;
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
 
@@ -51,8 +51,6 @@
 		kernSilmNurk = Math.round(nurk / 30) * 30;
 	};
 </script>
-
-<svelte:window bind:innerWidth />
 
 <div
 	role="application"
@@ -95,14 +93,6 @@
 		min-height: 100vh;
 	}
 
-	.container {
-		margin-bottom: 10rem;
-
-		@media only screen and (max-width: 768px) {
-			margin-bottom: 15rem;
-		}
-	}
-
 	header {
 		--mask: linear-gradient(
 				to bottom,
@@ -117,7 +107,7 @@
 		padding-block: var(--nav-element-spacing-vertical) calc(var(--block-spacing-vertical) * 2);
 		margin-bottom: calc(var(--block-spacing-vertical) * -1);
 		backdrop-filter: blur(2px);
-		background-color: rgba(0, 0, 0, 0.2);
+		background-color: transparentize($color: #000, $amount: 0.9);
 		background-blend-mode: darken;
 		background-size: 100% 100%;
 		pointer-events: none;
@@ -127,14 +117,9 @@
 
 		z-index: 999;
 
-		nav li {
-			font-size: 1.2em;
-			font-family: var(--font-accent);
-		}
-
 		@media screen and (max-width: 768px) {
-			padding-block: 0 calc(var(--block-spacing-vertical) * 3);
-			margin-bottom: calc(var(--block-spacing-vertical) * -2);
+			padding-block: 0 calc(var(--block-spacing-vertical) * 5);
+			margin-bottom: calc(var(--block-spacing-vertical) * -4);
 
 			& nav {
 				display: grid;
@@ -149,11 +134,9 @@
 				#kernList {
 					grid-column: span 2;
 					grid-row: 1;
-					padding: 0 calc(var(--nav-element-spacing-horizontal) * 0.5);
-
-					& li {
-						padding: calc(var(--nav-element-spacing-vertical) * 0.5) 0;
-					}
+					padding: calc(var(--nav-element-spacing-vertical) * 0.5)
+						calc(var(--nav-element-spacing-horizontal) * 0.5);
+					padding-bottom: 0;
 				}
 			}
 		}
