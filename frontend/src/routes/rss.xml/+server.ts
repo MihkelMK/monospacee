@@ -27,12 +27,12 @@ export async function GET({ fetch }) {
 				</itunes:owner>
 				<itunes:type>episodic</itunes:type>
 				<itunes:image href="${encodeURI(
-					`${config.url}/api/og?title=${config.description.split('.')[0]}&type=main`
-				).replace(/&/g, '&amp;')}"/>
+					`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`
+				).replaceAll('&', '&amp;')}"/>
 				<image>
 					<url>
-						${encodeURI(`${config.url}/api/og?title=${config.description.split('.')[0]}&type=main`).replace(
-							/&/g,
+						${encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`).replaceAll(
+							'&',
 							'&amp;'
 						)}
 					</url>
@@ -55,8 +55,8 @@ export async function GET({ fetch }) {
 							<link>${config.url}/${post.date}</link>
 							<itunes:summary>${post.description}</itunes:summary>
 							<itunes:image href="${encodeURI(
-								`${config.url}/api/og?date=${post.date}&title=${post.title}&type=${post.type}`
-							).replace(/&/g, '&amp;')}"/>
+								`${config.ogUrl}/?date=${post.date}&title=${post.title}&type=${post.type}`
+							).replaceAll('&', '&amp;')}"/>
               <enclosure url="${config.url}/recordings/${
 								post.date
 							}.mp3" type="audio/mpeg" length="${post.audioSize}"/>

@@ -36,7 +36,7 @@
 	<meta
 		name="og:image"
 		content={encodeURI(
-			`${config.url}/api/og?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`
+			`${config.ogUrl}/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`
 		)}
 	/>
 </svelte:head>

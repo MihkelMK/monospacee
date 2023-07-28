@@ -1,7 +1,7 @@
-<script lang='ts'>
-	export let title: string;
-	export let postType: string;
-	export let date: string;
+<script>
+	export let title;
+	export let postType;
+	export let date;
 
 	const accentColor =
 		postType === 'main'

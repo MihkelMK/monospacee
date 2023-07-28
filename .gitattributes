@@ -1,3 +1,1 @@
 *.mp3 filter=lfs diff=lfs merge=lfs -text
-static/recordings/2023-06-30.mp3 filter=lfs diff=lfs merge=lfs -text
-static/recordings/2023-07-08.mp3 filter=lfs diff=lfs merge=lfs -text

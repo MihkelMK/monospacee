@@ -1,12 +1,11 @@
 import robotoMono500 from '@fontsource/roboto-mono/files/roboto-mono-latin-500-normal.woff';
 import robotoMono700 from '@fontsource/roboto-mono/files/roboto-mono-latin-700-normal.woff';
 import { componentToImageResponse } from '@ethercorps/sveltekit-og';
-import type { RequestHandler } from '@sveltejs/kit';
 import OG from './OG.svelte';
 
-const fontMemo: Record<string, ArrayBuffer> = {};
+const fontMemo = {};
 
-async function getFont(path: string) {
+async function getFont(path) {
 	if (fontMemo[path]) {
 		return fontMemo[path];
 	}
@@ -16,10 +15,11 @@ async function getFont(path: string) {
 	return result;
 }
 
-export const GET = (async ({ url, setHeaders }) => {
+export const GET = async ({ url, setHeaders }) => {
 	const title = url.searchParams.get('title') ?? '';
 	const date = url.searchParams.get('date') ?? '';
 	const type = url.searchParams.get('type') ?? '';
+
 	const fontData = await getFont(`${url.origin}${robotoMono500}`);
 	const fontDataBold = await getFont(`${url.origin}${robotoMono700}`);
 
@@ -45,4 +45,4 @@ export const GET = (async ({ url, setHeaders }) => {
 			]
 		}
 	);
-}) satisfies RequestHandler;
+};

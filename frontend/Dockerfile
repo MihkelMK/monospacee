@@ -1,9 +1,6 @@
 # Use this image as the platform to build the app
 FROM node:18 AS external-website
 
-# A small line inside the image to show who made it
-LABEL Developers="monospacee"
-
 # The WORKDIR instruction sets the working directory for everything that will happen next
 WORKDIR /app
 
@@ -11,13 +8,13 @@ WORKDIR /app
 COPY . .
 
 # Clean install all node modules
-RUN yarn global add pnpm && pnpm i --frozen-lockfile
+RUN rm -rf pnpm-lock.yaml node_modules .svelte-kit && yarn global add pnpm && pnpm i
 
 # Build SvelteKit app
 RUN npm run build
 
 # Delete source code files that were used to build the app that are no longer needed
-RUN rm -rf src/ static/ emailTemplates/ docker-compose.yml
+RUN rm -rf src/ static/ docker-compose.yml
 
 # The USER instruction sets the user name to use as the default user for the remainder of the current stage
 USER node:node
