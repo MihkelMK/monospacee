@@ -50,7 +50,7 @@
 			recordingPlaying.set(false);
 			clearInterval(trackTimer);
 		} else {
-			trackTimer = setInterval(updateTime, 100);
+			trackTimer = setInterval(updateTime, 500);
 		}
 	};
 
@@ -174,7 +174,7 @@
 		if (!$streamingData[slug]?.title) {
 			$streamingData[slug].title = $feed.find((post) => post.date === slug)?.title ?? '';
 		}
-		recTitle = $streamingData[slug].title;
+		recTitle = $streamingData[slug].title ?? '';
 
 		if (progressWasSaved) getPlayingSong(currentTime);
 		refreshTrack();
@@ -263,7 +263,6 @@
 		{songIndex}
 		on:mute={mute}
 		muted={audioFile?.muted}
-		ended={totalTrackTime - currentTime < 0.1}
 		lastSong={songs ? songs.length - 1 : 0}
 		on:replaceAudio={() => replaceAudio(blogSlug)}
 		on:rewind={rewindAudio}
@@ -297,14 +296,18 @@
 		display: grid;
 		width: 100%;
 		min-width: min(100%, 30rem);
+		font-family: var(--font-accent);
 		grid-template-areas:
 			'track track track track track'
 			'. current title total .'
-			'play progress progress progress mute';
+			'mute progress progress progress play';
 		grid-template-columns: 3.5rem 1fr 1fr 1fr 3.5rem;
-		position: sticky;
+		position: fixed;
 		bottom: 0;
 		gap: 0;
+		left: 50%;
+		translate: -50%;
+
 		padding-bottom: 1rem;
 		border-radius: var(--border-radius) var(--border-radius) 0 0;
 		background: var(--card-background-color);
@@ -313,13 +316,15 @@
 		@media screen and (max-width: 768px) {
 			grid-template-areas:
 				'track track track track track'
-				'play current title total mute'
+				'mute current title total play'
 				'progress progress progress progress progress';
-			grid-template-columns: 4.5rem auto auto auto 4.5rem;
-			gap: 0.55rem 0;
+			grid-template-columns: 5rem auto auto auto 5rem;
+			gap: 0.85rem 0;
 			padding: 0;
 			min-width: 100%;
 			border-radius: 0;
+			left: 0;
+			translate: 0;
 		}
 	}
 </style>

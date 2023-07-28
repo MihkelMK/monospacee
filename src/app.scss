@@ -61,32 +61,35 @@ article.post {
 		--accent-hover: var(--secondary-hover);
 		--accent-focus: var(--secondary-focus);
 	}
-  &.contrast {
-    & .toc-level-2 li,
-.toc-level-2 li a {
-	--color: color-mix(in srgb, var(--accent-color) 80%, #000);
-	--accent-focus: color-mix(in srgb, var(--accent-color) 30%, rgba(155, 155, 155, 0));
-	--accent-hover: color-mix(in srgb, var(--accent-color) 90%, rgba(0, 0, 0, 0.8));
-}
+	&.contrast {
+		& .toc-level-2 li,
+		.toc-level-2 li a {
+			--color: color-mix(in srgb, var(--accent-color) 80%, #000);
+			--accent-focus: color-mix(in srgb, var(--accent-color) 30%, rgba(155, 155, 155, 0));
+			--accent-hover: color-mix(in srgb, var(--accent-color) 90%, rgba(0, 0, 0, 0.8));
+		}
 
-& .toc-level-3 li,
-.toc-level-3 li a {
-	--color: color-mix(in srgb, var(--accent-color) 60%, #000);
-	--accent-focus: color-mix(in srgb, var(--accent-color) 20%, rgba(0, 0, 0, 0));
-	--accent-hover: color-mix(in srgb, var(--accent-color) 40%, rgba(0, 0, 0, 0.9));
-}
-
-  }
+		& .toc-level-3 li,
+		.toc-level-3 li a {
+			--color: color-mix(in srgb, var(--accent-color) 60%, #000);
+			--accent-focus: color-mix(in srgb, var(--accent-color) 20%, rgba(0, 0, 0, 0));
+			--accent-hover: color-mix(in srgb, var(--accent-color) 40%, rgba(0, 0, 0, 0.9));
+		}
+	}
 
 	&.playable {
 		& header {
 			display: grid;
-			grid-template-columns: 4fr 1fr;
+			grid-template-columns: auto 5rem;
 		}
 	}
 
 	& p {
-		width: min(100% - 3rem, 60ch);
+		width: min(100% - 3rem, 55ch);
+
+		@media screen and (max-width: 992px) {
+			width: 100%;
+		}
 	}
 
 	& a {
@@ -114,37 +117,33 @@ article.post {
 		}
 	}
 
-	header {
-		& :is(button, input[type='submit'], input[type='button'], [role='button']) {
-			place-self: center;
-			margin: 0;
-			padding: 0;
+	& :is(button, input[type='submit'], input[type='button'], [role='button']) {
+		place-self: center;
+		margin: 0;
+		padding: 0;
 
-			--icon_size: 2.2rem;
-			height: var(--icon_size);
-			width: var(--icon_size);
+		--icon_size: 2.2rem;
 
-			border-color: transparent;
-			background-color: transparent;
-			--color: var(--accent-color);
+		border-color: transparent;
+		background-color: transparent;
+		--color: var(--accent-color);
 
-			& iconify-icon {
-				line-height: normal;
-				font-size: var(--icon_size);
-				height: var(--icon_size);
-				width: var(--icon_size);
-			}
-
-			&:is([aria-current], :hover, :active, :focus) {
-				--color: var(--accent-hover);
-			}
-
-			&:focus {
-				--box-shadow: var(--button-hover-box-shadow, 0 0 0 rgba(0, 0, 0, 0)),
-					0 0 0 var(--outline-width) var(--accent-hover);
-			}
+		& iconify-icon {
+			line-height: normal;
+			font-size: var(--icon_size);
 		}
 
+		&:is([aria-current], :hover, :active, :focus) {
+			--color: var(--accent-hover);
+		}
+
+		&:focus {
+			--box-shadow: var(--button-hover-box-shadow, 0 0 0 rgba(0, 0, 0, 0)),
+				0 0 0 var(--outline-width) var(--accent-hover);
+		}
+	}
+
+	header {
 		& hgroup {
 			margin-bottom: 0;
 			& h2,

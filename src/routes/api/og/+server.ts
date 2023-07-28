@@ -16,12 +16,14 @@ async function getFont(path: string) {
 	return result;
 }
 
-export const GET = (async ({ url }) => {
+export const GET = (async ({ url, setHeaders }) => {
 	const title = url.searchParams.get('title') ?? '';
 	const date = url.searchParams.get('date') ?? '';
 	const type = url.searchParams.get('type') ?? '';
 	const fontData = await getFont(`${url.origin}${robotoMono500}`);
 	const fontDataBold = await getFont(`${url.origin}${robotoMono700}`);
+
+	setHeaders({'cache-control': 'public, immutable, no-transform, max-age=86400'})
 
 	return componentToImageResponse(
 		OG,

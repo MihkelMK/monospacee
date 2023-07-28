@@ -74,13 +74,13 @@
 	@mixin thumb() {
 		border: none; // for cross-browser consistency
 		width: 2vw;
-    border-radius: 0;
-    background: transparent;
+		border-radius: 0;
+		background: transparent;
 		height: 0.75rem;
 		cursor: ew-resize;
 		@media screen and (max-width: 768px) {
-      width: max(10vw, 4rem);
-    }
+			width: max(10vw, 4rem);
+		}
 	}
 
 	.player_progress {
@@ -105,15 +105,16 @@
 			background-image: linear-gradient(to right, var(--secondary), var(--primary));
 			background-size: 100vw 100%;
 			border-radius: 0 var(--border-radius) var(--border-radius) 0;
+			pointer-events: none;
 		}
 
 		@media screen and (max-width: 768px) {
 			place-self: end center;
-			height: 0.9rem;
+			height: 1rem;
 		}
 
 		&:hover {
-      input:not([disabled=""]) {
+			input:not([disabled='']) {
 				opacity: 0.9;
 			}
 		}
@@ -129,10 +130,21 @@
 			display: flex;
 			background: transparent;
 
+			@media screen and (max-width: 576px) {
+				clip: rect(0 0 0 0);
+				border: 0;
+				height: 1px;
+				margin: -1px;
+				overflow: hidden;
+				padding: 0;
+				position: absolute;
+				width: 1px;
+			}
+
 			& input {
 				margin: 0;
 				border: 0;
-				z-index: 2;
+				z-index: 1;
 
 				width: 0.6rem;
 				border-radius: 0;
@@ -152,7 +164,6 @@
 		}
 
 		input[type='range'] {
-      z-index: 1;
 			/* allow custom styling in WebKit browsers */
 			&,
 			&::-webkit-slider-runnable-track,

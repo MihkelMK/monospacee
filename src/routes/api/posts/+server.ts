@@ -31,19 +31,18 @@ async function getPosts() {
 	return posts;
 }
 
-export async function GET({ params, setHeaders }) {
-		setHeaders({
-			'cache-control': 'max-age=60'
-		});
+export async function GET({ url, setHeaders }) {
+	setHeaders({
+		'cache-control': 'max-age=60'
+	});
 
-
-	const skipTo = Number(params.skip) || 0;
+	const start = Number(url.searchParams.get('start')) ?? 0;
+	const end = Number(url.searchParams.get('end')) ?? 0;
 
 	const allPosts = await getPosts();
+	const posts = allPosts.slice(start, end > 0 ? end : undefined);
 
-	const posts = allPosts.slice(skipTo, skipTo + 10);
-
-	const nextIdx = skipTo + posts.length;
+	const nextIdx = start + posts.length;
 	const nextFrom = nextIdx < allPosts.length ? nextIdx : null;
 
 	return json({ posts, nextFrom });
