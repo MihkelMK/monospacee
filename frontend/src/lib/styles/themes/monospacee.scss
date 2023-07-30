@@ -1,5 +1,5 @@
 /**
- * Theme: default
+ * Theme: monospacee
  */
 
 // Variables
@@ -9,41 +9,15 @@
 // Commons styles
 @import 'monospacee/styles';
 
-// Dark theme (Auto)
-// Automatically enabled if user has Dark mode enabled
+// Dark theme (monospacee)
+// Can be forced with data-theme="dark"
 @import 'monospacee/dark';
-@media only screen and (prefers-color-scheme: dark) {
+
+// Light theme (Auto)
+// Automatically enabled if user has Light mode enabled
+@import 'monospacee/light';
+@media only screen and (prefers-color-scheme: light) {
 	:root:not([data-theme]) {
-		@include dark;
-	}
-}
-
-// Dark theme (Forced)
-// Enabled if forced with data-theme="dark"
-[data-theme='dark'] {
-	@include dark;
-}
-
-.glow {
-	--glow_color: #{transparentize($primary-300, 0.4)};
-	text-shadow: var(--glow_color) 0px 0px 20px;
-
-	&.secondary {
-		--glow_color: #{transparentize($secondary-300, 0.4)};
-	}
-	&.contrast {
-		--glow_color: #{transparentize($grey-300, 0.4)};
-	}
-
-	&-sm {
-		--glow_color: #{transparentize($primary-300, 0.7)};
-		text-shadow: var(--glow_color) 0px 0px 15px;
-
-		&.secondary {
-			--glow_color: #{transparentize($secondary-300, 0.7)};
-		}
-		&.contrast {
-			--glow_color: #{transparentize($grey-300, 0.7)};
-		}
+		@include light;
 	}
 }

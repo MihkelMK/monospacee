@@ -27,7 +27,7 @@
 			<header>
 				<hgroup>
 					<a href={'/' + post.date} data-sveltekit-preload-data="tap" class="title">
-						<h2 class="glow-sm">{post.title}</h2>
+						<h3 class="glow-sm">{post.title}</h3>
 					</a>
 					<h4>{formatDate(post.date)} [{post.type.slice(0, 1).toUpperCase()}]</h4>
 				</hgroup>
@@ -35,6 +35,7 @@
 					<button
 						disabled={$selectedRecording === post.date}
 						data-tooltip="Load to player"
+						aria-label="Play this recording"
 						on:click={() => loadToPlayer(post.date)}
 					>
 						<iconify-icon icon="pixelarticons:playlist" />

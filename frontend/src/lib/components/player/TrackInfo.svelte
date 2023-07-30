@@ -34,6 +34,8 @@
 	</span>
 	<span class="player_title glow-sm {isPlaying ? 'secondary' : 'contrast'}">{recTitle}</span>
 {:else}
+	<span class="player_song" aria-busy={loading} />
+
 	<span class="player_title glow-sm contrast" aria-busy={loading} />
 {/if}
 <span class="player_time player_time_total glow-sm {isPlaying ? 'contrast' : 'muted'}"
@@ -72,15 +74,15 @@
 			place-self: end center;
 			display: flex;
 			justify-content: center;
+			min-height: calc(2rem + var(--typography-spacing-vertical));
 			background-color: var(--progress-background-color);
 			padding-block: calc(var(--typography-spacing-vertical) * 0.5);
 			border-radius: var(--border-radius);
-			box-shadow: var(--card-box-shadow);
-			font-size: 1.1em;
+			font-size: 1.1rem;
 
 			@media screen and (max-width: 768px) {
 				max-width: 100%;
-				font-size: 1.2em;
+				font-size: 1.2rem;
 			}
 			&_text {
 				padding-inline: 2.5em;

@@ -11,6 +11,8 @@
 	import Kern from './Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
 	import { recordingPlaying, selectedRecording } from './store';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	export let data;
 
@@ -22,6 +24,8 @@
 	let kern: HTMLElement;
 
 	let innerWidth: number;
+	let scrolled = false;
+	let watcher: HTMLElement;
 
 	const muudaSuud = (e: MouseEvent) => {
 		if (innerWidth < 768) return;
@@ -50,6 +54,19 @@
 		const nurk = angleToMouse(hiirX, hiirY, ankurX, ankury) + 90;
 		kernSilmNurk = Math.round(nurk / 30) * 30;
 	};
+
+	onMount(() => {
+		if (browser) {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					scrolled = !entries?.at(0)?.isIntersecting;
+				},
+				{ threshold: 0.2, rootMargin: '5% 0px 0px 0px' }
+			);
+
+			observer.observe(watcher);
+		}
+	});
 </script>
 
 <svelte:window bind:innerWidth />
@@ -62,7 +79,9 @@
 		muudaSuud(e);
 	}, 100)}
 >
-	<header>
+	<div bind:this={watcher} data-scroll-watcher />
+
+	<header class:scrolled>
 		<nav>
 			<ul>
 				<li><a class="secondary glow" href="/">/home/page</a></li>
@@ -114,11 +133,10 @@
 			100% 50% / 100% 100% repeat-x;
 		position: sticky;
 		top: 0;
-		padding-block: var(--nav-element-spacing-vertical) calc(var(--block-spacing-vertical) * 2);
-		margin-bottom: calc(var(--block-spacing-vertical) * -1);
+		padding-block: var(--nav-element-spacing-vertical) calc(var(--block-spacing-vertical) * 2.5);
+		margin-bottom: calc(var(--block-spacing-vertical) * -1.5);
 		backdrop-filter: blur(2px);
 		background-color: rgba(0, 0, 0, 0.2);
-		background-blend-mode: darken;
 		background-size: 100% 100%;
 		pointer-events: none;
 
@@ -126,6 +144,27 @@
 		mask: var(--mask);
 
 		z-index: 999;
+
+		@media only screen and (prefers-color-scheme: light) {
+			--mask: none;
+			padding-block: 0;
+			margin-bottom: calc(var(--block-spacing-vertical) * 2.5);
+			backdrop-filter: none;
+			background-color: var(--card-background-color);
+
+			&.scrolled::after {
+				opacity: 1;
+				transition-duration: 0.2s;
+			}
+
+			&::after {
+				position: absolute;
+				opacity: 0;
+				inset: 0;
+				content: '';
+				box-shadow: var(--card-box-shadow);
+			}
+		}
 
 		nav li {
 			font-size: 1.2em;

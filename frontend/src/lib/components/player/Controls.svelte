@@ -11,6 +11,7 @@
 </script>
 
 <button
+	aria-label="Previous song"
 	class="player_button player_button_rewind"
 	on:click={() => dispatch('rewind')}
 	disabled={songIndex === 0 || loading}
@@ -18,13 +19,18 @@
 	<iconify-icon inline icon="pixelarticons:prev" />
 </button>
 
-<button class="player_button player_button_play" on:click={() => dispatch('playPause')}>
+<button
+	class="player_button player_button_play"
+	aria-label="Play pause audio"
+	on:click={() => dispatch('playPause')}
+>
 	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
 </button>
 
 <button
 	class="player_button player_button_forward"
 	on:click={() => dispatch('forward')}
+	aria-label="Next song"
 	disabled={songIndex === lastSong || loading}
 >
 	<iconify-icon inline icon="pixelarticons:next" />
@@ -34,6 +40,7 @@
 	class="player_button player_button_mute {muted ? 'unactive' : ''}"
 	on:click={() => dispatch('mute')}
 	disabled={loading}
+	aria-label="Mute audio"
 >
 	<iconify-icon inline icon={muted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'} />
 </button>
@@ -51,6 +58,7 @@
 		background-color: transparent;
 		border: none;
 
+		--color: var(--color);
 		transition: color var(--transition);
 
 		@media screen and (max-width: 768px) {
@@ -66,13 +74,13 @@
 
 		&:hover,
 		&:focus-within {
-			color: inherit;
+			--color: var(--contrast-hover);
 		}
 		&:active {
-			color: var(--contrast);
+			--color: var(--contrast);
 		}
 		&.unactive {
-			color: var(--muted-color);
+			--color: var(--muted-color);
 		}
 
 		&_rewind {

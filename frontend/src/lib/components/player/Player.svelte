@@ -309,9 +309,9 @@
 		translate: -50%;
 
 		padding-bottom: 1rem;
-		border-radius: var(--border-radius) var(--border-radius) 0 0;
 		background: var(--card-background-color);
 		box-shadow: var(--card-box-shadow);
+		border-radius: var(--border-radius) var(--border-radius) 0 0;
 
 		@media screen and (max-width: 768px) {
 			grid-template-areas:

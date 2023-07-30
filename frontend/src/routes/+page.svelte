@@ -113,22 +113,27 @@
 			<span> monospacee </span>
 			<ul>
 				<li>
-					<a href="https://soundcloud.com/monospacee">
+					<a href="https://soundcloud.com/monospacee" aria-label="our soundcloud">
 						<iconify-icon inline icon="mdi:soundcloud" />
 					</a>
 				</li>
 				<li>
-					<a href="https://www.youtube.com/@monospacee/streams">
+					<a href="https://www.youtube.com/@monospacee/streams" aria-label="our youtube">
 						<iconify-icon inline icon="mdi:youtube" />
 					</a>
 				</li>
-				<li>
+				<!-- 				<li>
 					<a href="https://github.com/MihkelMK/monospacee">
 						<iconify-icon inline={true} icon="mdi:github" />
 					</a>
-				</li>
+				</li> -->
 				<li>
-					<a target="_blank" referrerpolicy="no-referrer" href={`${config.url}/rss.xml`}>
+					<a
+						target="_blank"
+						referrerpolicy="no-referrer"
+						href={`${config.url}/rss.xml`}
+						aria-label="our rss feed"
+					>
 						<iconify-icon inline icon="mdi:rss-box" />
 					</a>
 				</li>

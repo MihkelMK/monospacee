@@ -38,7 +38,7 @@
 				<input
 					disabled={audioNotLoaded}
 					type="radio"
-					name="tracklistSong"
+					aria-label="Skip to song: {song.title}"
 					checked={i === songIndex}
 					on:click={() => dispatch('seekToSong', i)}
 				/>
@@ -46,6 +46,7 @@
 		{/each}
 	{/if}
 	<input
+		aria-label="player progress"
 		disabled={audioNotLoaded}
 		type="range"
 		max={`${totalTrackTime}`}
@@ -86,7 +87,7 @@
 	.player_progress {
 		grid-area: progress;
 		width: 100%;
-		background: var(--progress-background-color);
+		background: color-mix(in srgb, var(--progress-background-color) 90%, #000);
 		height: 0.75rem;
 		position: relative;
 		border-radius: calc(var(--border-radius) * 0.25);
@@ -106,6 +107,13 @@
 			background-size: 100vw 100%;
 			border-radius: 0 var(--border-radius) var(--border-radius) 0;
 			pointer-events: none;
+			@media only screen and (prefers-color-scheme: light) {
+				background-image: linear-gradient(
+					to right,
+					color-mix(in srgb, var(--secondary) 60%, #fff),
+					color-mix(in srgb, var(--primary) 60%, #fff)
+				);
+			}
 		}
 
 		@media screen and (max-width: 768px) {
@@ -116,6 +124,9 @@
 		&:hover {
 			input:not([disabled='']) {
 				opacity: 0.9;
+				@media only screen and (prefers-color-scheme: light) {
+					opacity: 0.4;
+				}
 			}
 		}
 
@@ -153,13 +164,29 @@
 				opacity: 0.5;
 				mix-blend-mode: soft-light;
 				transition: opacity var(--transition);
+
+				@media only screen and (prefers-color-scheme: light) {
+					opacity: 0.2;
+					mix-blend-mode: difference;
+					background-color: var(--muted-color);
+				}
 			}
 
-			&_active {
-				& input {
-					background-color: #f3f3f3;
-					opacity: 0.8;
+			@media only screen and (prefers-color-scheme: light) {
+				&_active {
+					z-index: 1;
+					& input {
+						opacity: 0.6;
+						background-color: #fff;
+					}
+					&:hover input {
+						opacity: 0.9;
+					}
 				}
+			}
+			&_active input {
+				background-color: var(--primary-inverse);
+				opacity: 0.5;
 			}
 		}
 

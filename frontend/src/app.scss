@@ -146,7 +146,7 @@ article.post {
 	header {
 		& hgroup {
 			margin-bottom: 0;
-			& h2,
+			& h3,
 			h1 {
 				--color: var(--accent-color);
 				margin-bottom: calc(var(--typography-spacing-vertical) * 0.05);

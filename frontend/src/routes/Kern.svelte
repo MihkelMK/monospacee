@@ -38,6 +38,7 @@
 
 <style lang="scss">
 	.maskott {
+		user-select: none;
 		position: relative;
 	}
 	.playing {
@@ -113,7 +114,7 @@
 
 	.noot {
 		position: absolute;
-		color: var(--background-color);
+		color: transparent;
 		animation-duration: 8s;
 		animation-iteration-count: infinite;
 		animation-timing-function: linear;

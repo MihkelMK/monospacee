@@ -41,6 +41,7 @@
       display: flex;
       color: #BDC3CB;
       letter-spacing: -0.025em;
+      line-height: 1.75em;
 		"
 	>
 		<span style="color: {accentColor}">monospacee</span>
@@ -58,6 +59,7 @@
       -webkit-background-clip: text;
       color: transparent;
       letter-spacing: -0.05em;
+      line-height: 0.95em;
 		"
 	>
 		{title}

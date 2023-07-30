@@ -240,3 +240,10 @@ samp {
 kbd {
 	--font-weight: bolder;
 }
+
+.glow {
+	text-shadow: var(--glow_color) 0px 0px 20px;
+	&-sm {
+		text-shadow: var(--glow_color) 0px 0px 15px;
+	}
+}

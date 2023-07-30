@@ -45,7 +45,7 @@
 	<header>
 		<hgroup>
 			<h1 class="glow-sm">{data.meta.title}</h1>
-			<h4>{formatDate(data.meta.date)} [{data.meta.type.slice(0, 1).toUpperCase()}]</h4>
+			<h2>{formatDate(data.meta.date)} [{data.meta.type.slice(0, 1).toUpperCase()}]</h2>
 		</hgroup>
 
 		<nav class="tags">
