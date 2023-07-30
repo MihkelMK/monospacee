@@ -90,6 +90,10 @@
 	<meta property="og:description" content={config.description} />
 	<meta property="og:url" content={config.url} />
 	<meta property="og:site_name" content={config.site_name} />
+	<meta
+		name="og:image"
+		content={encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`)}
+	/>
 </svelte:head>
 
 <svelte:window
