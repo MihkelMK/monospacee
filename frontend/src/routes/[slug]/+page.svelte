@@ -115,9 +115,6 @@
 		h1 {
 			font-size: 2.5rem;
 		}
-		h4 {
-			font-size: 1.1rem;
-		}
 	}
 
 	header {
@@ -156,7 +153,9 @@
 					&.played {
 						& button {
 							--color: color-mix(in srgb, var(--accent-color) 60%, rgba(0, 0, 0, 0.3));
-
+							@media only screen and (prefers-color-scheme: light) {
+								--color: color-mix(in srgb, var(--accent-color) 50%, rgba(255, 255, 255, 0.3));
+							}
 							&:hover {
 								--color: var(--accent-hover);
 							}
