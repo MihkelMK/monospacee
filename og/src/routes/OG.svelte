@@ -47,7 +47,7 @@
 		<span style="color: {accentColor}">monospacee</span>
 		:
 		<span style="color: {accentColorLow}; margin-left: 1em;"
-			>~/{postType.toLowerCase()}{postType === 'main' ? '' : 's'}</span
+			>~/{postType === 'main' ? '' : `${postType.toLowerCase()}s`}</span
 		>
 	</div>
 	<div
