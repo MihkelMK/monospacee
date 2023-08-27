@@ -1,6 +1,6 @@
 # Monospacee
 
-Powered by [SvelteKit](https://kit.svelte.dev/docs/introduction).
+Powered by [SvelteKit](https://kit.svelte.dev/docs/introduction).\
 Uses typescrypt, eslint, prettier.
 
 ## Initial

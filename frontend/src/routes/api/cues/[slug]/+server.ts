@@ -13,7 +13,7 @@ function timecodeToSeconds(timecode: string | undefined) {
 	return seconds + minutes * 60;
 }
 
-async function parseCue(cueFile: string) {
+function parseCue(cueFile: string) {
 	const slug = cueFile.match('FILE ".*" WAVE')?.at(0)?.split('"').at(1);
 	const songData = cueFile
 		.split('TRACK')

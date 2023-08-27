@@ -1,7 +1,8 @@
 <script lang="ts">
 	import * as config from '$lib/config';
 	import { formatDate, timeStringFromSeconds } from '$lib/utils';
-	import type { PageData, PostType } from './$types';
+	import type { PostEvent } from '$lib/types';
+	import type { PageData } from './$types';
 	import { selectedRecording, cueJump, streamingData } from '../store';
 
 	export let data: PageData;
@@ -12,7 +13,7 @@
 		selectedRecording.set(slug);
 	};
 
-	const getClass = (type: PostType) => {
+	const getClass = (type: PostEvent) => {
 		if (type === 'event') return 'secondary';
 		if (type === 'stream') return 'primary';
 		return 'contrast';

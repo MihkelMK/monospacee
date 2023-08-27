@@ -7,4 +7,4 @@
 	export let loading: 'lazy' | 'eager' | undefined = 'lazy';
 </script>
 
-<Img class="better-blur"  {src} {alt} {loading} />
+<Img class="better-blur" {src} {alt} {loading} />

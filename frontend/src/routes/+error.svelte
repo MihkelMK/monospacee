@@ -14,8 +14,5 @@
 		min-height: 90svh;
 		display: grid;
 		place-content: center;
-
-		p {
-		}
 	}
 </style>

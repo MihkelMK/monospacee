@@ -10,7 +10,7 @@ export async function load({ fetch, setHeaders }) {
 		});
 
 		return { posts, nextFrom };
-	} catch (err) {
+	} catch (_err) {
 		throw error(500, 'Error while fetching posts');
 	}
 }
