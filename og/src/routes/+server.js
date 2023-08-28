@@ -1,5 +1,5 @@
-import robotoMono500 from '@fontsource/roboto-mono/files/roboto-mono-latin-500-normal.woff';
-import robotoMono700 from '@fontsource/roboto-mono/files/roboto-mono-latin-700-normal.woff';
+import robotoMono500 from '$lib/Roboto Mono 500.ttf';
+import robotoMono700 from '$lib/Roboto Mono 700.ttf';
 import { componentToImageResponse } from '@ethercorps/sveltekit-og';
 import OG from './OG.svelte';
 

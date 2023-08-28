@@ -1,6 +1,9 @@
 <script>
+  /* @type {string} */
 	export let title;
+  /* @type {string} */
 	export let postType;
+  /* @type {string} */
 	export let date;
 
 	const accentColor =
@@ -59,7 +62,8 @@
       -webkit-background-clip: text;
       color: transparent;
       letter-spacing: -0.05em;
-      line-height: 0.95em;
+      line-height: 1.08em;
+      margin-top: -0.15em;
 		"
 	>
 		{title}
