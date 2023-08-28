@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@fontsource/roboto-mono':
-    specifier: ^5.0.8
-    version: 5.0.8
   '@resvg/resvg-js':
     specifier: ^2.4.1
     version: 2.4.1
@@ -305,10 +302,6 @@ packages:
       satori: 0.10.3
       svg2png-wasm: 1.4.0
     dev: true
-
-  /@fontsource/roboto-mono@5.0.8:
-    resolution: {integrity: sha512-vjnNX8zQCSp4HadUJ3gpZiizCsK/ROjgGMpd4bcRxuyiTNGGMaznmKbhqdyVeFVap1sX8h2Qu380awaotey/mQ==}
-    dev: false
 
   /@humanwhocodes/config-array@0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}

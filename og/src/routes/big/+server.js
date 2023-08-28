@@ -1,7 +1,7 @@
 import robotoMono500 from '$lib/Roboto Mono 500.ttf';
 import robotoMono700 from '$lib/Roboto Mono 700.ttf';
 import { componentToImageResponse } from '@ethercorps/sveltekit-og';
-import OG from './OG.svelte';
+import OGBig from './OGBig.svelte';
 
 const fontMemo = {};
 
@@ -26,11 +26,11 @@ export const GET = async ({ url, setHeaders }) => {
 	setHeaders({ 'cache-control': 'public, immutable, no-transform, max-age=86400' });
 
 	return componentToImageResponse(
-		OG,
+		OGBig,
 		{ title: title, date: date, postType: type },
 		{
-			height: 630,
-			width: 1200,
+			height: 3000,
+			width: 3000,
 			fonts: [
 				{
 					name: 'Roboto Mono',

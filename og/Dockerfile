@@ -7,10 +7,8 @@ WORKDIR /app
 # Copy all local files into the image
 COPY . .
 
-RUN rm -rf node_modules pnpm-lock.yaml .svelte-kit
-
 # Clean install all node modules
-RUN yarn global add pnpm && pnpm i
+RUN rm -rf pnpm-lock.yaml node_modules .svelte-kit && yarn global add pnpm && pnpm i
 
-# Build SvelteKit app
-CMD ["npm","run","dev"]
+# This is the command that will be run inside the image when you tell Docker to start the container
+CMD ["pnpm", "dev"]
