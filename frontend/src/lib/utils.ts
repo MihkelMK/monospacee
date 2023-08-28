@@ -53,7 +53,7 @@ export const timeStringFromSeconds = (seconds: number) => {
 };
 
 export function keybind(
-  _element: never,
+  _element: any,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: { binds: string[]; on_bind: any },
 ) {

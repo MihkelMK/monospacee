@@ -3,6 +3,7 @@
 	import { formatDate, timeStringFromSeconds } from '$lib/utils';
 	import type { PostEvent } from '$lib/types';
 	import type { PageData } from './$types';
+	import { MetaTags } from 'svelte-meta-tags';
 	import { selectedRecording, cueJump, streamingData } from '../store';
 
 	export let data: PageData;
@@ -28,19 +29,65 @@
 	};
 </script>
 
-<svelte:head>
-	<title>{config.title + ' | ' + data.meta.title}</title>
-	<meta property="og:type" content="article" />
-	<meta property="og:title" content={data.meta.title} />
-	<meta property="og:description" content={data.meta.description} />
-
-	<meta
-		name="og:image"
-		content={encodeURI(
+<MetaTags
+	title={data.meta.title}
+	titleTemplate={'%s | ' + config.title}
+	description={data.meta.description}
+	canonical={config.url + '/' + data.meta.date}
+	openGraph={{
+		url: config.url + '/' + data.meta.date,
+		title: data.meta.title + ' | ' + config.title,
+		description: data.meta.description,
+		type: 'article',
+		locale: 'et_EE',
+		audio: [
+			{
+				url: config.url + '/recordings/' + data.meta.date + '.mp3',
+				secureUrl: config.url + '/recordings/' + data.meta.date + '.mp3',
+				type: 'mpeg'
+			}
+		],
+		images: [
+			{
+				url: encodeURI(
+					`${config.ogUrl}/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`
+				),
+				secureUrl: encodeURI(
+					`${config.ogUrl}/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`
+				),
+				width: 1200,
+				height: 630,
+				alt:
+					'A graphic design introducing the ' +
+					data.meta.type +
+					' called ' +
+					data.meta.title +
+					' by the DJ duo, monospacee.',
+				type: 'image/png'
+			}
+		],
+		article: {
+			publishedTime: data.meta.date + 'T00:00:00+02:00',
+			authors: ['DJ RX', 'DJ Mimm'],
+			tags: data.meta.tags
+		},
+		siteName: config.site_name
+	}}
+	twitter={{
+		cardType: 'summary',
+		title: data.meta.title,
+		description: data.meta.description,
+		image: encodeURI(
 			`${config.ogUrl}/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`
-		)}
-	/>
-</svelte:head>
+		),
+		imageAlt:
+			'A graphic design introducing the ' +
+			data.meta.type +
+			' called ' +
+			data.meta.title +
+			' by the DJ duo, monospacee.'
+	}}
+/>
 
 <article class="post {getClass(data.meta.type)}">
 	<header>

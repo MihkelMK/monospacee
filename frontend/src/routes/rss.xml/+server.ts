@@ -27,11 +27,11 @@ export async function GET({ fetch }) {
 				</itunes:owner>
 				<itunes:type>episodic</itunes:type>
 				<itunes:image href="${encodeURI(
-					`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`
+					`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`
 				).replaceAll('&', '&amp;')}"/>
 				<image>
 					<url>
-						${encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`).replaceAll(
+						${encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`).replaceAll(
 							'&',
 							'&amp;'
 						)}
@@ -55,7 +55,7 @@ export async function GET({ fetch }) {
 							<link>${config.url}/${post.date}</link>
 							<itunes:summary>${post.description}</itunes:summary>
 							<itunes:image href="${encodeURI(
-								`${config.ogUrl}/?date=${post.date}&title=${post.title}&type=${post.type}`
+								`${config.ogUrl}/big?date=${post.date}&title=${post.title}&type=${post.type}`
 							).replaceAll('&', '&amp;')}"/>
               <enclosure url="${config.url}/recordings/${
 								post.date

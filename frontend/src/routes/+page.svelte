@@ -7,6 +7,7 @@
 	import type { Post } from '$lib/types';
 	import ArticleList from '$lib/components/ArticleList.svelte';
 	import { feed, visiblePostTypes } from './store.js';
+	import { MetaTags } from 'svelte-meta-tags';
 
 	export let data;
 	let loading = true;
@@ -84,18 +85,40 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{config.title}</title>
-	<meta name="description" content={config.description} />
-  <meta property="og:title" content={config.title} />
-	<meta property="og:description" content={config.description} />
-  <meta property="og:site_name" content={config.site_name} />
-	<meta property="og:url" content={config.url} />
-	<meta
-		name="og:image"
-		content={encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`)}
-	/>
-</svelte:head>
+<MetaTags
+	title="Welcome"
+	titleTemplate={'%s | ' + config.title}
+	description={config.description}
+	canonical={config.url + '/'}
+	openGraph={{
+		url: config.url + '/',
+		title: 'Welcome | ' + config.title,
+		description: config.description,
+		type: 'website',
+		locale: 'et_EE',
+		images: [
+			{
+				url: encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`),
+				secureUrl: encodeURI(
+					`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`
+				),
+				width: 1200,
+				height: 630,
+				alt: 'A graphic design introducing the landing page of by the DJ duo, monospacee.',
+				type: 'image/png'
+			}
+		],
+    		siteName: config.site_name
+
+	}}
+	twitter={{
+		cardType: 'summary',
+		title: config.title,
+		description: config.description,
+		image: encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`),
+		imageAlt: 'A graphic design introducing the landing page of by the DJ duo, monospacee.'
+	}}
+/>
 
 <svelte:window
 	use:keybind={{

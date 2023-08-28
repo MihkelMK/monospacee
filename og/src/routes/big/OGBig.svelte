@@ -1,11 +1,6 @@
 <script>
 	/** @type {string} */
-	export let title;
-	/** @type {string} */
 	export let postType;
-	/** @type {string} */
-	export let date;
-
 	const accentColor =
 		postType === 'main'
 			? '#a160cd'
@@ -40,22 +35,21 @@
 >
 	<div
 		style="
-      font-size: 13rem;
+      font-size: 18rem;
       display: flex;
       color: #BDC3CB;
       letter-spacing: -0.025em;
       line-height: 1.75em;
+      margin-top: 35rem;
 		"
 	>
-		<span style="color: {accentColor}">monospacee</span>
-		:
-		<span style="color: {accentColorLow}; margin-left: 1em;"
-			>~/{postType === 'main' ? '' : `${postType.toLowerCase()}s`}</span
+		<span style="color: {accentColor}; margin-top: -3rem;">monospacee</span><span
+			style="font-size:16rem; margin-left: 2rem">$</span
 		>
 	</div>
 	<div
 		style="
-      font-size: 22rem;
+      font-size: 26rem;
       font-weight: 700;
       background-image: linear-gradient(30deg, {accentColor}, {accentColorLow});
       background-clip: text;
@@ -63,29 +57,16 @@
       color: transparent;
       letter-spacing: -0.05em;
       line-height: 1em;
-      margin-top: -1rem;
+      margin-top: -8rem;
 		"
 	>
-		{title}
-	</div>
-
-	<div
-		style="
-		display: flex;
-    position: absolute;
-      letter-spacing: -0.025em;
-    font-size: 18rem;
-      color: #BDC3CB;
-    bottom: 9rem;
-  "
-	>
-		{date}
+		~/{postType === 'main' ? '' : `${postType.toLowerCase()}s`}
 	</div>
 
 	<span
 		style="
     position: absolute;
-    top: 9rem;
+    top: 35rem;
     left: 31%;
     gap: 0.1em;
     font-size: 26rem;
