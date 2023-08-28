@@ -40,6 +40,10 @@
 	.maskott {
 		user-select: none;
 		position: relative;
+
+    &:not(.playing) .noot {
+          --glow_color: transparent !important;
+    }
 	}
 	.playing {
 		& .kern,
