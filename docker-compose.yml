@@ -1,0 +1,19 @@
+---
+version: "3"
+
+services:
+  svelte:
+    container_name: monospacee
+    image: monospacee
+    build: ./frontend
+    user: "node"
+    restart: unless-stopped
+    ports:
+      - 9001:3000
+  og:
+    container_name: monospacee_og
+    image: monospacee_og
+    build: ./og
+    restart: unless-stopped
+    ports:
+      - 9002:5174

@@ -1,0 +1,23 @@
+/**
+ * Theme: monospacee
+ */
+
+// Variables
+@import '@picocss/pico/scss/variables';
+@import 'monospacee/colors';
+
+// Commons styles
+@import 'monospacee/styles';
+
+// Dark theme (monospacee)
+// Can be forced with data-theme="dark"
+@import 'monospacee/dark';
+
+// Light theme (Auto)
+// Automatically enabled if user has Light mode enabled
+@import 'monospacee/light';
+@media only screen and (prefers-color-scheme: light) {
+	:root:not([data-theme]) {
+		@include light;
+	}
+}
