@@ -108,8 +108,7 @@
 				type: 'image/png'
 			}
 		],
-    		siteName: config.site_name
-
+		siteName: config.site_name
 	}}
 	twitter={{
 		cardType: 'summary',
@@ -141,20 +140,21 @@
 			<span> monospacee </span>
 			<ul>
 				<li>
-					<a href="https://soundcloud.com/monospacee" aria-label="our soundcloud">
+					<a href="https://soundcloud.com/monospacee"
+						target="_blank"
+						referrerpolicy="no-referrer"
+            aria-label="our soundcloud">
 						<iconify-icon inline icon="mdi:soundcloud" />
 					</a>
 				</li>
 				<li>
-					<a href="https://www.youtube.com/@monospacee/streams" aria-label="our youtube">
+					<a href="https://www.youtube.com/@monospacee/streams"
+						target="_blank"
+						referrerpolicy="no-referrer"
+            aria-label="our youtube">
 						<iconify-icon inline icon="mdi:youtube" />
 					</a>
 				</li>
-				<!-- 				<li>
-					<a href="https://github.com/MihkelMK/monospacee">
-						<iconify-icon inline={true} icon="mdi:github" />
-					</a>
-				</li> -->
 				<li>
 					<a
 						target="_blank"
@@ -163,6 +163,15 @@
 						aria-label="our rss feed"
 					>
 						<iconify-icon inline icon="mdi:rss-box" />
+					</a>
+				</li>
+				<li>
+					<a href="https://github.com/MihkelMK/monospacee"
+          	target="_blank"
+						referrerpolicy="no-referrer"
+            aria-label='sourcecode for this site'
+          >
+						<iconify-icon inline={true} icon="mdi:github" />
 					</a>
 				</li>
 			</ul>
