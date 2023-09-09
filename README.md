@@ -101,9 +101,9 @@ Found a bug or error on the site? Suggestion to improve some hacky code?
 
 Contributions are always welcome!
 
-See `contributing.md` for ways to get started.
+See [`contributing.md`](./CONTRIBUTING.md) for ways to get started.
 
-Please adhere to this project's `code of conduct`.
+Please adhere to this project's [`code of conduct`](./CODE_OF_CONDUCT.md).
 
 ## Authors
 
