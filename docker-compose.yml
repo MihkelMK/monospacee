@@ -6,7 +6,6 @@ services:
     container_name: monospacee
     image: monospacee
     build: ./frontend
-    user: "node"
     restart: unless-stopped
     ports:
       - 9001:3000

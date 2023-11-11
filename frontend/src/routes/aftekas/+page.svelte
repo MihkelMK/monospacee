@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	export let data: Pagedata;
+	export let data: PageData;
 	$: ({ songs } = data);
 </script>
 
-<form action="?/addSong" method="post">
+<form method="POST">
 	<hgroup style="text-align: center; margin-block: 4rem;">
 		<h3>Suggest a song</h3>
 		<h4>
