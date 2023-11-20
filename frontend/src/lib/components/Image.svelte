@@ -1,10 +1,17 @@
 <script lang="ts">
 	import Img from '@zerodevx/svelte-img';
-	import type { ImageSrc } from '$lib/types';
+	import type { ImageSrcObject } from '$lib/types';
 
-	export let src: ImageSrc[];
+	export let src: ImageSrcObject;
 	export let alt = '';
+	export let circle = false;
 	export let loading: 'lazy' | 'eager' | undefined = 'lazy';
 </script>
 
-<Img class="better-blur" {src} {alt} {loading} />
+<Img class="better-blur {circle ? 'circle' : ''}" {src} {alt} {loading} />
+
+<style>
+	:global(img.circle) {
+		border-radius: 50%;
+	}
+</style>

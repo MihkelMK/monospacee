@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { recordingPlaying } from './store';
+	import { recordingPlaying } from '$lib/store';
 
 	export let silmaNurk: number = 0;
 	export let suu: String = '◡';

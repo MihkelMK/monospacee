@@ -4,20 +4,23 @@
 	let dispatch = createEventDispatcher();
 
 	export let isPlaying = false;
-	export let songIndex: number;
-	export let lastSong: number;
+	export let songIndex = 0;
+	export let lastSong = 0;
 	export let loading: boolean;
+	export let preview = false;
 	export let muted = false;
 </script>
 
-<button
-	aria-label="Previous song"
-	class="player_button player_button_rewind"
-	on:click={() => dispatch('rewind')}
-	disabled={songIndex === 0 || loading}
->
-	<iconify-icon inline icon="pixelarticons:prev" />
-</button>
+{#if !preview}
+	<button
+		aria-label="Previous song"
+		class="player_button player_button_rewind"
+		on:click={() => dispatch('rewind')}
+		disabled={songIndex === 0 || loading}
+	>
+		<iconify-icon inline icon="pixelarticons:prev" />
+	</button>
+{/if}
 
 <button
 	class="player_button player_button_play"
@@ -27,23 +30,27 @@
 	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
 </button>
 
-<button
-	class="player_button player_button_forward"
-	on:click={() => dispatch('forward')}
-	aria-label="Next song"
-	disabled={songIndex === lastSong || loading}
->
-	<iconify-icon inline icon="pixelarticons:next" />
-</button>
+{#if !preview}
+	<button
+		class="player_button player_button_forward"
+		on:click={() => dispatch('forward')}
+		aria-label="Next song"
+		disabled={songIndex === lastSong || loading}
+	>
+		<iconify-icon inline icon="pixelarticons:next" />
+	</button>
+{/if}
 
-<button
-	class="player_button player_button_mute {muted ? 'unactive' : ''}"
-	on:click={() => dispatch('mute')}
-	disabled={loading}
-	aria-label="Mute audio"
->
-	<iconify-icon inline icon={muted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'} />
-</button>
+{#if !preview}
+	<button
+		class="player_button player_button_mute {muted ? 'unactive' : ''}"
+		on:click={() => dispatch('mute')}
+		disabled={loading}
+		aria-label="Mute audio"
+	>
+		<iconify-icon inline icon={muted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'} />
+	</button>
+{/if}
 
 <style lang="scss">
 	.player_button {
