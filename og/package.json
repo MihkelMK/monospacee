@@ -1,6 +1,6 @@
 {
 	"name": "monospaceeOG",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"private": false,
 	"scripts": {
 		"dev": "vite dev --host",
@@ -12,6 +12,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@ethercorps/sveltekit-og": "^2.0.2",
 		"@sveltejs/adapter-auto": "^2.1.1",
 		"@sveltejs/kit": "^1.27.6",
 		"@types/cookie": "^0.5.4",
@@ -35,7 +36,6 @@
 		"@resvg/resvg-js": "^2.6.0",
 		"@sveltejs/adapter-node": "^1.3.1",
 		"eslint-plugin-svelte": "^2.35.0",
-		"satori": "^0.10.11",
-		"@ethercorps/sveltekit-og": "^2.0.2"
+		"satori": "^0.10.11"
 	}
 }
