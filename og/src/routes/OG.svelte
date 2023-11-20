@@ -75,10 +75,12 @@
 "
 	>
 		<span style="width: 0.5em;">[</span><!--
---><span style="width: 0.4em; font-size: 0.9em;">'</span
+--><span
+			style="width: 0.6em; font-size: 0.9em; margin-left: -0.2em;">＇</span
 		><!--
 --><span style="">-</span><!--
---><span style="width: 0.4em; font-size: 0.9em;">'</span
+--><span
+			style="width: 0.65em; font-size: 0.9em; margin-left: -0.25em;">＇</span
 		><!--
 --><span style="width: 0.5em;">]</span>
 	</span>

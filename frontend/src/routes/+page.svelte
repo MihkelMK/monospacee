@@ -8,6 +8,8 @@
 	import ArticleList from '$lib/components/ArticleList.svelte';
 	import { feed, visiblePostTypes } from './store.js';
 	import { MetaTags } from 'svelte-meta-tags';
+	import SocialIcon from '$lib/components/SocialIcon.svelte';
+	import Socials from '$lib/components/Socials.svelte';
 
 	export let data;
 	let loading = true;
@@ -136,46 +138,8 @@
 
 <header>
 	<hgroup>
-		<h1 class="glow-sm">
-			<span> monospacee </span>
-			<ul>
-				<li>
-					<a href="https://soundcloud.com/monospacee"
-						target="_blank"
-						referrerpolicy="no-referrer"
-            aria-label="our soundcloud">
-						<iconify-icon inline icon="mdi:soundcloud" />
-					</a>
-				</li>
-				<li>
-					<a href="https://www.youtube.com/@monospacee/streams"
-						target="_blank"
-						referrerpolicy="no-referrer"
-            aria-label="our youtube">
-						<iconify-icon inline icon="mdi:youtube" />
-					</a>
-				</li>
-				<li>
-					<a
-						target="_blank"
-						referrerpolicy="no-referrer"
-						href={`${config.url}/rss.xml`}
-						aria-label="our rss feed"
-					>
-						<iconify-icon inline icon="mdi:rss-box" />
-					</a>
-				</li>
-				<li>
-					<a href="https://github.com/MihkelMK/monospacee"
-          	target="_blank"
-						referrerpolicy="no-referrer"
-            aria-label='sourcecode for this site'
-          >
-						<iconify-icon inline={true} icon="mdi:github" />
-					</a>
-				</li>
-			</ul>
-		</h1>
+		<h1 class="glow-sm">monospacee</h1>
+		<Socials class="landing" data={config.socials} />
 		<h2 class="glow glow-sm contrast">
 			GPLv3 litsensiga DJ duo, kelle kerning sobib igale žanrile.
 		</h2>
@@ -256,31 +220,7 @@
 
 			h1 {
 				color: var(--primary);
-				margin-bottom: var(--nav-element-spacing-vertical);
-			}
-			ul {
-				display: inline;
-				margin-bottom: 0;
-				padding-left: 0;
-				font-size: 0.75em;
-			}
-			li {
-				display: inline;
-				margin-bottom: 0;
-			}
-			h2 {
-				color: var(--h2-color);
-				max-width: 65ch;
-			}
-
-			@media screen and (max-width: 768px) {
-				span {
-					margin-bottom: var(--typography-spacing-vertical);
-				}
-
-				ul {
-					display: block;
-				}
+				margin-bottom: calc(var(--nav-element-spacing-vertical) / 4);
 			}
 		}
 	}

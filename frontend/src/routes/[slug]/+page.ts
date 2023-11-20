@@ -1,23 +1,30 @@
-import { error } from "@sveltejs/kit";
-import type { Cue } from "$lib/types.js";
+import { error } from '@sveltejs/kit';
+import type { Cue } from '$lib/types.js';
 
 export async function load({ params, fetch, setHeaders }) {
-  try {
-    const post = await import(`../../posts/${params.slug}.md`);
+		setHeaders({
+			'cache-control': 'max-age=60'
+		});
 
-    const cueResponse = await fetch(`/api/cues/${params.slug}.cue`);
-    const cue: Cue = cueResponse.json();
+	try {
+		const post = await import(`../../posts/${params.slug}.md`);
 
-    setHeaders({
-      "cache-control": "max-age=60",
-    });
+    if (!post.metadata.recording) {
+      return {
+        content: post.default,
+        meta: post.metadata
+      }
+    }
 
-    return {
-      content: post.default,
-      meta: post.metadata,
-      cue: cue,
-    };
-  } catch (_err) {
-    throw error(404, `Could not find ${params.slug}`);
-  }
+		const cueResponse = await fetch(`/api/cues/${params.slug}.cue`);
+		const cue: Cue = cueResponse.json();
+
+		return {
+			content: post.default,
+			meta: post.metadata,
+			cue: cue
+		};
+	} catch (_err) {
+		throw error(404, `Could not find ${params.slug}`);
+	}
 }

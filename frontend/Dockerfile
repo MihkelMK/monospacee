@@ -4,20 +4,21 @@ FROM node:18 AS external-website
 # The WORKDIR instruction sets the working directory for everything that will happen next
 WORKDIR /app
 
-# Copy all local files into the image
+# Install packages
+RUN yarn global add pnpm
+COPY package.json .
+RUN pnpm i
+
+# Create DB
+COPY ./prisma/schema.prisma ./prisma/schema.prisma
+COPY tsconfig.json ./
+RUN npx prisma generate
+
 COPY . .
 
-# Clean install all node modules
-RUN rm -rf pnpm-lock.yaml node_modules .svelte-kit && yarn global add pnpm && pnpm i
-
 # Build SvelteKit app
-RUN npm run build
-
-# Delete source code files that were used to build the app that are no longer needed
-RUN rm -rf src/ static/ docker-compose.yml
-
-# The USER instruction sets the user name to use as the default user for the remainder of the current stage
-USER node:node
+RUN pnpm build && \
+    rm -rf src/ static/
 
 # This is the command that will be run inside the image when you tell Docker to start the container
-CMD ["node","build/index.js"]
+CMD ["ORIGIN=https://monospac.ee", "node","build/index.js"]
