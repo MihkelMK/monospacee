@@ -2,7 +2,7 @@
 	import type { Post, PostType } from '$lib/types';
 	import { formatDate } from '$lib/utils';
 	import { fly } from 'svelte/transition';
-	import { selectedRecording, visiblePostTypes } from '../../routes/store';
+	import { selectedRecording, visiblePostTypes } from '$lib/store';
 	import { cubicOut } from 'svelte/easing';
 
 	export let posts: Post[];

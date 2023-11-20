@@ -4,17 +4,13 @@
 	import '../app.scss';
 
 	import 'iconify-icon';
-	import PageTransition from './transition.svelte';
 
 	import { angleToMouse, throttle } from '$lib/utils';
 
 	import Kern from './Kern.svelte';
-	import Player from '$lib/components/player/Player.svelte';
-	import { recordingPlaying, selectedRecording } from './store';
+	import { recordingPlaying, selectedRecording } from '$lib/store';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-
-	export let data;
 
 	let kernSilmNurk = 0;
 	let silmadPaigal = false;
@@ -101,25 +97,12 @@
 			</ul>
 		</nav>
 	</header>
-	<div class="container">
-		<PageTransition url={data.url}>
-			<slot />
-		</PageTransition>
-	</div>
-	<Player />
+	<slot />
 </div>
 
 <style lang="scss">
 	.app {
 		min-height: 100vh;
-	}
-
-	.container {
-		margin-bottom: 10rem;
-
-		@media only screen and (max-width: 768px) {
-			margin-bottom: 15rem;
-		}
 	}
 
 	header {

@@ -7,7 +7,7 @@ export async function load({ params, fetch, setHeaders }) {
 		});
 
 	try {
-		const post = await import(`../../posts/${params.slug}.md`);
+		const post = await import(`../../../posts/${params.slug}.md`);
 
     if (!post.metadata.recording) {
       return {
