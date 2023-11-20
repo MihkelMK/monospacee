@@ -1,5 +1,5 @@
 <script>
-	/* @type {string} */
+	/** @type {string} */
 	export let postType;
 
 	const accentColor =
