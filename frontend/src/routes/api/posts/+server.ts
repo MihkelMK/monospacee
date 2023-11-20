@@ -43,7 +43,6 @@ export function GET({ url, setHeaders }) {
 
 	const nextIdx = start + posts.length;
 	const nextFrom = nextIdx < allPosts.length ? nextIdx : null;
-	console.log(start, end, allPosts);
 
 	return json({ posts, nextFrom });
 }
