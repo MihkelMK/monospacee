@@ -237,24 +237,24 @@
 	});
 </script>
 
-<svelte:window
-	use:keybind={{
-		binds: ['Control', 'k'],
-		on_bind: playPauseAudio
-	}}
-	use:keybind={{
-		binds: ['Control', 'j'],
-		on_bind: rewindAudio
-	}}
-	use:keybind={{
-		binds: ['Control', 'l'],
-		on_bind: forwardAudio
-	}}
-	use:keybind={{
-		binds: ['Control', 'm'],
-		on_bind: mute
-	}}
-/>
+<!-- <svelte:window -->
+<!-- 	use:keybind={{ -->
+<!-- 		binds: ['Control', 'k'], -->
+<!-- 		on_bind: playPauseAudio -->
+<!-- 	}} -->
+<!-- 	use:keybind={{ -->
+<!-- 		binds: ['Control', 'j'], -->
+<!-- 		on_bind: rewindAudio -->
+<!-- 	}} -->
+<!-- 	use:keybind={{ -->
+<!-- 		binds: ['Control', 'l'], -->
+<!-- 		on_bind: forwardAudio -->
+<!-- 	}} -->
+<!-- 	use:keybind={{ -->
+<!-- 		binds: ['Control', 'm'], -->
+<!-- 		on_bind: mute -->
+<!-- 	}} -->
+<!-- /> -->
 
 <footer class="container">
 	<Controls

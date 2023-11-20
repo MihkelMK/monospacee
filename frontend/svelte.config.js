@@ -58,7 +58,7 @@ const mdsvexOptions = {
 				}
 			}
 		],
-    		[rehypeToc, { customizeTOC: addTracklist }],
+		[rehypeToc, { customizeTOC: addTracklist }],
 		rehypePresetMinify
 	],
 	remarkPlugins: [remarkSqueezeParagraphs, remarkCapitalizeHeadings, sectionize]
@@ -77,7 +77,10 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		csrf: {
+			checkOrigin: process.env.NODE_ENV === 'development' ? false : true
+		}
 	}
 };
 

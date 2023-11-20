@@ -159,6 +159,20 @@ article.post {
 	}
 }
 
+ul:not(.landing) iconify-icon {
+	&[icon='mdi:instagram'] {
+		color: #e1306c;
+	}
+	&[icon='mdi:soundcloud'] {
+		color: #fe6d35;
+	}
+	&[icon='mdi:facebook'] {
+		color: #2374e1;
+	}
+	&[icon='mdi:spotify'] {
+		color: #1db954;
+	}
+}
 .toc {
 	margin-bottom: var(--block-spacing-vertical);
 }
