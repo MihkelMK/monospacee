@@ -14,7 +14,7 @@ toLocalStorage(selectedRecording, 'selectedRecording');
 
 export const selectedCue: Writable<Cue> = writable();
 
-export const selectedSearchResult: Writable<SpotifySearchResult> = writable();
+export const selectedSearchResult: Writable<SpotifySearchResult | undefined> = writable();
 
 export const cueJump: Writable<number | undefined> = writable(undefined);
 

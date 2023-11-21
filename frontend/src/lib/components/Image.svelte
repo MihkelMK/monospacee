@@ -10,8 +10,3 @@
 
 <Img class="better-blur {circle ? 'circle' : ''}" {src} {alt} {loading} />
 
-<style>
-	:global(img.circle) {
-		border-radius: 50%;
-	}
-</style>
