@@ -82,7 +82,7 @@
 			{:else}
 				<p>Select a search result to preview</p>
 			{/if}
-			<form method="POST" action="/aftekas?/submit">
+			<form method="POST" action="/soovid?/submit" use:enhance>
 				<input type="hidden" value={$selectedSearchResult?.name} id="title" name="title" />
 				<input
 					type="hidden"

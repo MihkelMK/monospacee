@@ -14,6 +14,9 @@ dependencies:
   '@jsdevtools/rehype-toc':
     specifier: ^3.0.2
     version: 3.0.2
+  '@lucia-auth/adapter-prisma':
+    specifier: ^3.0.2
+    version: 3.0.2(@prisma/client@5.6.0)(lucia@2.7.4)
   '@prisma/client':
     specifier: 5.6.0
     version: 5.6.0(prisma@5.6.0)
@@ -26,6 +29,9 @@ dependencies:
   iconify-icon:
     specifier: ^1.0.8
     version: 1.0.8
+  lucia:
+    specifier: ^2.7.4
+    version: 2.7.4
   rehype-preset-minify:
     specifier: ^7.0.0
     version: 7.0.0
@@ -50,6 +56,9 @@ dependencies:
   shiki:
     specifier: ^0.14.5
     version: 0.14.5
+  svelte-modals:
+    specifier: ^1.3.0
+    version: 1.3.0(svelte@4.2.7)
 
 devDependencies:
   '@picocss/pico':
@@ -405,6 +414,16 @@ packages:
   /@jsdevtools/rehype-toc@3.0.2:
     resolution: {integrity: sha512-n5JEf16Wr4mdkRMZ8wMP/wN9/sHmTjRPbouXjJH371mZ2LEGDl72t8tEsMRNFerQN/QJtivOxqK1frdGa4QK5Q==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@lucia-auth/adapter-prisma@3.0.2(@prisma/client@5.6.0)(lucia@2.7.4):
+    resolution: {integrity: sha512-EyJWZene1/zasPwPctv8wwNErZt5mwwm5JATbhg+kXr3R8pbC7lJfVzDTAeeFClVH5k/FywRcsBl3JkPaNIcow==}
+    peerDependencies:
+      '@prisma/client': ^4.2.0 || ^5.0.0
+      lucia: ^2.0.0
+    dependencies:
+      '@prisma/client': 5.6.0(prisma@5.6.0)
+      lucia: 2.7.4
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
@@ -1923,6 +1942,10 @@ packages:
     dependencies:
       yallist: 4.0.0
 
+  /lucia@2.7.4:
+    resolution: {integrity: sha512-do6Aah5kX2DUl7N0CvELWV1/b+qZGF0AUmUrkthYeNfXfgx4RAkWi4BkAlgGDBB/0c1WApb18mUD1pA5qTaWmw==}
+    dev: false
+
   /magic-string@0.27.0:
     resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
     engines: {node: '>=12'}
@@ -2933,6 +2956,14 @@ packages:
     transitivePeerDependencies:
       - typescript
     dev: true
+
+  /svelte-modals@1.3.0(svelte@4.2.7):
+    resolution: {integrity: sha512-b1Ylnyv9O6b7VYeWGJVToaVU2lw7GtErVwiEdojyfnOuZcrhNlQ5eDqbTrL3xyKz8j2VTy/QiGUl1lm/6SnQ2A==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0
+    dependencies:
+      svelte: 4.2.7
+    dev: false
 
   /svelte-preprocess@5.1.0(postcss@8.4.31)(sass@1.69.5)(svelte@4.2.7)(typescript@5.2.2):
     resolution: {integrity: sha512-EkErPiDzHAc0k2MF5m6vBNmRUh338h2myhinUw/xaqsLs7/ZvsgREiLGj03VrSzbY/TB5ZXgBOsKraFee5yceA==}

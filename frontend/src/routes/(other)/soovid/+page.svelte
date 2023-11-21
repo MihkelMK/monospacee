@@ -1,11 +1,9 @@
 <script lang="ts">
-	import type { PageData, ActionData } from './$types';
+	import type { ActionData } from './$types';
 	import SearchPreview from '$lib/components/SearchPreview.svelte';
 	import { selectedSearchResult } from '$lib/store';
-	import { page } from '$app/stores';
 	import { enhance } from '$app/forms';
-
-	// export let data: PageData;
+  import { page } from '$app/stores';
 
 	export let form: ActionData;
 
@@ -94,26 +92,6 @@
 	<p class="status status_{$page.status}">{form.message}</p>
 {/if}
 
-<!-- <details style="margin-top: 6rem;"> -->
-<!-- 	<summary role="button" class="contrast">Previous {data.songs.length} submissions</summary> -->
-<!-- 	<table> -->
-<!-- 		<thead> -->
-<!-- 			<tr> -->
-<!-- 				<th scope="col">Artist</th> -->
-<!-- 				<th scope="col">Title</th> -->
-<!-- 			</tr> -->
-<!-- 		</thead> -->
-<!-- 		<tbody> -->
-<!-- 			{#each data.songs as song} -->
-<!-- 				<tr> -->
-<!-- 					<td>{song.artist}</td> -->
-<!-- 					<td>{song.title}</td> -->
-<!-- 				</tr> -->
-<!-- 			{/each} -->
-<!-- 		</tbody> -->
-<!-- 	</table> -->
-<!-- </details> -->
-
 {#if form?.status === 201 && form?.tracks}
 	<div class="previews">
 		{#each form?.tracks as track}
@@ -133,21 +111,6 @@
 		fieldset {
 			width: fit-content;
 			margin-inline: auto;
-		}
-	}
-
-	p.status {
-		text-align: center;
-		place-self: center;
-		font-size: 1.1em;
-
-		&_404,
-		&_500 {
-			color: var(--form-element-invalid-active-border-color);
-		}
-		&_200,
-		&_201 {
-			color: var(--form-element-valid-active-border-color);
 		}
 	}
 

@@ -1,18 +1,6 @@
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions } from './$types';
 import { prisma } from '$lib/server/prisma';
-import { ActionFailure, fail } from '@sveltejs/kit';
-
-export const load: PageServerLoad = async () => {
-	try {
-		return {
-			songs: await prisma.song.findMany()
-		};
-	} catch (err) {
-		return {
-			songs: []
-		};
-	}
-};
+import { fail } from '@sveltejs/kit';
 
 export const actions: Actions = {
 	search: async ({ request, fetch }) => {
@@ -95,7 +83,8 @@ export const actions: Actions = {
 			await prisma.song.create({
 				data: {
 					title,
-					artist
+					artist,
+          spotifyID
 				}
 			});
 		} catch (err) {

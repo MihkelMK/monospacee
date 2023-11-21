@@ -19,12 +19,32 @@ body {
 	width: 1px;
 }
 
-img.better-blur::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	backdrop-filter: blur(30px);
-	pointer-events: none;
+p.status {
+	text-align: center;
+	place-self: center;
+	font-size: 1.1em;
+
+	&_404,
+	&_500 {
+		color: var(--form-element-invalid-active-border-color);
+	}
+	&_200,
+	&_201 {
+		color: var(--form-element-valid-active-border-color);
+	}
+}
+
+img {
+	&.circle {
+		border-right: 50%;
+	}
+	&.better-blur::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		backdrop-filter: blur(30px);
+		pointer-events: none;
+	}
 }
 
 nav.tags {
