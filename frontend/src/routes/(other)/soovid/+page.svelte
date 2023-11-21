@@ -3,7 +3,7 @@
 	import SearchPreview from '$lib/components/SearchPreview.svelte';
 	import { selectedSearchResult } from '$lib/store';
 	import { enhance } from '$app/forms';
-  import { page } from '$app/stores';
+	import { page } from '$app/stores';
 
 	export let form: ActionData;
 
@@ -88,16 +88,16 @@
 	</form>
 {/if}
 
-{#if form?.message}
-	<p class="status status_{$page.status}">{form.message}</p>
-{/if}
-
-{#if form?.status === 201 && form?.tracks}
 	<div class="previews">
+{#if form?.status === 201 && form?.tracks}
 		{#each form?.tracks as track}
 			<SearchPreview data={track} />
 		{/each}
+  {/if}
 	</div>
+
+{#if form?.message}
+	<p class="status status_{$page.status}">{form.message}</p>
 {/if}
 
 <style lang="scss">
@@ -114,10 +114,15 @@
 		}
 	}
 
+	p.status {
+		grid-column: 1/3;
+	}
+
 	form {
 		display: grid;
 		grid-template-columns: 2fr 1fr;
 		gap: 0 1rem;
+		height: fit-content;
 
 		& :not(button) {
 			grid-column: 1/3;
@@ -150,6 +155,8 @@
 	}
 
 	.previews {
+		grid-row: 1/3;
+		grid-column: 2/3;
 		@media screen and (min-width: 992px) {
 			max-height: 70svh;
 			overflow-y: scroll;
