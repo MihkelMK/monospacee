@@ -88,13 +88,13 @@
 	</form>
 {/if}
 
-	<div class="previews">
-{#if form?.status === 201 && form?.tracks}
+<div class="previews">
+	{#if form?.status === 201 && form?.tracks}
 		{#each form?.tracks as track}
 			<SearchPreview data={track} />
 		{/each}
-  {/if}
-	</div>
+	{/if}
+</div>
 
 {#if form?.message}
 	<p class="status status_{$page.status}">{form.message}</p>
@@ -155,9 +155,9 @@
 	}
 
 	.previews {
-		grid-row: 1/3;
-		grid-column: 2/3;
 		@media screen and (min-width: 992px) {
+			grid-row: 1/3;
+			grid-column: 2/3;
 			max-height: 70svh;
 			overflow-y: scroll;
 		}
