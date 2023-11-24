@@ -115,7 +115,9 @@
 	}
 
 	p.status {
-		grid-column: 1/3;
+		@media screen and (min-width: 992px) {
+			grid-column: 1/3;
+		}
 	}
 
 	form {
