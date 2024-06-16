@@ -326,44 +326,64 @@ FILE "2024-06-08.mp3" WAVE
   TRACK 82 AUDIO
     TITLE "Carmen"
     PERFORMER "Terminaator"
-    INDEX 01 249:27:0
+    INDEX 01 249:33:0
   TRACK 83 AUDIO
     TITLE "Appi! Ma Vajan Armastust!!!"
     PERFORMER "Vennaskond"
-    INDEX 01 252:52:19
+    INDEX 01 252:45:19
   TRACK 84 AUDIO
     TITLE "15 Magamata Ööd"
-    PERFORMER "Ines PERFORMER "Joost"
-    INDEX 01 271:43:01
+    PERFORMER "Ines"
+    INDEX 01 255:00:03
+  TRACK 85 AUDIO
+    TITLE "Segased lood"
+    PERFORMER "Karl-Erik Taukar"
+    INDEX 01 257:49:19
+  TRACK 86 AUDIO
+    TITLE "Absoluutselt (Gee Remix)"
+    PERFORMER "HU?"
+    INDEX 01 261:40:63
+  TRACK 87 AUDIO
+    TITLE "What Makes You Beautiful"
+    PERFORMER "One Direction"
+    INDEX 01 264:45:04
+  TRACK 88 AUDIO
+    TITLE "bad guy"
+    PERFORMER "Billie Eilish"
+    INDEX 01 267:57:04
+  TRACK 89 AUDIO
+    TITLE "Europapa"
+    PERFORMER "Joost"
+    INDEX 01 270:58:19
   TRACK 90 AUDIO
     TITLE "X-RAY"
     PERFORMER "Tommy Cash"
-    INDEX 01 274:27:17
+    INDEX 01 273:33:35
   TRACK 91 AUDIO
     TITLE "Baba Yaga"
     PERFORMER "Tommy Cash"
-    INDEX 01 276:50:94
+    INDEX 01 275:45:12
   TRACK 92 AUDIO
     TITLE "Don't Stop Me Now (Remastered 2011)"
     PERFORMER "Queen"
-    INDEX 01 279:24:90
+    INDEX 00 278:38:08
   TRACK 93 AUDIO
     TITLE "We Will Rock You (Remastered 2011)"
-    P_E_R_F_O_R_M_E_R "Queen"
-    INDEX 01 283:00:29
+    PERFORMER "Queen"
+    INDEX 00 282:00:47
   TRACK 94 AUDIO
     TITLE "Täna Ma Ei Skoori"
-    pERFORMER "genialistid"
-    INDEX 01 284:53:21
+    PERFORMER "genialistid"
+    INDEX 00 283:59:39
   TRACK 95 AUDIO
     TITLE "Tiffer"
-    pERFORMER "Ursula"
-    INDEX 01 288:59:45
+    PERFORMER "Ursula"
+    INDEX 00 288:00:63
   TRACK 96 AUDIO
     TITLE "Ballaad Jimmyst"
-    pERFORMER "terminaator"
-    INDEX 01 291:13:02
+    PERFORMER "terminaator"
+    INDEX 00 290:19:20
   TRACK 97 AUDIO
     TITLE "Leekiv Armastus"
     PERFORMER "Genialistid"
-    INDEX 01 295:09:06
+    INDEX 01 294:09:24
