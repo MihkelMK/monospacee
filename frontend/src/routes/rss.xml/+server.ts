@@ -14,9 +14,9 @@ export async function GET({ fetch }) {
 	const xml = `
     <?xml version="1.0" encoding="UTF-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
 			<channel>
-				<title>${config.title}</title>
+				<title>${encodeURIComponent(config.title)}</title>
         <googleplay:author>${config.author}</googleplay:author>
-				<description>${config.description}</description>
+				<description>${encodeURIComponent(config.description)}</description>
 				<copyright>&#169; ${new Date().getFullYear()} ${config.author}</copyright>
         <googleplay:category text="Music"/>
 				<itunes:category text="Music"/>

@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
 	import ArticleList from '$lib/components/ArticleList.svelte';
-	import { feed, visiblePostTypes } from './store.js';
+	import { feed, visiblePostTypes } from '$lib/store.js';
 	import { MetaTags } from 'svelte-meta-tags';
 	import SocialIcon from '$lib/components/SocialIcon.svelte';
 	import Socials from '$lib/components/Socials.svelte';

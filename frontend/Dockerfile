@@ -21,4 +21,4 @@ RUN pnpm build && \
     rm -rf src/ static/
 
 # This is the command that will be run inside the image when you tell Docker to start the container
-CMD ["ORIGIN=https://monospac.ee", "node","build/index.js"]
+CMD ["node","build/index.js"]

@@ -35,12 +35,16 @@ export type ImageInfo = {
 	link?: ImageLink;
 };
 
-export type ImageSrc = {
-	format: string;
-	width: number;
-	height: number;
-	src: string;
+export type ImageSrcObject = {
+  img: ImageSrc,
+  sources: Record<string, ImageSrc>
 };
+
+export type ImageSrc = {
+  src: string;
+  w: number;
+  h?: number;
+}
 
 export type PostEvent = 'event' | 'project' | 'stream';
 
@@ -52,5 +56,64 @@ export type ImageLink = {
 export type SocialLink = {
 	href: string;
 	label?: string;
-  icon: string;
+	icon: string;
+};
+
+export type SpotifySearchResult = {
+	album: SpotifyAlbum;
+	artists: SpotifyArtist[];
+	disc_number: number;
+	duration_ms: number;
+	explicit: boolean;
+	external_ids: SpotifyExternalIDS;
+	external_urls: SpotifyExternalUrls;
+	href: string;
+	id: string;
+	is_local: boolean;
+	is_playable: boolean;
+	name: string;
+	popularity: number;
+	preview_url: null | string;
+	track_number: number;
+	type: string;
+	uri: string;
+};
+
+export type SpotifyAlbum = {
+	album_type: string;
+	artists: SpotifyArtist[];
+	external_urls: SpotifyExternalUrls;
+	href: string;
+	id: string;
+	images: SpotifyImage[];
+	is_playable: boolean;
+	name: string;
+	release_date: Date;
+	release_date_precision: string;
+	total_tracks: number;
+	type: string;
+	uri: string;
+};
+
+export type SpotifyArtist = {
+	external_urls: SpotifyExternalUrls;
+	href: string;
+	id: string;
+	name: string;
+	type: string;
+	uri: string;
+};
+
+export type SpotifyExternalUrls = {
+	spotify: string;
+};
+
+export type SpotifyImage = {
+	height: number;
+	url: string;
+	width: number;
+};
+
+export type SpotifyExternalIDS = {
+	isrc: string;
 };
