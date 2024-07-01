@@ -240,7 +240,7 @@
 		display: flex;
 		justify-content: space-evenly;
 		color: var(--contrast);
-		width: min(90dvh, 45rem);
+		width: min(90%, 45rem);
 		margin-inline: auto;
 
 		label {
