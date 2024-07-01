@@ -1,5 +1,3 @@
-declare module 'javascript-terminal';
-
 declare module '*&imagetools' {
 	/**
 	 * actual types

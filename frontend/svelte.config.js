@@ -1,5 +1,5 @@
 import adapter from '@sveltejs/adapter-node';
-import preprocess from 'svelte-preprocess';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 import { escapeSvelte, mdsvex } from 'mdsvex';
 import { createHighlighter } from 'shiki';
@@ -68,12 +68,12 @@ const mdsvexOptions = {
 const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
-		preprocess({
+		mdsvex(mdsvexOptions),
+		vitePreprocess({
 			scss: {
 				prependData: '@import "src/variables.scss";'
 			}
-		}),
-		mdsvex(mdsvexOptions)
+		})
 	],
 
 	kit: {
