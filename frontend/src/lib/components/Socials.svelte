@@ -19,18 +19,25 @@
 
 <style lang="scss">
 	ul {
-		display: inline;
+		display: flex;
 		margin-bottom: 0;
 		padding-left: 0;
+		justify-content: center;
+		gap: 0.75em;
 		font-size: 0.8em;
-		margin-inline-start: 0.5em;
 
 		&:global(.landing) {
 			font-size: 2rem;
 		}
 	}
+
+	ul.inline {
+		display: inline-flex;
+		margin-inline-start: 0.5em;
+	}
+
 	li {
-		display: inline;
+		list-style: none;
 		margin-bottom: 0;
 	}
 </style>
