@@ -52,5 +52,5 @@ export type ImageLink = {
 export type SocialLink = {
 	href: string;
 	label?: string;
-  icon: string;
+	icon: string;
 };

@@ -21,7 +21,8 @@
 	class={className}
 >
 	<div class="content" class:paused={paused || (pauseOnHover && hovered)}>
-		{#each Array(repeat) as _}
+		<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+		{#each { length: repeat } as _}
 			<div class="text" style="animation-duration: {duration}s">
 				<slot />
 			</div>
@@ -38,7 +39,7 @@
 		animation-timing-function: linear;
 		animation-iteration-count: infinite;
 		margin-top: 0.15em;
-    float: left;
+		float: left;
 	}
 	.paused .text {
 		animation-play-state: paused;

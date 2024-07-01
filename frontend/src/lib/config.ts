@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import { SocialLink } from './types';
 
 export const title = 'monospacee';
 
@@ -12,7 +13,7 @@ export const url = dev ? 'http://localhost:5173' : 'https://monospac.ee';
 
 export const author = 'monospacee';
 
-export const socials = [
+export const socials: SocialLink[] = [
 	{
 		href: 'https://github.com/MihkelMK/monospacee',
 		icon: 'github',
@@ -20,13 +21,15 @@ export const socials = [
 	},
 	{
 		href: 'https://soundcloud.com/monospacee',
-		icon: 'soundcloud'
+		icon: 'soundcloud',
+		label: 'our soundcloud'
 	},
 	{
 		href: 'https://www.youtube.com/@monospacee/streams',
-		icon: 'youtube'
+		icon: 'youtube',
+		label: 'our youtube'
 	},
-  	{
+	{
 		href: `${url}/rss.xml`,
 		icon: 'rss-box',
 		label: 'our rss feed'

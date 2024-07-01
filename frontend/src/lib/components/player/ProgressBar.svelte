@@ -31,8 +31,8 @@
 				data-placement={timeToPercent(song.start, totalTrackTime) < 35
 					? 'right'
 					: timeToPercent(song.start, totalTrackTime) > 65
-					? 'left'
-					: 'top'}
+						? 'left'
+						: 'top'}
 				data-tooltip={trimString(`${song.title} - ${song.artist}`, 40)}
 			>
 				<input

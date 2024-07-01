@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Kern from './Kern.svelte';
+	import Kern from '$lib/components/Kern.svelte';
 	import { page } from '$app/stores';
 </script>
 

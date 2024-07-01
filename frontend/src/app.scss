@@ -1,6 +1,18 @@
 /* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
 @use './variables.scss' as *;
-@import '/src/lib/styles/pico';
+@use '@picocss/pico/scss/pico' with (
+	$css-var-prefix: '--',
+	$modules: (
+		'themes/default': false,
+		'content/code': false,
+		'forms/input-color': false,
+		'forms/input-date': false,
+		'forms/input-file': false,
+		'forms/input-range': false,
+		'forms/input-search': false
+	)
+);
+@use '$lib/styles/themes/monospacee.scss';
 
 body {
 	min-height: 100vh;
@@ -40,9 +52,20 @@ nav.tags {
 	}
 }
 
+.feed article.post {
+	max-width: 45rem;
+
+	& p {
+		margin-bottom: 0;
+	}
+}
+
 article.post {
+	margin-inline: auto;
+	max-width: min(100%, 65rem);
 	--accent-color: var(--contrast);
 	--accent-hover: var(--color);
+	--accent-hover-underline: var(--color);
 	--accent-focus: var(--muted-color);
 	--accordion-active-summary-color: var(--accent-hover);
 	--accordion-open-summary-color: color-mix(
@@ -54,11 +77,13 @@ article.post {
 	&.primary {
 		--accent-color: var(--primary);
 		--accent-hover: var(--primary-hover);
+		--accent-hover-underline: var(--primary-hover-underline);
 		--accent-focus: var(--primary-focus);
 	}
 	&.secondary {
 		--accent-color: var(--secondary);
 		--accent-hover: var(--secondary-hover);
+		--accent-hover-underline: var(--secondary-hover-underline);
 		--accent-focus: var(--secondary-focus);
 	}
 	&.contrast {
@@ -114,6 +139,7 @@ article.post {
 		[role='link']:is([aria-current], :hover, :active, :focus) {
 			--color: var(--accent-hover);
 			--background-color: var(--accent-focus);
+			--underline: var(--accent-hover-underline);
 		}
 	}
 
@@ -135,6 +161,7 @@ article.post {
 
 		&:is([aria-current], :hover, :active, :focus) {
 			--color: var(--accent-hover);
+			--underline: var(--accent-hover-underline);
 		}
 
 		&:focus {

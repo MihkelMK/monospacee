@@ -45,9 +45,9 @@ export async function GET({ params, setHeaders }) {
 	});
 
 	const file = `/static/recordings/${params.slug}`;
-	const cues = import.meta.glob('/static/recordings/*.cue', { as: 'raw' });
+	const cues = import.meta.glob('/static/recordings/*.cue', { query: '?raw', import: 'default' });
 	const cueStream = cues[file];
-	const cueBody = await cueStream();
+	const cueBody = (await cueStream()) as string;
 
 	const parsedCue: Cue = await parseCue(cueBody);
 	return json(parsedCue);

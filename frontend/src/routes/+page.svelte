@@ -6,9 +6,8 @@
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
 	import ArticleList from '$lib/components/ArticleList.svelte';
-	import { feed, visiblePostTypes } from './store.js';
+	import { feed, visiblePostTypes } from '$lib/store';
 	import { MetaTags } from 'svelte-meta-tags';
-	import SocialIcon from '$lib/components/SocialIcon.svelte';
 	import Socials from '$lib/components/Socials.svelte';
 
 	export let data;
@@ -35,7 +34,10 @@
 
 	onMount(() => {
 		if (browser) {
-			const handleIntersect = (entries: any[], observer: IntersectionObserver) => {
+			const handleIntersect = (
+				entries: IntersectionObserverEntry[],
+				observer: IntersectionObserver
+			) => {
 				entries.forEach((entry) => {
 					if (!morePostsAvailable()) {
 						observer.unobserve(entry.target);
@@ -53,8 +55,6 @@
 			loading = false;
 		}
 	});
-
-	$: showMorePosts;
 
 	async function showMorePosts() {
 		try {
@@ -140,7 +140,7 @@
 	<hgroup>
 		<h1 class="glow-sm">monospacee</h1>
 		<Socials class="landing" data={config.socials} />
-		<h2 class="glow glow-sm contrast">
+		<h2 class="glow glow-sm contrast" style="margin-top: var(--typography-spacing-top)">
 			GPLv3 litsensiga DJ duo, kelle kerning sobib igale žanrile.
 		</h2>
 	</hgroup>
@@ -150,21 +150,6 @@
 	<section class="feed">
 		<h3 class="glow-sm contrast">⇣ Posts ⇣</h3>
 		<fieldset>
-			<label
-				for="projectSwitch"
-				class={`${$visiblePostTypes.includes('project') ? 'glow-sm' : ''}`}
-			>
-				<input
-					bind:group={$visiblePostTypes}
-					value="project"
-					type="checkbox"
-					id="projectSwitch"
-					name="postTypes"
-					role="switch"
-				/>
-				<span class={`${$visiblePostTypes.includes('project') ? 'glow primary' : ''}`}>[P]</span
-				>rojects
-			</label>
 			<label
 				for="eventSwitch"
 				class={`${$visiblePostTypes.includes('event') ? 'glow-sm secondary' : ''}`}
@@ -181,8 +166,23 @@
 				>vents
 			</label>
 			<label
+				for="projectSwitch"
+				class={`${$visiblePostTypes.includes('project') ? 'glow-sm contrast' : ''}`}
+			>
+				<input
+					bind:group={$visiblePostTypes}
+					value="project"
+					type="checkbox"
+					id="projectSwitch"
+					name="postTypes"
+					role="switch"
+				/>
+				<span class={`${$visiblePostTypes.includes('project') ? 'glow contrast' : ''}`}>[P]</span
+				>rojects
+			</label>
+			<label
 				for="streamSwitch"
-				class={`${$visiblePostTypes.includes('stream') ? 'glow-sm contrast' : ''}`}
+				class={`${$visiblePostTypes.includes('stream') ? 'glow-sm primary' : ''}`}
 			>
 				<input
 					bind:group={$visiblePostTypes}
@@ -192,10 +192,12 @@
 					name="postTypes"
 					role="switch"
 				/>
-				<span class={`${$visiblePostTypes.includes('stream') ? 'glow contrast' : ''}`}>[S]</span
+				<span class={`${$visiblePostTypes.includes('stream') ? 'glow primary' : ''}`}>[S]</span
 				>reams
 			</label>
 		</fieldset>
+	</section>
+	<section class="feed">
 		{#if $feed}
 			<ArticleList posts={$feed.slice(0, limit)} />
 		{:else}
@@ -225,6 +227,10 @@
 		}
 	}
 
+	main {
+		min-height: 20dvh;
+	}
+
 	footer {
 		display: flex;
 		justify-content: center;
@@ -238,6 +244,8 @@
 		display: flex;
 		justify-content: space-evenly;
 		color: var(--contrast);
+		width: min(90%, 45rem);
+		margin-inline: auto;
 
 		label {
 			span {
@@ -257,7 +265,7 @@
 			}
 		}
 
-		#streamSwitch {
+		#projectSwitch {
 			--switch-checked-background-color: var(--muted-color);
 		}
 

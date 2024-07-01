@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { recordingPlaying } from './store';
+	import { recordingPlaying } from '$lib/store';
 
 	export let silmaNurk: number = 0;
-	export let suu: String = '◡';
-	export let paremSilm: String = "'";
-	export let vasakSilm: String = "'";
+	export let suu: string = '◡';
+	export let paremSilm: string = "'";
+	export let vasakSilm: string = "'";
 
 	$: if ($recordingPlaying) {
 		silmaNurk = 0;
@@ -41,9 +41,9 @@
 		user-select: none;
 		position: relative;
 
-    &:not(.playing) .noot {
-          --glow_color: transparent !important;
-    }
+		&:not(.playing) .noot {
+			--glow_color: transparent !important;
+		}
 	}
 	.playing {
 		& .kern,

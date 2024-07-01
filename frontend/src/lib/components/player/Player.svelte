@@ -2,14 +2,8 @@
 	import { onMount } from 'svelte';
 
 	import type { Cue, Song } from '$lib/types';
-	import { timeStringFromSeconds, keybind } from '$lib/utils';
-	import {
-		selectedRecording,
-		cueJump,
-		recordingPlaying,
-		feed,
-		streamingData
-	} from '../../../routes/store';
+	import { timeStringFromSeconds } from '$lib/utils';
+	import { selectedRecording, cueJump, recordingPlaying, feed, streamingData } from '$lib/store';
 
 	import TrackInfo from './TrackInfo.svelte';
 	import Controls from './Controls.svelte';
@@ -89,7 +83,7 @@
 		)
 			songIndex = songIndex + 1;
 
-		trackTitle = `${song.title} / ${song.artist}` ?? 'Loading...';
+		trackTitle = song.title && song.artist ? `${song.title} / ${song.artist}` : 'Loading...';
 	};
 
 	const getCue = async () => {
@@ -294,7 +288,7 @@
 <style lang="scss">
 	footer {
 		display: grid;
-		width: 100%;
+		width: min(90dvw, 50rem);
 		min-width: min(100%, 30rem);
 		font-family: var(--font-accent);
 		grid-template-areas:
