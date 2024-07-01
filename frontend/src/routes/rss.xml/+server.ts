@@ -1,5 +1,6 @@
 import * as config from '$lib/config';
 import type { Post } from '$lib/types';
+import { escape } from 'html-escaper';
 
 export async function GET({ fetch }) {
 	const response = await fetch('/api/posts');
@@ -26,15 +27,12 @@ export async function GET({ fetch }) {
 					<itunes:email>${config.author}@kasterpalu.ee</itunes:email>
 				</itunes:owner>
 				<itunes:type>episodic</itunes:type>
-				<itunes:image href="${encodeURI(
-					`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`
-				).replaceAll('&', '&amp;')}"/>
+				<itunes:image href="${escape(
+					encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`)
+				)}"/>
 				<image>
 					<url>
-						${encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`).replaceAll(
-							'&',
-							'&amp;'
-						)}
+						${escape(encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`))}
 					</url>
 					<title>${config.title}</title>
 					<link>${config.url}</link>
@@ -46,23 +44,26 @@ export async function GET({ fetch }) {
 				<link>${config.url}</link>
 				<atom:link href="${config.url}/rss.xml" rel="self" type="application/rss+xml"/>
 				${posts
+					.filter((post) => post.duration)
 					.map(
 						(post) => `
 						<item>
 							<itunes:episodeType>full</itunes:episodeType>
-							<title>${encodeURIComponent(post.title)}</title>
-							<description>${encodeURIComponent(post.description)}</description>
-							<link>${encodeURI(config.url)}/${post.date}</link>
-							<itunes:summary>${encodeURIComponent(post.description)}</itunes:summary>
-							<itunes:image href="${encodeURI(
-								`${config.ogUrl}/big?date=${post.date}&title=${post.title}&type=${post.type}`
-							).replaceAll('&', '&amp;')}"/>
-              <enclosure url="${config.url}/recordings/${
-								post.date
-							}.mp3" type="audio/mpeg" length="${post.audioSize}"/>
+							<title>${escape(post.title)}</title>
+							<description>${escape(post.description)}</description>
+							<link>${config.url}/${post.date}</link>
+							<itunes:summary>${escape(post.description)}</itunes:summary>
+							<itunes:image href="${escape(
+								encodeURI(
+									`${config.ogUrl}/big?date=${post.date}&title=${post.title}&type=${post.type}`
+								)
+							)}"/>
+              				<enclosure url="${config.url}/recordings/${
+												post.date
+											}.mp3" type="audio/mpeg" length="${post.audioSize}"/>
 							<guid isPermaLink="false">${config.url}/${post.date}</guid>
 							<pubDate>${new Date(post.date).toUTCString()}</pubDate>
-              <itunes:duration>${post.duration}</itunes:duration>
+              				<itunes:duration>${post.duration}</itunes:duration>
 						</item>
 					`
 					)
