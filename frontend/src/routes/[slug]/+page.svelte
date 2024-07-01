@@ -124,9 +124,9 @@
 			{#if data.meta.youtube}
 				<a
 					role="button"
-					class="contrast"
 					href={`https://www.youtube.com/live/${data.meta.youtube}`}
 					data-tooltip="Watch on youtube"
+					target="_blank"
 				>
 					<iconify-icon inline icon="mdi-youtube" />
 				</a>
