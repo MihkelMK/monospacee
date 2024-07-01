@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { SocialLink } from './types';
+import type { SocialLink } from '$lib/types';
 
 export const title = 'monospacee';
 
