@@ -2,7 +2,7 @@ import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 
 import { escapeSvelte, mdsvex } from 'mdsvex';
-import shiki from 'shiki';
+import { createHighlighter } from 'shiki';
 import rehypeToc from '@jsdevtools/rehype-toc';
 import remarkSqueezeParagraphs from 'remark-squeeze-paragraphs';
 import remarkCapitalizeHeadings from 'remark-capitalize-headings';
@@ -30,7 +30,7 @@ const mdsvexOptions = {
 	extensions: ['.md'],
 	highlight: {
 		highlighter: async (code, lang = 'text') => {
-			const highlighter = await shiki.getHighlighter({ theme: 'one-dark-pro' });
+			const highlighter = await createHighlighter({ theme: 'one-dark-pro' });
 
 			const html = escapeSvelte(highlighter.codeToHtml(code, { lang }));
 
