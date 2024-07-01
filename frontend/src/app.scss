@@ -170,6 +170,10 @@ article.post {
 		}
 	}
 
+	& main:not(.recorded) nav.toc li.toc-item:last-of-type {
+		display: none;
+	}
+
 	header {
 		& hgroup {
 			margin-bottom: 0;

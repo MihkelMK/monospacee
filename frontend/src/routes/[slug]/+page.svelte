@@ -109,7 +109,7 @@
 		</nav>
 	</header>
 
-	<main>
+	<main class={data.meta.recording ? 'recorded' : ''}>
 		<h3 id="sisukord">
 			Sisukord
 			{#if data.meta.recording}
