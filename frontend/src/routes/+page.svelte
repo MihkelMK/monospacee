@@ -140,7 +140,7 @@
 	<hgroup>
 		<h1 class="glow-sm">monospacee</h1>
 		<Socials class="landing" data={config.socials} />
-		<h2 class="glow glow-sm contrast">
+		<h2 class="glow glow-sm contrast" style="margin-top: var(--typography-spacing-top)">
 			GPLv3 litsensiga DJ duo, kelle kerning sobib igale žanrile.
 		</h2>
 	</hgroup>
@@ -196,6 +196,8 @@
 				>reams
 			</label>
 		</fieldset>
+	</section>
+	<section class="feed">
 		{#if $feed}
 			<ArticleList posts={$feed.slice(0, limit)} />
 		{:else}
@@ -238,6 +240,8 @@
 		display: flex;
 		justify-content: space-evenly;
 		color: var(--contrast);
+		width: min(90dvh, 45rem);
+		margin-inline: auto;
 
 		label {
 			span {

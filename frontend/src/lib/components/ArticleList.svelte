@@ -46,10 +46,3 @@
 		</article>
 	{/if}
 {/each}
-
-<style lang="scss">
-	article {
-		max-width: 45rem;
-		margin-inline: auto;
-	}
-</style>

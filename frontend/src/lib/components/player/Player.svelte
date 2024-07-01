@@ -294,7 +294,7 @@
 <style lang="scss">
 	footer {
 		display: grid;
-		width: 100%;
+		width: min(90dvw, 50rem);
 		min-width: min(100%, 30rem);
 		font-family: var(--font-accent);
 		grid-template-areas:

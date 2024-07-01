@@ -1,0 +1,56 @@
+@use 'sass:map';
+@use './colors.scss' as *;
+@use '@picocss/pico/scss/settings' as *;
+
+$color-mappings: (
+	'azure': (
+		'dark': (
+			'primary': $primary-400,
+			'primary-glow': $primary-300,
+			'primary-background': $primary-600,
+			'primary-underline': rgba($primary-400, 0.5),
+			'primary-hover': $primary-300,
+			'primary-hover-background': $primary-500,
+			'primary-focus': rgba($primary-400, 0.375),
+			'primary-inverse': $white,
+
+			'secondary': $secondary-300,
+			'secondary-glow': $secondary-300,
+			'secondary-background': $secondary-500,
+			'secondary-underline': rgba($secondary-400, 0.5),
+			'secondary-hover': $secondary-400,
+			'secondary-hover-background': $secondary-500,
+			'secondary-focus': rgba($secondary-400, 0.25),
+			'secondary-inverse': #{mix($black, $grey-900, 50%)},
+
+			'text-selection-color': rgba($primary-400, 0.1875),
+			'switch-thumb-box-shadow': 0 0 0 rgba(0, 0, 0, 0)
+		),
+		'light': (
+			'primary': $primary-500,
+			'primary-glow': transparent,
+			'primary-background': $primary-500,
+			'primary-underline': rgba($primary-500, 0.5),
+			'primary-hover': $primary-600,
+			'primary-hover-background': $primary-700,
+			'primary-focus': rgba($primary-400, 0.5),
+			'primary-inverse': $white,
+
+			'secondary': $secondary-400,
+			'secondary-glow': transparent,
+			'secondary-background': $secondary-400,
+			'secondary-underline': rgba($secondary-400, 0.5),
+			'secondary-hover': $secondary-500,
+			'secondary-hover-background': $secondary-600,
+			'secondary-focus': rgba($secondary-300, 0.5),
+			'secondary-inverse': $white,
+
+			'text-selection-color': rgba($primary-400, 0.25),
+			'switch-thumb-box-shadow': 0 0 0 rgba(0, 0, 0, 0)
+		)
+	)
+);
+
+@function get($key, $mode: 'light') {
+	@return map.get(map.get(map.get($color-mappings, $theme-color), $mode), $key);
+}
