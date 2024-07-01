@@ -35,8 +35,8 @@ export function GET({ url, setHeaders }) {
 		'cache-control': 'max-age=60'
 	});
 
-	const start = Number(url.searchParams.get('start')) ?? 0;
-	const end = Number(url.searchParams.get('end')) ?? 0;
+	const start = Number(url.searchParams.get('start')) || 0;
+	const end = Number(url.searchParams.get('end')) || 0;
 
 	const allPosts = getPosts();
 	const posts = allPosts.slice(start, end > 0 ? end : undefined);

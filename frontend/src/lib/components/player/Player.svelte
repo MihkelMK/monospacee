@@ -83,7 +83,7 @@
 		)
 			songIndex = songIndex + 1;
 
-		trackTitle = `${song.title} / ${song.artist}` ?? 'Loading...';
+		trackTitle = song.title && song.artist ? `${song.title} / ${song.artist}` : 'Loading...';
 	};
 
 	const getCue = async () => {

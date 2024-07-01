@@ -40,6 +40,7 @@ export const timeStringFromSeconds = (seconds: number) => {
 };
 
 export function keybind(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	_element: any,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	options: { binds: string[]; on_bind: any }
@@ -65,6 +66,7 @@ export function keybind(
 
 		// But we've traded that earlier complexity for needing to loop all of
 		// our bound key flags.
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const [_key, flag] of lookup) {
 			// If any flag is `false`, we just early return to skip.
 			if (!flag) return;
@@ -89,7 +91,7 @@ export function keybind(
 			globalThis.removeEventListener('keyup', on_key_up);
 		},
 
-		// deno-lint-ignore no-explicit-any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		update(options: { binds: string[]; on_bind: any }) {
 			// Since we're supporting reactive options, we need to reinitialize
 			// a new lookup `Map` with the new keys and to dump the old state.

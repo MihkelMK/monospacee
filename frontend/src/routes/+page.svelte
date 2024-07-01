@@ -34,7 +34,10 @@
 
 	onMount(() => {
 		if (browser) {
-			const handleIntersect = (entries: any[], observer: IntersectionObserver) => {
+			const handleIntersect = (
+				entries: IntersectionObserverEntry[],
+				observer: IntersectionObserver
+			) => {
 				entries.forEach((entry) => {
 					if (!morePostsAvailable()) {
 						observer.unobserve(entry.target);

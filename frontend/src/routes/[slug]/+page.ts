@@ -24,7 +24,8 @@ export async function load({ params, fetch, setHeaders }) {
 			meta: post.metadata,
 			cue: await cue
 		};
-	} catch (_err) {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	} catch (_) {
 		throw error(404, `Could not find ${params.slug}`);
 	}
 }
