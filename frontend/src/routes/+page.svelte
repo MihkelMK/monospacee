@@ -151,21 +151,6 @@
 		<h3 class="glow-sm contrast">⇣ Posts ⇣</h3>
 		<fieldset>
 			<label
-				for="projectSwitch"
-				class={`${$visiblePostTypes.includes('project') ? 'glow-sm' : ''}`}
-			>
-				<input
-					bind:group={$visiblePostTypes}
-					value="project"
-					type="checkbox"
-					id="projectSwitch"
-					name="postTypes"
-					role="switch"
-				/>
-				<span class={`${$visiblePostTypes.includes('project') ? 'glow primary' : ''}`}>[P]</span
-				>rojects
-			</label>
-			<label
 				for="eventSwitch"
 				class={`${$visiblePostTypes.includes('event') ? 'glow-sm secondary' : ''}`}
 			>
@@ -181,8 +166,23 @@
 				>vents
 			</label>
 			<label
+				for="projectSwitch"
+				class={`${$visiblePostTypes.includes('project') ? 'glow-sm contrast' : ''}`}
+			>
+				<input
+					bind:group={$visiblePostTypes}
+					value="project"
+					type="checkbox"
+					id="projectSwitch"
+					name="postTypes"
+					role="switch"
+				/>
+				<span class={`${$visiblePostTypes.includes('project') ? 'glow contrast' : ''}`}>[P]</span
+				>rojects
+			</label>
+			<label
 				for="streamSwitch"
-				class={`${$visiblePostTypes.includes('stream') ? 'glow-sm contrast' : ''}`}
+				class={`${$visiblePostTypes.includes('stream') ? 'glow-sm primary' : ''}`}
 			>
 				<input
 					bind:group={$visiblePostTypes}
@@ -192,7 +192,7 @@
 					name="postTypes"
 					role="switch"
 				/>
-				<span class={`${$visiblePostTypes.includes('stream') ? 'glow contrast' : ''}`}>[S]</span
+				<span class={`${$visiblePostTypes.includes('stream') ? 'glow primary' : ''}`}>[S]</span
 				>reams
 			</label>
 		</fieldset>
@@ -261,7 +261,7 @@
 			}
 		}
 
-		#streamSwitch {
+		#projectSwitch {
 			--switch-checked-background-color: var(--muted-color);
 		}
 

@@ -40,13 +40,15 @@
 		description: data.meta.description,
 		type: 'article',
 		locale: 'et_EE',
-		audio: data.meta.recording ? [
-			{
-				url: config.url + '/recordings/' + data.meta.date + '.mp3',
-				secureUrl: config.url + '/recordings/' + data.meta.date + '.mp3',
-				type: 'mpeg'
-			}
-		] : [],
+		audio: data.meta.recording
+			? [
+					{
+						url: config.url + '/recordings/' + data.meta.date + '.mp3',
+						secureUrl: config.url + '/recordings/' + data.meta.date + '.mp3',
+						type: 'mpeg'
+					}
+				]
+			: [],
 		images: [
 			{
 				url: encodeURI(
@@ -134,24 +136,24 @@
 		<svelte:component this={data.content} />
 	</main>
 
-  {#if data.cue}
-    <footer>
-      <h3 id="tracklist">Tracklist</h3>
-      <nav>
-        <ul>
-          {#each data.cue.songs as song}
-            <li class={progress >= song.start ? 'played' : ''}>
-              <button on:click={() => scrubToSong(song.start, data.cue.slug)}>
-                <span>[{timeStringFromSeconds(song.start)}]</span>
-                <strong>{song.title}</strong>
-                <small>/ {song.artist}</small>
-              </button>
-            </li>
-          {/each}
-        </ul>
-      </nav>
-    </footer>
-  {/if}
+	{#if data.cue}
+		<footer>
+			<h3 id="tracklist">Tracklist</h3>
+			<nav>
+				<ul>
+					{#each data.cue.songs as song}
+						<li class={progress >= song.start ? 'played' : ''}>
+							<button on:click={() => scrubToSong(song.start, data.cue.slug)}>
+								<span>[{timeStringFromSeconds(song.start)}]</span>
+								<strong>{song.title}</strong>
+								<small>/ {song.artist}</small>
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</footer>
+	{/if}
 </article>
 
 <style lang="scss">
