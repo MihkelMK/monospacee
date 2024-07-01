@@ -38,7 +38,7 @@
 		animation-timing-function: linear;
 		animation-iteration-count: infinite;
 		margin-top: 0.15em;
-    float: left;
+		float: left;
 	}
 	.paused .text {
 		animation-play-state: paused;

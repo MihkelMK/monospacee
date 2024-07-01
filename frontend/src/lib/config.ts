@@ -26,7 +26,7 @@ export const socials = [
 		href: 'https://www.youtube.com/@monospacee/streams',
 		icon: 'youtube'
 	},
-  	{
+	{
 		href: `${url}/rss.xml`,
 		icon: 'rss-box',
 		label: 'our rss feed'
