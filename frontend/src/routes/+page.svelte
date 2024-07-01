@@ -6,9 +6,8 @@
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
 	import ArticleList from '$lib/components/ArticleList.svelte';
-	import { feed, visiblePostTypes } from './store.js';
+	import { feed, visiblePostTypes } from '$lib/store';
 	import { MetaTags } from 'svelte-meta-tags';
-	import SocialIcon from '$lib/components/SocialIcon.svelte';
 	import Socials from '$lib/components/Socials.svelte';
 
 	export let data;
@@ -53,8 +52,6 @@
 			loading = false;
 		}
 	});
-
-	$: showMorePosts;
 
 	async function showMorePosts() {
 		try {
@@ -225,6 +222,10 @@
 				margin-bottom: calc(var(--nav-element-spacing-vertical) / 4);
 			}
 		}
+	}
+
+	main {
+		min-height: 20dvh;
 	}
 
 	footer {

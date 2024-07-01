@@ -18,7 +18,7 @@ export const cueJump: Writable<number | undefined> = writable(undefined);
 
 export const streamingData: Writable<Record<string, RecordingData>> = writable(
   fromLocalStorage("streamingData", {
-    [fromLocalStorage("selectedRecording", "2023-08-24") as string]: {
+    [fromLocalStorage("selectedRecording", "2024-06-08") as string]: {
       progress: 0,
     },
   }) as Record<string, RecordingData>,

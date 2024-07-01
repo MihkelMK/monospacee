@@ -2,14 +2,8 @@
 	import { onMount } from 'svelte';
 
 	import type { Cue, Song } from '$lib/types';
-	import { timeStringFromSeconds, keybind } from '$lib/utils';
-	import {
-		selectedRecording,
-		cueJump,
-		recordingPlaying,
-		feed,
-		streamingData
-	} from '../../../routes/store';
+	import { timeStringFromSeconds } from '$lib/utils';
+	import { selectedRecording, cueJump, recordingPlaying, feed, streamingData } from '$lib/store';
 
 	import TrackInfo from './TrackInfo.svelte';
 	import Controls from './Controls.svelte';

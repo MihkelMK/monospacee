@@ -4,7 +4,7 @@
 	import type { PostEvent } from '$lib/types';
 	import type { PageData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
-	import { selectedRecording, cueJump, streamingData } from '../store';
+	import { selectedRecording, cueJump, streamingData } from '$lib/store';
 
 	export let data: PageData;
 

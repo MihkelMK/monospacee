@@ -4,13 +4,13 @@
 	import '../app.scss';
 
 	import 'iconify-icon';
-	import PageTransition from './transition.svelte';
+	import PageTransition from '$lib/components/PageTransition.svelte';
 
 	import { angleToMouse, throttle } from '$lib/utils';
 
-	import Kern from './Kern.svelte';
+	import Kern from '$lib/components/Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
-	import { recordingPlaying, selectedRecording } from './store';
+	import { recordingPlaying, selectedRecording } from '$lib/store';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
