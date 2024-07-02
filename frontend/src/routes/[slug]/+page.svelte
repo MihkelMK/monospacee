@@ -141,7 +141,6 @@
 
 	{#if data.cue}
 		<footer>
-			<h3 id="tracklist">Tracklist</h3>
 			<Tracklist cue={data.cue} scrub={scrubToSong} />
 		</footer>
 	{/if}

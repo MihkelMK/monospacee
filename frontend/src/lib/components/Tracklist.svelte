@@ -38,6 +38,9 @@
 	});
 </script>
 
+<h3 id="tracklist">
+	<span>Tracklist</span><small>[{cue.songs.indexOf(closest) + 1}/{cue.songs.length}]</small>
+</h3>
 <nav>
 	<ul bind:this={list_element}>
 		{#each cue.songs as song, i}
@@ -62,7 +65,19 @@
 </nav>
 
 <style lang="scss">
+	h3 {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		small {
+			color: var(--muted-color);
+		}
+	}
+
 	ul {
+		--mask: linear-gradient(
+				to bottom,
 		flex-direction: column;
 		height: 20rem;
 		overflow-y: scroll;
