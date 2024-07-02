@@ -16,7 +16,7 @@
 	on:click={() => dispatch('rewind')}
 	disabled={songIndex === 0 || loading}
 >
-	<iconify-icon inline icon="pixelarticons:prev" />
+	<iconify-icon inline icon="pixelarticons:prev"></iconify-icon>
 </button>
 
 <button
@@ -24,7 +24,8 @@
 	aria-label="Play pause audio"
 	on:click={() => dispatch('playPause')}
 >
-	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
+	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'}
+	></iconify-icon>
 </button>
 
 <button
@@ -33,7 +34,7 @@
 	aria-label="Next song"
 	disabled={songIndex === lastSong || loading}
 >
-	<iconify-icon inline icon="pixelarticons:next" />
+	<iconify-icon inline icon="pixelarticons:next"></iconify-icon>
 </button>
 
 <button
@@ -42,7 +43,8 @@
 	disabled={loading}
 	aria-label="Mute audio"
 >
-	<iconify-icon inline icon={muted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'} />
+	<iconify-icon inline icon={muted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'}
+	></iconify-icon>
 </button>
 
 <style lang="scss">

@@ -79,7 +79,7 @@
 		muudaSuud(e);
 	}, 100)}
 >
-	<div bind:this={watcher} data-scroll-watcher />
+	<div bind:this={watcher} data-scroll-watcher></div>
 
 	<header class:scrolled>
 		<nav>

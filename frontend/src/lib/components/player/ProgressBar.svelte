@@ -63,7 +63,7 @@
 			scrubbing = false;
 		}}
 	/>
-	<span class="player_progress_bar" style="width: {progress}%; opacity:{opacity}" />
+	<span class="player_progress_bar" style="width: {progress}%; opacity:{opacity}"></span>
 </div>
 
 <style lang="scss">

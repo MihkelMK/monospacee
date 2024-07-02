@@ -201,15 +201,15 @@
 		{#if $feed}
 			<ArticleList posts={$feed.slice(0, limit)} />
 		{:else}
-			<article class="post" aria-busy="true" />
+			<article class="post" aria-busy="true"></article>
 		{/if}
 		{#if loading}
-			<article class="post" aria-busy="true" />
+			<article class="post" aria-busy="true"></article>
 		{/if}
 	</section>
 </main>
 
-<footer bind:this={footer} />
+<footer bind:this={footer}></footer>
 
 <style lang="scss">
 	header {

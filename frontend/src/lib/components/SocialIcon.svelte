@@ -6,5 +6,5 @@
 </script>
 
 <a class={iconClassName} {href} target="_blank" referrerpolicy="no-referrer" aria-label={label}>
-	<iconify-icon inline icon="mdi:{icon}" />
+	<iconify-icon inline icon="mdi:{icon}"></iconify-icon>
 </a>

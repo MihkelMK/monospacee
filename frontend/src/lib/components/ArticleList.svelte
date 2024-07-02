@@ -38,7 +38,7 @@
 						aria-label="Play this recording"
 						on:click={() => loadToPlayer(post.date)}
 					>
-						<iconify-icon icon="pixelarticons:playlist" />
+						<iconify-icon icon="pixelarticons:playlist"></iconify-icon>
 					</button>
 				{/if}
 			</header>

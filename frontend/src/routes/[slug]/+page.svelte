@@ -120,7 +120,7 @@
 					data-tooltip="Load to player"
 					on:click={() => loadToPlayer(data.meta.date)}
 				>
-					<iconify-icon inline icon="pixelarticons:playlist" />
+					<iconify-icon inline icon="pixelarticons:playlist"></iconify-icon>
 				</button>
 			{/if}
 			{#if data.meta.youtube}
@@ -130,7 +130,7 @@
 					data-tooltip="Watch on youtube"
 					target="_blank"
 				>
-					<iconify-icon inline icon="mdi-youtube" />
+					<iconify-icon inline icon="mdi-youtube"></iconify-icon>
 				</a>
 			{/if}
 		</h3>

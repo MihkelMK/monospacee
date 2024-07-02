@@ -34,9 +34,9 @@
 	</span>
 	<span class="player_title glow-sm {isPlaying ? 'secondary' : 'contrast'}">{recTitle}</span>
 {:else}
-	<span class="player_song" aria-busy={loading} />
+	<span class="player_song" aria-busy={loading}></span>
 
-	<span class="player_title glow-sm contrast" aria-busy={loading} />
+	<span class="player_title glow-sm contrast" aria-busy={loading}></span>
 {/if}
 <span class="player_time player_time_total glow-sm {isPlaying ? 'contrast' : 'muted'}"
 	>{totalTimeDisplay}</span
