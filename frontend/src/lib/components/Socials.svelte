@@ -2,7 +2,7 @@
 	import type { SocialLink } from '$lib/types';
 	import SocialIcon from './SocialIcon.svelte';
 
-	export let data: SocialLink;
+	export let data: SocialLink[];
 	let className = '';
 	export { className as class };
 	let iconClassName = '';
