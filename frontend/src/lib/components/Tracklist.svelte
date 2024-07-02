@@ -168,6 +168,15 @@
 		}
 
 		@media screen and (min-width: 768px) {
+			--mask: linear-gradient(
+					to bottom,
+					rgba(0, 0, 0, 0) 0,
+					rgba(0, 0, 0, 1) 10%,
+					rgba(0, 0, 0, 1) 50%,
+					rgba(0, 0, 0, 1) 90%,
+					rgba(0, 0, 0, 0) 100%
+				)
+				100% 100% / 100% 100% repeat-x;
 			align-items: start;
 
 			& li button {
