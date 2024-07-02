@@ -71,7 +71,6 @@
 		border: none;
 
 		--color: var(--color);
-		transition: color var(--transition);
 
 		@media screen and (max-width: 768px) {
 			--icon_size: 2.7rem;

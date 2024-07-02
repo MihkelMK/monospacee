@@ -66,8 +66,6 @@
 			font-weight: bold;
 			text-align: center;
 
-			transition: color var(--transition);
-
 			@media screen and (max-width: 768px) {
 				margin: 0;
 				font-size: 1.3em;

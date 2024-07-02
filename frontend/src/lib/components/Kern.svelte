@@ -130,7 +130,6 @@
 		animation-timing-function: linear;
 
 		font-size: 1rem;
-		transition: color var(--transition);
 		transition-duration: 1s;
 		opacity: 0;
 

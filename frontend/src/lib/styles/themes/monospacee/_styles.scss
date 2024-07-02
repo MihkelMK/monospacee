@@ -41,7 +41,7 @@
 	#{$css-var-prefix}outline-width: 0.125rem;
 
 	// Transitions
-	#{$css-var-prefix}transition: 0.2s ease-in-out;
+	#{$css-var-prefix}transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
 	// Spacings
 	#{$css-var-prefix}spacing: 1rem;
@@ -225,6 +225,20 @@
 
 // Typography
 @if map.get($modules, 'content/typography') {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	small,
+	strong,
+	span,
+	label {
+		transition: color var(#{$css-var-prefix}transition);
+	}
+
 	// Small
 	small {
 		#{$css-var-prefix}font-size: 0.875em;

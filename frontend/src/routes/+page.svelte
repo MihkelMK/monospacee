@@ -257,7 +257,6 @@
 		label {
 			span {
 				--accent-color: var(--muted-color);
-				transition: color var(--transition);
 
 				&.secondary {
 					--accent-color: var(--secondary);
