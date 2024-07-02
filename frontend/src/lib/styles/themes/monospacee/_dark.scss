@@ -30,6 +30,8 @@
 	#{$css-var-prefix}primary-hover-underline: var(#{$css-var-prefix}primary-hover);
 	#{$css-var-prefix}primary-focus: theme-colors.get('primary-focus', 'dark');
 	#{$css-var-prefix}primary-inverse: theme-colors.get('primary-inverse', 'dark');
+	#{$css-var-prefix}primary-glow: #{transparentize(theme-colors.get('primary-glow', 'dark'), 0.4)};
+	#{$css-var-prefix}primary-glow-sm: #{transparentize(theme-colors.get('primary-glow', 'dark'), 0.7)};
 
 	// Secondary colors
 	#{$css-var-prefix}secondary: theme-colors.get('secondary', 'dark');
@@ -44,6 +46,14 @@
 	#{$css-var-prefix}secondary-hover-border: var(#{$css-var-prefix}secondary-hover-background);
 	#{$css-var-prefix}secondary-hover-underline: var(#{$css-var-prefix}secondary-hover);
 	#{$css-var-prefix}secondary-focus: theme-colors.get('secondary-focus', 'dark');
+	#{$css-var-prefix}secondary-glow: #{transparentize(
+			theme-colors.get('secondary-glow', 'dark'),
+			0.4
+		)};
+	#{$css-var-prefix}secondary-glow-sm: #{transparentize(
+			theme-colors.get('secondary-glow', 'dark'),
+			0.7
+		)};
 
 	// Contrast colors
 	#{$css-var-prefix}contrast: #{$grey-100};
@@ -56,32 +66,28 @@
 	#{$css-var-prefix}contrast-hover-underline: var(#{$css-var-prefix}contrast-hover);
 	#{$css-var-prefix}contrast-focus: #{rgba($grey-500, 0.25)};
 	#{$css-var-prefix}contrast-inverse: #{mix($black, $grey-900, 50%)};
+	#{$css-var-prefix}contrast-glow: #{transparentize($grey-300, 0.4)};
+	#{$css-var-prefix}contrast-glow-sm: #{transparentize($grey-300, 0.7)};
 
 	// Text Glow
 	.glow {
-		#{$css-var-prefix}glow_color: #{transparentize(theme-colors.get('primary-glow', 'dark'), 0.4)};
+		#{$css-var-prefix}glow-color: var(#{$css-var-prefix}primary-glow);
 
 		&.secondary {
-			#{$css-var-prefix}glow_color: #{transparentize(
-					theme-colors.get('secondary-glow', 'dark'),
-					0.4
-				)};
+			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}secondary-glow);
 		}
 		&.contrast {
-			#{$css-var-prefix}glow_color: #{transparentize($grey-300, 0.4)};
+			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}contrast-glow);
 		}
 
 		&-sm {
-			#{$css-var-prefix}glow_color: #{transparentize(theme-colors.get('primary-glow', 'dark'), 0.7)};
+			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}primary-glow-sm);
 
 			&.secondary {
-				#{$css-var-prefix}glow_color: #{transparentize(
-						theme-colors.get('secondary-glow', 'dark'),
-						0.7
-					)};
+				#{$css-var-prefix}glow-color: var(#{$css-var-prefix}secondary-glow-sm);
 			}
 			&.contrast {
-				#{$css-var-prefix}glow_color: #{transparentize($grey-300, 0.7)};
+				#{$css-var-prefix}glow-color: var(#{$css-var-prefix}contrast-glow-sm);
 			}
 		}
 	}

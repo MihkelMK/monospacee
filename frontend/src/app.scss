@@ -67,6 +67,9 @@ article.post {
 	--accent-hover: var(--color);
 	--accent-hover-underline: var(--color);
 	--accent-focus: var(--muted-color);
+	--accent-glow: var(--contrast-glow);
+	--accent-glow-sm: var(--contrast-glow-sm);
+
 	--accordion-active-summary-color: var(--accent-hover);
 	--accordion-open-summary-color: color-mix(
 		in srgb,
@@ -79,12 +82,16 @@ article.post {
 		--accent-hover: var(--primary-hover);
 		--accent-hover-underline: var(--primary-hover-underline);
 		--accent-focus: var(--primary-focus);
+		--accent-glow: var(--primary-glow);
+		--accent-glow-sm: var(--primary-glow-sm);
 	}
 	&.secondary {
 		--accent-color: var(--secondary);
 		--accent-hover: var(--secondary-hover);
 		--accent-hover-underline: var(--secondary-hover-underline);
 		--accent-focus: var(--secondary-focus);
+		--accent-glow: var(--secondary-glow);
+		--accent-glow-sm: var(--secondary-glow-sm);
 	}
 	&.contrast {
 		& .toc-level-2 li,
@@ -99,6 +106,14 @@ article.post {
 			--color: color-mix(in srgb, var(--accent-color) 60%, #000);
 			--accent-focus: color-mix(in srgb, var(--accent-color) 20%, rgba(0, 0, 0, 0));
 			--accent-hover: color-mix(in srgb, var(--accent-color) 40%, rgba(0, 0, 0, 0.9));
+		}
+	}
+
+	& *.glow {
+		--glow-color: var(--accent-glow) !important;
+
+		&-sm {
+			--glow-color: var(--accent-glow-sm) !important;
 		}
 	}
 
