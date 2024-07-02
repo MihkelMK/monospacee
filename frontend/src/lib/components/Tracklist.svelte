@@ -84,29 +84,26 @@
 		scroll-snap-type: y mandatory;
 		scroll-behavior: smooth;
 		width: 100%;
-		gap: 1rem;
 
 		li {
 			scroll-snap-align: center;
-			padding: calc(var(--nav-element-spacing-vertical) * 0.5)
-				calc(var(--nav-element-spacing-horizontal) * 0.5);
+			padding: calc(var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
 			& button {
-				display: block;
 				max-width: 40ch;
-				padding: calc(var(--nav-link-spacing-vertical) * 0.125)
-					calc(var(--nav-element-spacing-horizontal) * 0.125);
-				border-radius: calc(var(--border-radius) * 1.5);
+				padding: calc(var(--nav-element-spacing-vertical) * 0.75)
+					calc(var(--nav-element-spacing-horizontal) * 2) !important;
+
 				--background-color: transparent;
 				--border-color: transparent;
 
 				& p {
 					margin-bottom: 0;
 					--color: var(--contrast);
-					font-size: 0.8em;
+					font-size: 1em;
 
 					&:first-of-type {
 						--color: var(--accent-color);
-						font-size: 1em;
+						font-size: 1.1em;
 					}
 
 					&.track_info_seperator,
@@ -166,6 +163,7 @@
 				max-width: unset;
 				display: flex;
 				gap: 0.5rem;
+				align-items: center;
 				text-align: left;
 
 				& p {
