@@ -1,22 +1,32 @@
 <script lang="ts">
-	export let duration = 15;
-	export let repeat = 2;
-	export let paused = false;
-	export let pauseOnHover = false;
+	interface Props {
+		duration?: number;
+		repeat?: number;
+		paused?: boolean;
+		pauseOnHover?: boolean;
+		class?: string;
+		children?: import('svelte').Snippet;
+	}
 
-	let className = '';
-	export { className as class };
+	let {
+		duration = 15,
+		repeat = 2,
+		paused = false,
+		pauseOnHover = false,
+		class: className = '',
+		children
+	}: Props = $props();
 
-	let hovered = false;
+	let hovered = $state(false);
 </script>
 
 <div
-	on:focus={() => (hovered = true)}
+	onfocus={() => (hovered = true)}
 	role="marquee"
 	aria-label="song title"
-	on:focusout={() => (hovered = false)}
-	on:mouseover={() => (hovered = true)}
-	on:mouseleave={() => (hovered = false)}
+	onfocusout={() => (hovered = false)}
+	onmouseover={() => (hovered = true)}
+	onmouseleave={() => (hovered = false)}
 	style="overflow: hidden;"
 	class={className}
 >
@@ -24,7 +34,7 @@
 		<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 		{#each { length: repeat } as _}
 			<div class="text" style="animation-duration: {duration}s">
-				<slot />
+				{@render children?.()}
 			</div>
 		{/each}
 	</div>

@@ -28,8 +28,8 @@ export async function GET({ fetch }) {
 				</itunes:owner>
 				<itunes:type>episodic</itunes:type>
 				<itunes:image href="${escape(
-					encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`)
-				)}"/>
+		encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`)
+	)}"/>
 				<image>
 					<url>
 						${escape(encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`))}
@@ -44,9 +44,9 @@ export async function GET({ fetch }) {
 				<link>${config.url}</link>
 				<atom:link href="${config.url}/rss.xml" rel="self" type="application/rss+xml"/>
 				${posts
-					.filter((post) => post.duration)
-					.map(
-						(post) => `
+			.filter((post: Post) => post.duration)
+			.map(
+				(post: Post) => `
 						<item>
 							<itunes:episodeType>full</itunes:episodeType>
 							<title>${escape(post.title)}</title>
@@ -54,20 +54,19 @@ export async function GET({ fetch }) {
 							<link>${config.url}/${post.date}</link>
 							<itunes:summary>${escape(post.description)}</itunes:summary>
 							<itunes:image href="${escape(
-								encodeURI(
-									`${config.ogUrl}/big?date=${post.date}&title=${post.title}&type=${post.type}`
-								)
-							)}"/>
-              				<enclosure url="${config.url}/recordings/${
-												post.date
-											}.mp3" type="audio/mpeg" length="${post.audioSize}"/>
+					encodeURI(
+						`${config.ogUrl}/big?date=${post.date}&title=${post.title}&type=${post.type}`
+					)
+				)}"/>
+              				<enclosure url="${config.url}/recordings/${post.date
+					}.mp3" type="audio/mpeg" length="${post.audioSize}"/>
 							<guid isPermaLink="false">${config.url}/${post.date}</guid>
 							<pubDate>${new Date(post.date).toUTCString()}</pubDate>
               				<itunes:duration>${post.duration}</itunes:duration>
 						</item>
 					`
-					)
-					.join('')}
+			)
+			.join('')}
 			</channel>
 		</rss>
 	`.trim();

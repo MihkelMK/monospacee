@@ -1,17 +1,21 @@
 <script lang="ts">
-	import type { Post, PostType } from '$lib/types';
+	import type { Post, PostEvent } from '$lib/types';
 	import { formatDate } from '$lib/utils';
 	import { fly } from 'svelte/transition';
 	import { selectedRecording, visiblePostTypes } from '$lib/store';
 	import { cubicOut } from 'svelte/easing';
 
-	export let posts: Post[];
+	interface Props {
+		posts: Post[];
+	}
+
+	let { posts }: Props = $props();
 
 	const loadToPlayer = (slug: string) => {
 		selectedRecording.set(slug);
 	};
 
-	const getClass = (type: PostType) => {
+	const getClass = (type: PostEvent) => {
 		if (type === 'event') return 'secondary';
 		if (type === 'stream') return 'primary';
 		return 'contrast';
@@ -36,7 +40,7 @@
 						disabled={$selectedRecording === post.date}
 						data-tooltip="Load to player"
 						aria-label="Play this recording"
-						on:click={() => loadToPlayer(post.date)}
+						onclick={() => loadToPlayer(post.date)}
 					>
 						<iconify-icon icon="pixelarticons:playlist"></iconify-icon>
 					</button>

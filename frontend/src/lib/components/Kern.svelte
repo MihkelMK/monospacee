@@ -1,14 +1,20 @@
 <script lang="ts">
 	import { recordingPlaying } from '$lib/store';
 
-	export let silmaNurk: number = 0;
-	export let suu: string = '◡';
-	export let paremSilm: string = "'";
-	export let vasakSilm: string = "'";
-
-	$: if ($recordingPlaying) {
-		silmaNurk = 0;
+	interface Props {
+		silmaNurk?: number;
+		suu?: string;
+		paremSilm?: string;
+		vasakSilm?: string;
 	}
+
+	let { silmaNurk = $bindable(0), suu = '◡', paremSilm = "'", vasakSilm = "'" }: Props = $props();
+
+	$effect(() => {
+		if ($recordingPlaying) {
+			silmaNurk = 0;
+		}
+	});
 </script>
 
 <span class="maskott {$recordingPlaying ? 'playing' : ''}">

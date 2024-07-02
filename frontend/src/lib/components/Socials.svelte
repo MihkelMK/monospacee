@@ -2,11 +2,13 @@
 	import type { SocialLink } from '$lib/types';
 	import SocialIcon from './SocialIcon.svelte';
 
-	export let data: SocialLink[];
-	let className = '';
-	export { className as class };
-	let iconClassName = '';
-	export { iconClassName as iconClass };
+	interface Props {
+		data: SocialLink[];
+		class?: string;
+		iconClass?: string;
+	}
+
+	let { data, class: className = '', iconClass: iconClassName = '' }: Props = $props();
 </script>
 
 <ul class={className}>

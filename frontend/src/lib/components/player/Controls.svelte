@@ -1,36 +1,46 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	interface Props {
+		isPlaying?: boolean;
+		songIndex: number;
+		lastSong: number;
+		loading: boolean;
+		muted?: boolean;
+		mute: () => void;
+		forward: () => void;
+		rewind: () => void;
+		playPause: () => void;
+	}
 
-	let dispatch = createEventDispatcher();
-
-	export let isPlaying = false;
-	export let songIndex: number;
-	export let lastSong: number;
-	export let loading: boolean;
-	export let muted = false;
+	let {
+		isPlaying = $bindable(),
+		songIndex,
+		lastSong,
+		loading = $bindable(),
+		muted = false,
+		mute,
+		forward,
+		rewind,
+		playPause
+	}: Props = $props();
 </script>
 
 <button
 	aria-label="Previous song"
 	class="player_button player_button_rewind"
-	on:click={() => dispatch('rewind')}
+	onclick={rewind}
 	disabled={songIndex === 0 || loading}
 >
 	<iconify-icon inline icon="pixelarticons:prev"></iconify-icon>
 </button>
 
-<button
-	class="player_button player_button_play"
-	aria-label="Play pause audio"
-	on:click={() => dispatch('playPause')}
->
+<button class="player_button player_button_play" aria-label="Play pause audio" onclick={playPause}>
 	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'}
 	></iconify-icon>
 </button>
 
 <button
 	class="player_button player_button_forward"
-	on:click={() => dispatch('forward')}
+	onclick={forward}
 	aria-label="Next song"
 	disabled={songIndex === lastSong || loading}
 >
@@ -39,7 +49,7 @@
 
 <button
 	class="player_button player_button_mute {muted ? 'unactive' : ''}"
-	on:click={() => dispatch('mute')}
+	onclick={mute}
 	disabled={loading}
 	aria-label="Mute audio"
 >

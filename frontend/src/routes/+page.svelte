@@ -9,16 +9,21 @@
 	import { feed, visiblePostTypes } from '$lib/store';
 	import { MetaTags } from 'svelte-meta-tags';
 	import Socials from '$lib/components/Socials.svelte';
+	import type { PageServerData } from './$types';
 
-	export let data;
-	let loading = true;
+	interface Props {
+		data: PageServerData;
+	}
+
+	let { data }: Props = $props();
+	let loading = $state(true);
 
 	const INITIAL_POSTS = 1;
 
 	let nextFrom = data?.nextFrom ?? null;
 	feed.set(data.posts);
 
-	let limit = INITIAL_POSTS;
+	let limit = $state(INITIAL_POSTS);
 
 	function morePostsAvailable() {
 		return limit < $feed.length || nextFrom;
@@ -30,7 +35,7 @@
 		else visiblePostTypes.set([...$visiblePostTypes, type]);
 	}
 
-	let footer: HTMLElement;
+	let footer: HTMLElement | undefined = $state();
 
 	onMount(() => {
 		if (browser) {
@@ -51,7 +56,9 @@
 
 			const observer = new IntersectionObserver(handleIntersect, options);
 
-			observer.observe(footer);
+			if (footer) {
+				observer.observe(footer);
+			}
 			loading = false;
 		}
 	});

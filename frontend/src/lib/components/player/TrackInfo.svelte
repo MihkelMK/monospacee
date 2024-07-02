@@ -1,14 +1,25 @@
 <script lang="ts">
 	import Marquee from '../Marquee.svelte';
 
-	export let currTimeDisplay = '';
-	export let totalTimeDisplay = '';
-	export let trackTitle = '';
-	export let recTitle = '';
-	export let isPlaying: boolean;
-	export let loading: boolean;
+	interface Props {
+		currTimeDisplay?: string;
+		totalTimeDisplay?: string;
+		trackTitle?: string;
+		recTitle?: string;
+		isPlaying: boolean;
+		loading: boolean;
+	}
 
-	$: displayTitle = !loading;
+	let {
+		currTimeDisplay = '',
+		totalTimeDisplay = '',
+		trackTitle = '',
+		recTitle = '',
+		isPlaying = $bindable(),
+		loading = $bindable()
+	}: Props = $props();
+
+	let displayTitle = $derived(!loading);
 </script>
 
 <span class="player_time player_time_current glow-sm {isPlaying ? 'contrast' : 'muted'}"

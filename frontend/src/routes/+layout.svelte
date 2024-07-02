@@ -13,22 +13,28 @@
 	import { recordingPlaying, selectedRecording } from '$lib/store';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import type { LayoutData } from './$types';
 
-	export let data;
+	interface Props {
+		data: LayoutData;
+		children?: import('svelte').Snippet;
+	}
 
-	let kernSilmNurk = 0;
+	let { data, children }: Props = $props();
+
+	let kernSilmNurk = $state(0);
 	let silmadPaigal = false;
 	let kernSilmV = "'";
 	let kernSilmP = "'";
-	let kernSuu = '◡';
-	let kern: HTMLElement;
+	let kernSuu = $state('◡');
+	let kern: HTMLElement | undefined = $state();
 
-	let innerWidth: number;
-	let scrolled = false;
-	let watcher: HTMLElement;
+	let innerWidth: number | undefined = $state();
+	let scrolled = $state(false);
+	let watcher: HTMLElement | undefined = $state();
 
 	const muudaSuud = (e: MouseEvent) => {
-		if (innerWidth < 768) return;
+		if (!innerWidth || innerWidth < 768) return;
 		if (!e) return;
 		if (getComputedStyle(e.target as Element).cursor === 'pointer') {
 			kernSuu = 'ₒ';
@@ -40,7 +46,7 @@
 	};
 
 	const liigutaSilmi = (e: MouseEvent) => {
-		if (innerWidth < 768) return;
+		if (!innerWidth || !kern || innerWidth < 768) return;
 		if (silmadPaigal || !e || $recordingPlaying) return;
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
@@ -64,7 +70,9 @@
 				{ threshold: 0.2, rootMargin: '5% 0px 0px 0px' }
 			);
 
-			observer.observe(watcher);
+			if (watcher) {
+				observer.observe(watcher);
+			}
 		}
 	});
 </script>
@@ -74,10 +82,13 @@
 <div
 	role="application"
 	class="app"
-	on:mousemove={liigutaSilmi}
-	on:mousemove={throttle(function (e) {
-		muudaSuud(e);
-	}, 100)}
+	onmousemove={(event) => {
+		liigutaSilmi(event);
+
+		throttle(function (e) {
+			muudaSuud(e);
+		}, 100)?.(event);
+	}}
 >
 	<div bind:this={watcher} data-scroll-watcher></div>
 
@@ -103,7 +114,7 @@
 	</header>
 	<div class="container">
 		<PageTransition url={data.url}>
-			<slot />
+			{@render children?.()}
 		</PageTransition>
 	</div>
 	<Player />

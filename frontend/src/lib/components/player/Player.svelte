@@ -9,7 +9,7 @@
 	import Controls from './Controls.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 
-	const getPlayingSong = (time = audioFile.currentTime) => {
+	const getPlayingSong = (time = audioFile?.currentTime) => {
 		if (!songs || typeof time !== 'number') return;
 
 		const closest = songs.reduce((prev, curr) => {
@@ -40,6 +40,8 @@
 	};
 
 	const toggleTimeRunning = () => {
+		if (!audioFile) return;
+
 		if (audioFile.ended) {
 			recordingPlaying.set(false);
 			clearInterval(trackTimer);
@@ -49,6 +51,8 @@
 	};
 
 	const seekToSong = (index: number) => {
+		if (!audioFile) return;
+
 		if (index < 0 || !songs || !songs.at(index)) return;
 		songIndex = index;
 		audioFile.currentTime = songs.at(index)?.start ?? audioFile.currentTime;
@@ -61,14 +65,6 @@
 		getPlayingSong(time);
 		audioFile.currentTime = time;
 		$streamingData[$selectedRecording].progress = time;
-	};
-
-	const scrubToTimeOnEvent = (event: CustomEvent) => {
-		const time: number = event.detail ?? currentTime ?? 0;
-		audioFile.currentTime = time;
-		currentTime = time;
-		$streamingData[$selectedRecording].progress = time;
-		getPlayingSong(time);
 	};
 
 	const refreshTrack = () => {
@@ -133,6 +129,8 @@
 			loading = false;
 		}
 
+		if (!audioFile) return;
+
 		if (audioFile.ended || currentTime === totalTrackTime) {
 			audioFile.currentTime = 0;
 			songIndex = 0;
@@ -194,26 +192,24 @@
 		audioFile.muted = !audioFile.muted;
 	};
 
-	let totalTimeDisplay = '00:00:00';
-	let currTimeDisplay = '00:00:00';
+	let totalTimeDisplay = $state('00:00:00');
+	let currTimeDisplay = $state('00:00:00');
 	let trackTimer: NodeJS.Timeout;
-	let currentTime = 0;
-	let loading = true;
-
-	let blogSlug: string | null;
+	let currentTime = $state(0);
+	let loading = $state(true);
 
 	// Controls
 	let firstLoad = true;
 
-	let songIndex = 0;
-	let songs: Song[];
+	let songIndex = $state(0);
+	let songs: Song[] | undefined = $state();
 	let audioUrl = '';
 
-	let audioFile: HTMLAudioElement;
-	let trackTitle: string;
-	let recTitle: string;
+	let audioFile: HTMLAudioElement | undefined = $state();
+	let trackTitle: string | undefined = $state();
+	let recTitle: string | undefined = $state();
 
-	let totalTrackTime: number;
+	let totalTrackTime: number | undefined = $state();
 
 	onMount(async () => {
 		selectedRecording.subscribe((slug: string) => {
@@ -255,13 +251,12 @@
 		bind:isPlaying={$recordingPlaying}
 		loading={loading || !audioFile}
 		{songIndex}
-		on:mute={mute}
+		{mute}
 		muted={audioFile?.muted}
 		lastSong={songs ? songs.length - 1 : 0}
-		on:replaceAudio={() => replaceAudio(blogSlug)}
-		on:rewind={rewindAudio}
-		on:playPause={playPauseAudio}
-		on:forward={forwardAudio}
+		rewind={rewindAudio}
+		playPause={playPauseAudio}
+		forward={forwardAudio}
 	/>
 
 	<TrackInfo
@@ -275,13 +270,13 @@
 
 	<ProgressBar
 		isPlaying={$recordingPlaying}
-		{totalTrackTime}
+		totalTrackTime={totalTrackTime || 0}
 		{currentTime}
 		audioNotLoaded={!audioFile}
 		bind:songIndex
-		{songs}
-		on:scrub={scrubToTimeOnEvent}
-		on:seekToSong={({ detail }) => seekToSong(detail)}
+		songs={songs || []}
+		scrub={scrubToTime}
+		{seekToSong}
 	/>
 </footer>
 

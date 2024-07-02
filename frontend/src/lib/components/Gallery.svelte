@@ -2,7 +2,11 @@
 	import type { ImageInfo } from '$lib/types';
 	import Image from './Image.svelte';
 
-	export let images: ImageInfo[];
+	interface Props {
+		images: ImageInfo[];
+	}
+
+	let { images }: Props = $props();
 </script>
 
 {#if images}

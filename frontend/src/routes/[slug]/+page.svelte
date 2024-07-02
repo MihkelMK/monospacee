@@ -1,13 +1,17 @@
 <script lang="ts">
 	import * as config from '$lib/config';
-	import { formatDate, timeStringFromSeconds } from '$lib/utils';
+	import { formatDate } from '$lib/utils';
 	import Tracklist from '$lib/components/Tracklist.svelte';
 	import type { PostEvent } from '$lib/types';
 	import type { PageData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
-	import { selectedRecording, cueJump, streamingData } from '$lib/store';
+	import { selectedRecording, cueJump } from '$lib/store';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const loadToPlayer = (slug: string) => {
 		selectedRecording.set(slug);
@@ -19,10 +23,7 @@
 		return 'contrast';
 	};
 
-	const scrubToSong = (event: CustomEvent) => {
-		const { start, audioURL } = event.detail;
-		if (!start || !audioURL) return;
-
+	const scrubToSong = (start: number, audioURL: string) => {
 		const cleanSlug = audioURL.split('.').at(0);
 		if (!cleanSlug) return;
 
@@ -118,7 +119,7 @@
 				<button
 					disabled={$selectedRecording === data.meta.date}
 					data-tooltip="Load to player"
-					on:click={() => loadToPlayer(data.meta.date)}
+					onclick={() => loadToPlayer(data.meta.date)}
 				>
 					<iconify-icon inline icon="pixelarticons:playlist"></iconify-icon>
 				</button>
@@ -141,7 +142,7 @@
 	{#if data.cue}
 		<footer>
 			<h3 id="tracklist">Tracklist</h3>
-			<Tracklist cue={data.cue} on:scrub={scrubToSong} />
+			<Tracklist cue={data.cue} scrub={scrubToSong} />
 		</footer>
 	{/if}
 </article>

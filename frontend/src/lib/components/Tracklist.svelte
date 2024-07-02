@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { selectedRecording, streamingData } from '$lib/store';
 	import type { Cue, Song } from '$lib/types';
-	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let cue: Cue;
+	interface Props {
+		scrub: (start: number, audioURL: string) => void;
+		cue: Cue;
+	}
 
-	let dispatch = createEventDispatcher();
+	let { cue, scrub }: Props = $props();
 
-	let list_element: HTMLUListElement;
+	let list_element: HTMLUListElement | undefined = $state();
 
-	function scroll_on_change(closest: Song) {
+	function scroll_on_change(last_track: Song | undefined) {
 		if (closest === last_track || !list_element) return;
 
 		last_track = closest;
@@ -22,16 +24,17 @@
 		}
 	}
 
-	let last_track: Song | undefined;
+	let last_track: Song | undefined = $state();
 
-	$: progress = $streamingData[$selectedRecording].progress;
-	$: closest = cue.songs.reduce((prev, curr) => {
-		return curr.start <= progress && curr.start > prev.start ? curr : prev;
-	});
-	$: scroll_on_change(closest);
+	let progress = $derived($streamingData[$selectedRecording].progress);
+	let closest = $derived(
+		cue.songs.reduce((prev, curr) => {
+			return curr.start <= progress && curr.start > prev.start ? curr : prev;
+		})
+	);
 
-	onMount(() => {
-		scroll_on_change(closest);
+	$effect(() => {
+		scroll_on_change(last_track);
 	});
 </script>
 
@@ -45,11 +48,10 @@
 						: progress >= song.start
 							? 'played'
 							: ''}
-					on:click={() => dispatch('scrub', { start: song.start, audioURL: cue.slug })}
+					onclick={() => scrub(song.start, cue.slug)}
 				>
-					<!-- <span>[{timeStringFromSeconds(song.start)}]</span> -->
 					<p>
-						<span class="track_info_number">{i + 1}: </span><strong>{song.title}</strong>
+						<span class="track_info_number">{i + 1}:{' '}</span><strong>{song.title}</strong>
 					</p>
 					<p class="track_info_seperator">/</p>
 					<p>{song.artist}</p>

@@ -1,25 +1,40 @@
 <script lang="ts">
-	import type { Song } from '$lib/types';
-	import { trimString } from '$lib/utils';
-	import { createEventDispatcher } from 'svelte';
+	import type { Song } from '$lib/types.js';
+	import { trimString } from '$lib/utils.js';
 
-	export let totalTrackTime: number;
-	export let currentTime: number;
-	export let songIndex: number;
-	export let audioNotLoaded: boolean;
-	export let isPlaying: boolean;
-	export let songs: Song[];
+	interface Props {
+		totalTrackTime: number;
+		currentTime: number;
+		songIndex: number;
+		audioNotLoaded: boolean;
+		isPlaying: boolean;
+		songs: Song[];
+		seekToSong: (index: number) => void;
+		scrub: (time: number) => void;
+	}
 
-	const dispatch = createEventDispatcher();
+	let {
+		totalTrackTime,
+		currentTime,
+		songIndex = $bindable(),
+		audioNotLoaded,
+		isPlaying,
+		songs,
+		seekToSong,
+		scrub
+	}: Props = $props();
+
 	const timeToPercent = (time: number, totalTime: number) =>
 		Math.min((time * 100) / totalTime, 100);
 
-	let scrubTime: number;
-	let scrubbing = false;
+	let scrubTime: number | undefined = $state();
+	let scrubbing = $state(false);
+	let opacity = $derived(isPlaying ? '1' : '0.6');
+	let progress = $derived(scrubTime ? scrubTime * (100 / totalTrackTime) : 0);
 
-	$: scrubTime = scrubbing ? scrubTime : currentTime;
-	$: opacity = isPlaying ? '1' : '0.6';
-	$: progress = scrubTime ? scrubTime * (100 / totalTrackTime) : 0;
+	$effect(() => {
+		scrubTime = scrubbing ? scrubTime : currentTime;
+	});
 </script>
 
 <div class="player_progress">
@@ -40,7 +55,7 @@
 					type="radio"
 					aria-label="Skip to song: {song.title}"
 					checked={i === songIndex}
-					on:click={() => dispatch('seekToSong', i)}
+					onclick={() => seekToSong(i)}
 				/>
 			</label>
 		{/each}
@@ -52,14 +67,18 @@
 		max={`${totalTrackTime}`}
 		min="0"
 		bind:value={scrubTime}
-		on:pointerdown={() => (scrubbing = true)}
-		on:pointerup={() => {
-			dispatch('scrub', scrubTime);
+		onpointerdown={() => (scrubbing = true)}
+		onpointerup={() => {
+			if (scrubTime) {
+				scrub(scrubTime);
+			}
 			scrubbing = false;
 		}}
-		on:touchstart={() => (scrubbing = true)}
-		on:touchend={() => {
-			dispatch('scrub', scrubTime);
+		ontouchstart={() => (scrubbing = true)}
+		ontouchend={() => {
+			if (scrubTime) {
+				scrub(scrubTime);
+			}
 			scrubbing = false;
 		}}
 	/>
