@@ -1,14 +1,13 @@
 <script lang="ts">
 	import * as config from '$lib/config';
 	import { formatDate, timeStringFromSeconds } from '$lib/utils';
+	import Tracklist from '$lib/components/Tracklist.svelte';
 	import type { PostEvent } from '$lib/types';
 	import type { PageData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { selectedRecording, cueJump, streamingData } from '$lib/store';
 
 	export let data: PageData;
-
-	$: progress = $streamingData[$selectedRecording].progress;
 
 	const loadToPlayer = (slug: string) => {
 		selectedRecording.set(slug);
@@ -20,8 +19,11 @@
 		return 'contrast';
 	};
 
-	const scrubToSong = (start: number, audioUrl: string) => {
-		const cleanSlug = audioUrl.split('.').at(0);
+	const scrubToSong = (event: CustomEvent) => {
+		const { start, audioURL } = event.detail;
+		if (!start || !audioURL) return;
+
+		const cleanSlug = audioURL.split('.').at(0);
 		if (!cleanSlug) return;
 
 		if (cleanSlug != $selectedRecording) selectedRecording.set(cleanSlug);
@@ -139,19 +141,7 @@
 	{#if data.cue}
 		<footer>
 			<h3 id="tracklist">Tracklist</h3>
-			<nav>
-				<ul>
-					{#each data.cue.songs as song}
-						<li class={progress >= song.start ? 'played' : ''}>
-							<button on:click={() => scrubToSong(song.start, data.cue.slug)}>
-								<span>[{timeStringFromSeconds(song.start)}]</span>
-								<strong>{song.title}</strong>
-								<small>/ {song.artist}</small>
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</nav>
+			<Tracklist cue={data.cue} on:scrub={scrubToSong} />
 		</footer>
 	{/if}
 </article>
@@ -181,40 +171,6 @@
 
 		footer {
 			margin-bottom: var(--block-spacing-vertical);
-			ul {
-				flex-direction: column;
-				align-items: start;
-				li {
-					padding: calc(var(--nav-element-spacing-vertical) * 0.5)
-						calc(var(--nav-element-spacing-horizontal) * 0.5);
-					& button {
-						padding: calc(var(--nav-link-spacing-vertical) * 0.125)
-							calc(var(--nav-element-spacing-horizontal) * 0.125);
-						border-radius: calc(var(--border-radius) * 1.5);
-						text-align: start;
-						width: fit-content;
-						--background-color: transparent;
-						--border-color: transparent;
-						--color: var(--accent-color);
-
-						&:hover {
-							--color: var(--accent-hover);
-						}
-					}
-
-					&.played {
-						& button {
-							--color: color-mix(in srgb, var(--accent-color) 60%, rgba(0, 0, 0, 0.3));
-							@media only screen and (prefers-color-scheme: light) {
-								--color: color-mix(in srgb, var(--accent-color) 50%, rgba(255, 255, 255, 0.3));
-							}
-							&:hover {
-								--color: var(--accent-hover);
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 
