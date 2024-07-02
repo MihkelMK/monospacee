@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { sineOut } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 
 	interface Props {
 		url?: string;
@@ -11,7 +11,7 @@
 </script>
 
 {#key url}
-	<div class="transition" in:fade={{ duration: 250, easing: sineOut }}>
+	<div class="transition" in:fade={{ duration: 300, easing: expoOut }}>
 		{@render children?.()}
 	</div>
 {/key}
