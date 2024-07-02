@@ -14,7 +14,7 @@
 
 		last_track = closest;
 		const current_list_element = Array.from(list_element.children)
-			.filter((list_element) => list_element.id === closest.title)
+			.filter((list_element) => list_element.id === String(closest.start))
 			.at(0);
 
 		if (current_list_element) {
@@ -38,9 +38,9 @@
 <nav>
 	<ul bind:this={list_element}>
 		{#each cue.songs as song, i}
-			<li id={song.title}>
+			<li id={String(song.start)}>
 				<button
-					class={closest.title === song.title
+					class={closest.start === song.start
 						? 'current glow-sm'
 						: progress >= song.start
 							? 'played'
