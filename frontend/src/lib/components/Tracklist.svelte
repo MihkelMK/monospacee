@@ -78,6 +78,17 @@
 	ul {
 		--mask: linear-gradient(
 				to bottom,
+				rgba(0, 0, 0, 0) 0,
+				rgba(0, 0, 0, 1) 15%,
+				rgba(0, 0, 0, 1) 50%,
+				rgba(0, 0, 0, 1) 85%,
+				rgba(0, 0, 0, 0) 100%
+			)
+			100% 100% / 100% 100% repeat-x;
+
+		-webkit-mask: var(--mask);
+		mask: var(--mask);
+
 		flex-direction: column;
 		height: 20rem;
 		overflow-y: scroll;
