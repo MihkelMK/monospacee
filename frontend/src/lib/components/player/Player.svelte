@@ -67,6 +67,7 @@
 
 		const currentRelative = '/' + audio.src.split('/').slice(3).join('/');
 		if (selectedRecording === currentRelative) return;
+		loadedAudio = undefined;
 
 		audio.src = selectedRecording;
 		audio.load();
