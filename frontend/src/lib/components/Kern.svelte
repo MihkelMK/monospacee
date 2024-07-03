@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { recordingPlaying } from '$lib/store';
+	import { audioStore } from '$lib/store.svelte';
 
 	interface Props {
 		silmaNurk?: number;
@@ -11,13 +11,13 @@
 	let { silmaNurk = $bindable(0), suu = '◡', paremSilm = "'", vasakSilm = "'" }: Props = $props();
 
 	$effect(() => {
-		if ($recordingPlaying) {
+		if (audioStore.isPlaying) {
 			silmaNurk = 0;
 		}
 	});
 </script>
 
-<span class="maskott {$recordingPlaying ? 'playing' : ''}">
+<span class="maskott {audioStore.isPlaying ? 'playing' : ''}">
 	<span class="noot noot-1 glow contrast">&#9835; &#9833;</span>
 	<span class="noot noot-2 glow contrast">&#9833;</span>
 	<span class="noot noot-3 glow contrast">&#9834;</span>
@@ -31,12 +31,12 @@
 		<span class="kern_sulg kern_sulg_v secondary glow">[</span><!--
 --><span
 			class="kern_silm kern_silm_v secondary glow"
-			style="rotate:{silmaNurk}deg;">{$recordingPlaying ? '◕' : vasakSilm}</span
+			style="rotate:{silmaNurk}deg;">{audioStore.isPlaying ? '◕' : vasakSilm}</span
 		><!--
 --><span class="kern_suu">{suu}</span><!--
 --><span
 			class="kern_silm kern_silm_p secondary glow"
-			style="rotate:{silmaNurk}deg">{$recordingPlaying ? '◕' : paremSilm}</span
+			style="rotate:{silmaNurk}deg">{audioStore.isPlaying ? '◕' : paremSilm}</span
 		><!--
 --><span class="kern_sulg kern_sulg_p secondary glow">]</span>
 	</span>

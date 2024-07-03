@@ -1,31 +1,25 @@
 <script lang="ts">
+	import { timeStringFromSeconds } from '$lib/utils';
 	import Marquee from '../Marquee.svelte';
 
 	interface Props {
-		currTimeDisplay?: string;
-		totalTimeDisplay?: string;
-		trackTitle?: string;
-		recTitle?: string;
-		isPlaying: boolean;
 		loading: boolean;
+		isPlaying: boolean;
+		currentTime: number;
+		duration: number;
+		trackTitle: string;
+		trackArtist: string;
+		cueTitle: string;
 	}
 
-	let {
-		currTimeDisplay = '',
-		totalTimeDisplay = '',
-		trackTitle = '',
-		recTitle = '',
-		isPlaying = $bindable(),
-		loading = $bindable()
-	}: Props = $props();
-
-	let displayTitle = $derived(!loading);
+	let { loading, isPlaying, currentTime, duration, trackTitle, trackArtist, cueTitle }: Props =
+		$props();
 </script>
 
 <span class="player_time player_time_current glow-sm {isPlaying ? 'contrast' : 'muted'}"
-	>{currTimeDisplay}</span
+	>{timeStringFromSeconds(currentTime)}</span
 >
-{#if displayTitle}
+{#if !loading}
 	<span class="player_song">
 		<Marquee
 			class="player_song_scrolling"
@@ -35,22 +29,20 @@
 			pauseOnHover
 		>
 			<span class="player_song_text">
-				<strong class="glow-sm {isPlaying ? 'contrast' : 'muted'}"
-					>{trackTitle.split('/')[0]}</strong
-				>
+				<strong class="glow-sm {isPlaying ? 'contrast' : 'muted'}">{trackTitle}</strong>
 				<span class="glow-sm {isPlaying ? 'secondary' : 'muted'}">/</span>
-				<span class="glow-sm {isPlaying ? 'contrast' : 'muted'}">{trackTitle.split('/')[1]}</span>
+				<span class="glow-sm {isPlaying ? 'contrast' : 'muted'}">{trackArtist}</span>
 			</span>
 		</Marquee>
 	</span>
-	<span class="player_title glow-sm {isPlaying ? 'secondary' : 'contrast'}">{recTitle}</span>
+	<span class="player_title glow-sm {isPlaying ? 'secondary' : 'contrast'}">{cueTitle}</span>
 {:else}
 	<span class="player_song" aria-busy={loading}></span>
 
 	<span class="player_title glow-sm contrast" aria-busy={loading}></span>
 {/if}
 <span class="player_time player_time_total glow-sm {isPlaying ? 'contrast' : 'muted'}"
-	>{totalTimeDisplay}</span
+	>{timeStringFromSeconds(duration)}</span
 >
 
 <style lang="scss">

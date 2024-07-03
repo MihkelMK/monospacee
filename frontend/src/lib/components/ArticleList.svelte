@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { Post, PostEvent } from '$lib/types';
-	import { formatDate } from '$lib/utils';
+	import { formatDate, recordingPathFromDate } from '$lib/utils';
 	import { fly } from 'svelte/transition';
-	import { selectedRecording, visiblePostTypes } from '$lib/store';
+	import { visiblePostTypes } from '$lib/store.svelte';
 	import { cubicOut } from 'svelte/easing';
+	import { audioStore } from '$lib/store.svelte';
 
 	interface Props {
 		posts: Post[];
@@ -11,8 +12,12 @@
 
 	let { posts }: Props = $props();
 
-	const loadToPlayer = (slug: string) => {
-		selectedRecording.set(slug);
+	const loadToPlayer = (date: string) => {
+		const newPath = recordingPathFromDate(date);
+
+		if (audioStore.selectedRecording !== newPath) {
+			audioStore.setRecording(newPath);
+		}
 	};
 
 	const getClass = (type: PostEvent) => {
@@ -37,7 +42,7 @@
 				</hgroup>
 				{#if post.duration}
 					<button
-						disabled={$selectedRecording === post.date}
+						disabled={audioStore.selectedRecording === recordingPathFromDate(post.date)}
 						data-tooltip="Load to player"
 						aria-label="Play this recording"
 						onclick={() => loadToPlayer(post.date)}

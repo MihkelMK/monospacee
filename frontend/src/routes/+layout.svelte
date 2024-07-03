@@ -10,7 +10,7 @@
 
 	import Kern from '$lib/components/Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
-	import { recordingPlaying, selectedRecording } from '$lib/store';
+	import { audioStore } from '$lib/store.svelte';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import type { LayoutData } from './$types';
@@ -47,7 +47,7 @@
 
 	const liigutaSilmi = (e: MouseEvent) => {
 		if (!innerWidth || !kern || innerWidth < 768) return;
-		if (silmadPaigal || !e || $recordingPlaying) return;
+		if (silmadPaigal || !e || audioStore.isPlaying) return;
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
 
@@ -108,7 +108,11 @@
 				</li>
 			</ul>
 			<ul>
-				<li><a class="secondary glow" href={`/${$selectedRecording}`}>/mnt/current</a></li>
+				<li>
+					<a class="secondary glow" href={`/${audioStore.selectedRecording?.split('.')[0]}`}
+						>/mnt/current</a
+					>
+				</li>
 			</ul>
 		</nav>
 	</header>
@@ -117,7 +121,7 @@
 			{@render children?.()}
 		</PageTransition>
 	</div>
-	<Player />
+	<Player cue={data.cue} />
 </div>
 
 <style lang="scss">

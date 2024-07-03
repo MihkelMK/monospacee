@@ -1,11 +1,11 @@
 <script lang="ts">
 	import * as config from '$lib/config';
-	import { formatDate } from '$lib/utils';
+	import { formatDate, recordingPathFromDate } from '$lib/utils';
 	import Tracklist from '$lib/components/Tracklist.svelte';
 	import type { PostEvent } from '$lib/types';
 	import type { PageData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
-	import { selectedRecording, cueJump } from '$lib/store';
+	import { audioStore, cueJump } from '$lib/store.svelte';
 
 	interface Props {
 		data: PageData;
@@ -13,8 +13,11 @@
 
 	let { data }: Props = $props();
 
-	const loadToPlayer = (slug: string) => {
-		selectedRecording.set(slug);
+	const loadToPlayer = (date: string) => {
+		const newPath = recordingPathFromDate(date);
+		if (audioStore.selectedRecording !== newPath) {
+			audioStore.setRecording(newPath);
+		}
 	};
 
 	const getClass = (type: PostEvent) => {
@@ -24,10 +27,14 @@
 	};
 
 	const scrubToSong = (start: number, audioURL: string) => {
-		const cleanSlug = audioURL.split('.').at(0);
-		if (!cleanSlug) return;
+		const date = audioURL.split('.').at(0);
+		if (!date) return;
 
-		if (cleanSlug != $selectedRecording) selectedRecording.set(cleanSlug);
+		const newPath = recordingPathFromDate(date);
+		if (audioStore.selectedRecording !== newPath) {
+			audioStore.setRecording(newPath);
+			audioStore.currentTime = start;
+		}
 		cueJump.set(start);
 	};
 </script>
@@ -117,7 +124,7 @@
 			Sisukord
 			{#if data.meta.recording}
 				<button
-					disabled={$selectedRecording === data.meta.date}
+					disabled={audioStore.selectedRecording === recordingPathFromDate(data.meta.date)}
 					data-tooltip="Load to player"
 					onclick={() => loadToPlayer(data.meta.date)}
 				>
@@ -139,9 +146,9 @@
 		<svelte:component this={data.content} />
 	</main>
 
-	{#if data.cue}
+	{#if data.postCue}
 		<footer>
-			<Tracklist cue={data.cue} scrub={scrubToSong} />
+			<Tracklist cue={data.postCue} scrub={scrubToSong} />
 		</footer>
 	{/if}
 </article>

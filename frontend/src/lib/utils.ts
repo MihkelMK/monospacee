@@ -17,6 +17,22 @@ export const throttle = (func: (e: any) => void, limit: number) => {
 	};
 };
 
+export function timeToPercent(start: number, total: number) {
+	return (start / total) * 100 || 0;
+}
+
+export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
+	func: F,
+	waitFor: number
+): (...args: Parameters<F>) => void {
+	let timeout: ReturnType<typeof setTimeout>;
+
+	return (...args: Parameters<F>): void => {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => func(...args), waitFor);
+	};
+}
+
 export const angleToMouse = (cx: number, cy: number, ex: number, ey: number) => {
 	const dy = ey - cy;
 	const dx = ex - cx;
@@ -24,6 +40,10 @@ export const angleToMouse = (cx: number, cy: number, ex: number, ey: number) => 
 	const deg = (rad * 180) / Math.PI; // rads to degs, (-180, 180]
 	return deg;
 };
+
+export function recordingPathFromDate(date: string) {
+	return `/recordings/${date}.mp3`;
+}
 
 export const trimString = (str: string, len: number) =>
 	str.length > len ? str.substring(0, len - 3) + '…' : str.substring(0, len);

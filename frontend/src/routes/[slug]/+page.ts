@@ -22,7 +22,7 @@ export async function load({ params, fetch, setHeaders }) {
 		return {
 			content: post.default,
 			meta: post.metadata,
-			cue: await cue
+			postCue: await cue
 		};
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	} catch (_) {

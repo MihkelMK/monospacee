@@ -1,60 +1,80 @@
 <script lang="ts">
 	import type { Song } from '$lib/types.js';
-	import { trimString } from '$lib/utils.js';
+	import { trimString, timeToPercent } from '$lib/utils.js';
 
-	interface Props {
-		totalTrackTime: number;
-		currentTime: number;
-		songIndex: number;
-		audioNotLoaded: boolean;
-		isPlaying: boolean;
-		songs: Song[];
-		seekToSong: (index: number) => void;
-		scrub: (time: number) => void;
-	}
-
-	let {
-		totalTrackTime,
-		currentTime,
-		songIndex = $bindable(),
-		audioNotLoaded,
-		isPlaying,
+	// interface Props {
+	// 	totalTrackTime: number;
+	// 	currentTime: number;
+	// 	songIndex: number;
+	// 	audioNotLoaded: boolean;
+	// 	isPlaying: boolean;
+	// 	songs: Song[];
+	// 	seekToSong: (index: number) => void;
+	// 	scrub: (time: number) => void;
+	// }
+	//
+	// let {
+	// 	totalTrackTime,
+	// 	currentTime,
+	// 	songIndex = $bindable(),
+	// 	audioNotLoaded,
+	// 	isPlaying,
+	// 	songs,
+	// 	seekToSong,
+	// 	scrub
+	// }: Props = $props();
+	//
+	// const timeToPercent = (time: number, totalTime: number) =>
+	// 	Math.min((time * 100) / totalTime, 100);
+	//
+	// let scrubTime: number | undefined = $state();
+	// let scrubbing = $state(false);
+	// let progress = $derived(scrubTime ? scrubTime * (100 / totalTrackTime) : 0);
+	//
+	// $effect(() => {
+	// 	scrubTime = scrubbing ? scrubTime : currentTime;
+	// });
+	const {
+		duration,
+		progress,
 		songs,
-		seekToSong,
-		scrub
-	}: Props = $props();
+		playingSongIndex,
+		loading,
+		isPlaying,
+		updateProgress,
+		seekToSong
+	} = $props<{
+		duration: number;
+		progress: number;
+		songs: Song[] | undefined;
+		playingSongIndex: number | undefined;
+		loading: boolean;
+		isPlaying: boolean;
+		updateProgress: (event: Event) => void;
+		seekToSong: (trackIndex: number) => void;
+	}>();
 
-	const timeToPercent = (time: number, totalTime: number) =>
-		Math.min((time * 100) / totalTime, 100);
-
-	let scrubTime: number | undefined = $state();
-	let scrubbing = $state(false);
 	let opacity = $derived(isPlaying ? '1' : '0.6');
-	let progress = $derived(scrubTime ? scrubTime * (100 / totalTrackTime) : 0);
-
-	$effect(() => {
-		scrubTime = scrubbing ? scrubTime : currentTime;
-	});
 </script>
 
 <div class="player_progress">
-	{#if songs && totalTrackTime}
+	{#if songs && duration}
 		{#each songs as song, i}
 			<label
-				style="--startsAt:{timeToPercent(song.start, totalTrackTime)}%;"
-				class="player_progress_step {i === songIndex ? 'player_progress_step_active' : ''}"
-				data-placement={timeToPercent(song.start, totalTrackTime) < 35
+				style="--startsAt:{timeToPercent(song.start, duration)}%;"
+				class="player_progress_step {i === playingSongIndex ? 'player_progress_step_active' : ''}"
+				data-placement={timeToPercent(song.start, duration) < 35
 					? 'right'
-					: timeToPercent(song.start, totalTrackTime) > 65
+					: timeToPercent(song.start, duration) > 65
 						? 'left'
 						: 'top'}
 				data-tooltip={trimString(`${song.title} - ${song.artist}`, 40)}
 			>
 				<input
-					disabled={audioNotLoaded}
+					disabled={loading}
 					type="radio"
 					aria-label="Skip to song: {song.title}"
-					checked={i === songIndex}
+					checked={i === playingSongIndex}
 					onclick={() => seekToSong(i)}
 				/>
 			</label>
@@ -62,25 +82,12 @@
 	{/if}
 	<input
 		aria-label="player progress"
-		disabled={audioNotLoaded}
+		disabled={loading}
 		type="range"
-		max={`${totalTrackTime}`}
+		max={String(duration)}
 		min="0"
-		bind:value={scrubTime}
-		onpointerdown={() => (scrubbing = true)}
-		onpointerup={() => {
-			if (scrubTime) {
-				scrub(scrubTime);
-			}
-			scrubbing = false;
-		}}
-		ontouchstart={() => (scrubbing = true)}
-		ontouchend={() => {
-			if (scrubTime) {
-				scrub(scrubTime);
-			}
-			scrubbing = false;
-		}}
+		value={progress}
+		oninput={updateProgress}
 	/>
 	<span class="player_progress_bar" style="width: {progress}%; opacity:{opacity}"></span>
 </div>

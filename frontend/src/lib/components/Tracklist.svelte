@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { selectedRecording, streamingData } from '$lib/store';
+	import { audioStore } from '$lib/store.svelte';
 	import type { Cue, Song } from '$lib/types';
 
 	interface Props {
@@ -26,10 +26,9 @@
 
 	let last_track: Song | undefined = $state();
 
-	let progress = $derived($streamingData[$selectedRecording].progress);
 	let closest = $derived(
 		cue.songs.reduce((prev, curr) => {
-			return curr.start <= progress && curr.start > prev.start ? curr : prev;
+			return curr.start <= audioStore.currentTime && curr.start > prev.start ? curr : prev;
 		})
 	);
 
@@ -48,7 +47,7 @@
 				<button
 					class={closest.start === song.start
 						? 'current glow-sm'
-						: progress >= song.start
+						: audioStore.currentTime >= song.start
 							? 'played'
 							: ''}
 					onclick={() => scrub(song.start, cue.slug)}
