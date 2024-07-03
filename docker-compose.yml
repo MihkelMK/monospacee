@@ -1,16 +1,15 @@
 ---
-version: "3"
-
+name: monospacee
 services:
-  svelte:
-    container_name: monospacee
+  web:
+    container_name: monospacee-web
     image: monospacee
     build: ./frontend
     restart: unless-stopped
     ports:
       - 9001:3000
   og:
-    container_name: monospacee_og
+    container_name: monospacee-og
     image: monospacee_og
     build: ./og
     restart: unless-stopped
