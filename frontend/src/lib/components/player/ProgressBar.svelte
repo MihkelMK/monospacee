@@ -109,10 +109,6 @@
 		onpointerup={() => {
 			scrubbing = updateProgress(scrubTime);
 		}}
-		ontouchstart={() => (scrubbing = true)}
-		ontouchend={() => {
-			scrubbing = updateProgress(scrubTime);
-		}}
 	/>
 	<span class="player_progress_bar" style="width: {shownProgress}%; opacity:{opacity}"></span>
 </div>
