@@ -73,7 +73,6 @@
 			scrubTime = currentTime;
 		}
 	});
-	$inspect(scrubbing, shownProgress);
 </script>
 
 <div class="player_progress">
