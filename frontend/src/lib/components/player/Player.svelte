@@ -22,171 +22,13 @@
 
 		return cue.songs.indexOf(closest);
 	};
-	//
-	// const updateTime = () => {
-	// 	if (!audioFile) return;
-	// 	currentTime = audioFile.currentTime;
-	// 	currTimeDisplay = timeStringFromSeconds(audioFile.currentTime);
-	//
-	// 	if (audioFile.ended) {
-	// 		toggleTimeRunning();
-	// 	}
-	//
-	// 	if (
-	// 		audioFile.ended ||
-	// 		!$streamingData[$selectedRecording].progress ||
-	// 		Math.abs(audioFile.currentTime - $streamingData[$selectedRecording].progress) > 2
-	// 	) {
-	// 		$streamingData[$selectedRecording].progress = audioFile.currentTime;
-	// 	}
-	//
-	// 	refreshTrack();
-	// };
-	//
-	// const toggleTimeRunning = () => {
-	// 	if (!audioFile) return;
-	//
-	// 	if (audioFile.ended) {
-	// 		recordingPlaying.set(false);
-	// 		clearInterval(trackTimer);
-	// 	} else {
-	// 		trackTimer = setInterval(updateTime, 500);
-	// 	}
-	// };
-	//
+
 	const seekToSong = (index: number) => {
 		if (!audio) return;
 
 		if (index < 0 || !cue?.songs || !cue?.songs.at(index)) return;
 		audio.currentTime = cue.songs.at(index)?.start ?? audio.currentTime;
 	};
-	//
-	// const scrubToTime = (time: number) => {
-	// 	if (!audioFile) return;
-	//
-	// 	getPlayingSong(time);
-	// 	audioFile.currentTime = time;
-	// 	$streamingData[$selectedRecording].progress = time;
-	// };
-	//
-	// const refreshTrack = () => {
-	// 	if (!songs) return;
-	// 	const song = songs.at(songIndex);
-	// 	if (!song) return;
-	//
-	// 	if (
-	// 		audioFile &&
-	// 		songIndex + 1 < songs.length &&
-	// 		songs.at(songIndex + 1)?.start < audioFile.currentTime
-	// 	)
-	// 		songIndex = songIndex + 1;
-	//
-	// 	trackTitle = song.title && song.artist ? `${song.title} / ${song.artist}` : 'Loading...';
-	// };
-
-	// const replaceAudio = async (slug: string | null) => {
-	// 	if (slug) {
-	// 		if (audioFile) audioFile.pause();
-	//
-	// 		totalTimeDisplay = timeStringFromSeconds(0);
-	//
-	// 		if (audioFile) {
-	// 			audioFile.pause();
-	// 			audioFile.src = `/recordings/${audioUrl}`;
-	// 			audioFile.load();
-	// 		} else {
-	// 			audioFile = audioUrl ? new Audio(`/recordings/${audioUrl}`) : new Audio();
-	// 			audioFile.load();
-	// 		}
-	//
-	// 		if (currentTime) audioFile.currentTime = currentTime;
-	//
-	// 		// Track Duration and Progress Bar
-	// 		audioFile.onloadedmetadata = () => {
-	// 			if (!audioFile) return;
-	//
-	// 			totalTrackTime = audioFile.duration;
-	// 			totalTimeDisplay = timeStringFromSeconds(totalTrackTime);
-	// 			refreshTrack();
-	//
-	// 			if (slug !== $selectedRecording) audioFile.play();
-	//
-	// 			if ($streamingData[$selectedRecording]?.duration !== audioFile.duration) {
-	// 				$streamingData[$selectedRecording].duration = audioFile.duration;
-	// 			}
-	// 		};
-	// 	}
-	// };
-
-	// const playPauseAudio = () => {
-	// 	if (!audioFile) {
-	// 		loading = true;
-	// 		replaceAudio(audioUrl);
-	// 		loading = false;
-	// 	}
-	//
-	// 	if (!audioFile) return;
-	//
-	// 	if (audioFile.ended || currentTime === totalTrackTime) {
-	// 		audioFile.currentTime = 0;
-	// 		songIndex = 0;
-	// 	}
-	//
-	// 	if (audioFile.paused) {
-	// 		recordingPlaying.set(true);
-	// 		toggleTimeRunning();
-	// 		audioFile.play();
-	// 	} else {
-	// 		recordingPlaying.set(false);
-	// 		toggleTimeRunning();
-	// 		audioFile.pause();
-	// 	}
-	// };
-
-	// const reloadPlayer = async (slug: string | null) => {
-	// 	if (!slug) return;
-	//
-	// 	let progressWasSaved = false;
-	// 	if ($streamingData[slug]?.progress) progressWasSaved = true;
-	// 	else $streamingData[slug] = { progress: 0 };
-	//
-	// 	totalTrackTime = $streamingData[slug]?.duration ?? 0;
-	// 	currentTime = $streamingData[slug]?.progress ?? 0;
-	// 	totalTimeDisplay = timeStringFromSeconds(totalTrackTime);
-	// 	currTimeDisplay = timeStringFromSeconds(currentTime);
-	//
-	// 	const selectedCue: Cue = await getCue();
-	// 	songs = selectedCue.songs;
-	// 	audioUrl = selectedCue.slug;
-	//
-	// 	if (!$streamingData[slug]?.title) {
-	// 		$streamingData[slug].title = $feed.find((post) => post.date === slug)?.title ?? '';
-	// 	}
-	// 	recTitle = $streamingData[slug].title ?? '';
-	//
-	// 	if (progressWasSaved) getPlayingSong(currentTime);
-	// 	refreshTrack();
-	//
-	// 	if (!firstLoad) {
-	// 		replaceAudio(audioUrl);
-	// 		playPauseAudio();
-	//
-	// 		if (scrubToTime !== null && $cueJump) scrubToTime($cueJump);
-	// 	} else firstLoad = false;
-	// };
-	//
-	// const rewindAudio = () => {
-	// 	if (!audioFile) return;
-	// 	debounce(() => scrubToTime(currentTime - 30), 100)();
-	// };
-	// const forwardAudio = () => {
-	// 	if (!audioFile) return;
-	// 	debounce(() => scrubToTime(currentTime + 30), 100)();
-	// };
-	// const mute = () => {
-	// 	if (!audioFile) return;
-	// 	audioFile.muted = !audioFile.muted;
-	// };
 
 	let audio: HTMLAudioElement | null = $state(null);
 	let loadedAudio: string | undefined = $state(undefined);
@@ -331,18 +173,6 @@
 		{updateProgress}
 		{seekToSong}
 	></ProgressBar>
-	<!-- <Controls -->
-	<!-- 	bind:isPlaying={$recordingPlaying} -->
-	<!-- 	loading={loading || !audioFile} -->
-	<!-- 	{songIndex} -->
-	<!-- 	{mute} -->
-	<!-- 	muted={audioFile?.muted} -->
-	<!-- 	lastSong={songs ? songs.length - 1 : 0} -->
-	<!-- 	rewind={rewindAudio} -->
-	<!-- 	playPause={playPauseAudio} -->
-	<!-- 	forward={forwardAudio} -->
-	<!-- /> -->
-	<!---->
 	<TrackInfo
 		loading={!loadedAudio}
 		isPlaying={audioStore.isPlaying}
@@ -352,17 +182,6 @@
 		trackArtist={playingSongArtist}
 		{cueTitle}
 	/>
-	<!---->
-	<!-- <ProgressBar -->
-	<!-- 	isPlaying={$recordingPlaying} -->
-	<!-- 	totalTrackTime={totalTrackTime || 0} -->
-	<!-- 	{currentTime} -->
-	<!-- 	audioNotLoaded={!audioFile} -->
-	<!-- 	bind:songIndex -->
-	<!-- 	songs={songs || []} -->
-	<!-- 	scrub={scrubToTime} -->
-	<!-- 	{seekToSong} -->
-	<!-- /> -->
 </footer>
 
 <style lang="scss">
