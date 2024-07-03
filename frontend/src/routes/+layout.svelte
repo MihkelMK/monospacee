@@ -61,6 +61,13 @@
 		kernSilmNurk = Math.round(nurk / 30) * 30;
 	};
 
+	let currentTrack = $state(data.selected);
+	let currentTrackLink = $derived(currentTrack.split('.')[0].split('/')[2]);
+
+	$effect(() => {
+		currentTrack = audioStore.selectedRecording;
+	});
+
 	onMount(() => {
 		if (browser) {
 			const observer = new IntersectionObserver(
@@ -109,10 +116,7 @@
 			</ul>
 			<ul>
 				<li>
-					<a
-						class="secondary glow"
-						href={`/${audioStore.selectedRecording?.split('.')[0].split('/')[2]}`}>/mnt/current</a
-					>
+					<a class="secondary glow" href={`/${currentTrackLink}`}>/mnt/current</a>
 				</li>
 			</ul>
 		</nav>

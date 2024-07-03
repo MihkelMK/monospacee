@@ -2,6 +2,7 @@ import type { Post, PostType } from '$lib/types';
 import { timeToPercent } from '$lib/utils';
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
+import { browser } from '$app/environment';
 
 export const feed: Writable<Post[]> = writable([]);
 
@@ -10,7 +11,7 @@ export const cueJump: Writable<number | undefined> = writable(undefined);
 export const visiblePostTypes: Writable<PostType[]> = writable(['project', 'event', 'stream']);
 
 export class AudioStore {
-	selectedRecording: string | null = $state('/recordings/2024-06-08.mp3');
+	selectedRecording: string | null = $state('');
 	isPlaying: boolean = $state(false);
 	isMuted: boolean = $state(false);
 	currentTime: number = $state(0);
@@ -21,7 +22,7 @@ export class AudioStore {
 
 	constructor() {
 		// Load progress for the initial selected recording (if any) on instantiation
-		if (typeof window !== 'undefined') {
+		if (browser) {
 			// Ensure this runs only in the browser
 			this.selectedRecording = this.loadSelection();
 			this.currentTime = this.loadProgress(this.selectedRecording) || 0;
@@ -64,7 +65,7 @@ export class AudioStore {
 
 	// Save the current progress to local storage
 	saveProgress() {
-		if (this.selectedRecording) {
+		if (browser && this.selectedRecording) {
 			const progressData = JSON.parse(localStorage.getItem('audioProgress') || '{}');
 			progressData['selected'] = this.selectedRecording;
 			progressData[this.selectedRecording] = this.currentTime;
@@ -73,13 +74,15 @@ export class AudioStore {
 	}
 
 	loadSelection() {
-		const progressData = JSON.parse(localStorage.getItem('audioProgress') || '{}');
-		return progressData['selected'] || '/recordings/2024-06-08.mp3';
+		if (browser) {
+			const progressData = JSON.parse(localStorage.getItem('audioProgress') || '{}');
+			return progressData['selected'] || '/recordings/2024-06-08.mp3';
+		}
 	}
 
 	// Load the progress from local storage
 	loadProgress(recording: string | null): number | null {
-		if (recording) {
+		if (browser && recording) {
 			const progressData = JSON.parse(localStorage.getItem('audioProgress') || '{}');
 			return progressData[recording] || null;
 		}
