@@ -109,7 +109,10 @@
 			</ul>
 			<ul>
 				<li>
-					<a class="secondary glow" href={`${audioStore.selectedRecording?.split('.')[0].split('/')[2]}`}>/mnt/current</a>
+					<a
+						class="secondary glow"
+						href={`/${audioStore.selectedRecording?.split('.')[0].split('/')[2]}`}>/mnt/current</a
+					>
 				</li>
 			</ul>
 		</nav>
