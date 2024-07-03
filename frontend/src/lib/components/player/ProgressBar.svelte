@@ -36,7 +36,7 @@
 	// });
 	const {
 		duration,
-		progress,
+		currentTime,
 		songs,
 		playingSongIndex,
 		loading,
@@ -45,16 +45,35 @@
 		seekToSong
 	} = $props<{
 		duration: number;
-		progress: number;
+		currentTime: number;
 		songs: Song[] | undefined;
 		playingSongIndex: number | undefined;
 		loading: boolean;
 		isPlaying: boolean;
-		updateProgress: (event: Event) => void;
+		updateProgress: (time: number) => boolean;
 		seekToSong: (trackIndex: number) => void;
 	}>();
 
+	let scrubbing = $state(false);
 	let opacity = $derived(isPlaying ? '1' : '0.6');
+	let scrubTime = $state(0);
+	let shownProgress = $derived.by(() => {
+		// The Math.abs check keeps the progress bar from flickering
+		// after the user has scrubbed time.
+		// The first currentTime update still has the old, pre scrub time
+		if (scrubbing || Math.abs(scrubTime - currentTime) > 4) {
+			return timeToPercent(scrubTime, duration);
+		} else {
+			return timeToPercent(currentTime, duration);
+		}
+	});
+
+	$effect(() => {
+		if (!scrubbing) {
+			scrubTime = currentTime;
+		}
+	});
+	$inspect(scrubbing, shownProgress);
 </script>
 
 <div class="player_progress">
@@ -86,10 +105,17 @@
 		type="range"
 		max={String(duration)}
 		min="0"
-		value={progress}
-		oninput={updateProgress}
+		bind:value={scrubTime}
+		onpointerdown={() => (scrubbing = true)}
+		onpointerup={() => {
+			scrubbing = updateProgress(scrubTime);
+		}}
+		ontouchstart={() => (scrubbing = true)}
+		ontouchend={() => {
+			scrubbing = updateProgress(scrubTime);
+		}}
 	/>
-	<span class="player_progress_bar" style="width: {progress}%; opacity:{opacity}"></span>
+	<span class="player_progress_bar" style="width: {shownProgress}%; opacity:{opacity}"></span>
 </div>
 
 <style lang="scss">

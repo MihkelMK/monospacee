@@ -213,12 +213,11 @@
 		audioStore.updateVolume(audio.volume);
 	}
 
-	function updateProgress(event: Event) {
-		if (!audio) return;
+	function updateProgress(time: number) {
+		if (!audio || !time) return false;
 
-		const target = event.target as HTMLInputElement;
-		const value = parseFloat(target.value);
-		audio.currentTime = (value / 100) * audio.duration;
+		audio.currentTime = time;
+		return false;
 	}
 
 	function loadNewSong(selectedRecording: string | null, startAfterLoad: boolean) {
@@ -324,7 +323,7 @@
 
 	<ProgressBar
 		duration={audioStore.duration}
-		progress={audioStore.progress}
+		currentTime={audioStore.currentTime}
 		songs={cue?.songs}
 		{playingSongIndex}
 		isPlaying={audioStore.isPlaying}
