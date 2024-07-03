@@ -32,24 +32,37 @@
 		})
 	);
 
+	let is_tracklist_playing: boolean = $derived(
+		audioStore.selectedRecording === '/recordings/' + cue.slug
+	);
+
 	$effect(() => {
-		scroll_on_change(last_track);
+		if (is_tracklist_playing) {
+			scroll_on_change(last_track);
+		}
 	});
 </script>
 
 <h3 id="tracklist">
-	<span>Tracklist</span><small>[{cue.songs.indexOf(closest) + 1}/{cue.songs.length}]</small>
+	<span>Tracklist</span>
+	{#if is_tracklist_playing}
+		<small>[{cue.songs.indexOf(closest) + 1}/{cue.songs.length}]</small>
+	{:else}
+		<small>[0/{cue.songs.length}]</small>
+	{/if}
 </h3>
 <nav>
 	<ul bind:this={list_element}>
 		{#each cue.songs as song, i}
 			<li id={String(song.start)}>
 				<button
-					class={closest.start === song.start
-						? 'current glow-sm'
-						: audioStore.currentTime >= song.start
-							? 'played'
-							: ''}
+					class={!is_tracklist_playing
+						? ''
+						: closest.start === song.start
+							? 'current glow-sm'
+							: audioStore.currentTime >= song.start
+								? 'played'
+								: ''}
 					onclick={() => scrub(song.start, cue.slug)}
 				>
 					<p>
