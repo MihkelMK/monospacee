@@ -62,7 +62,7 @@
 	};
 
 	let currentTrack = $state(data.selected);
-	let currentTrackLink = $derived(currentTrack.split('/')[2].split('.')[0]);
+	let currentTrackLink = $derived(currentTrack?.split('/')[2]?.split('.')[0] || '');
 
 	$effect(() => {
 		if (audioStore.selectedRecording) {
