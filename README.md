@@ -2,12 +2,14 @@
 
 Blog style website for the DJ duo monospacee.
 
+Source code is available under the GPLv3 license. Content is available under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
+
 ## Features
 
 - Blog posts generated from markdown
 - Audio player with song timestamps read from .cue files
 - Progress for each recording saved into Local Storage
-- Keyboard controlls for playback and post filtration
+- Keyboard controls for playback and post filtration
 - Programmatically generated OG (social preview) images
 - Programmatically generated podcast RSS feed
 
@@ -28,34 +30,34 @@ Blog style website for the DJ duo monospacee.
 Clone the project
 
 ```bash
-  git clone git@github.com:MihkelMK/monospacee.git
+git clone git@github.com:MihkelMK/monospacee.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd monospacee
+cd monospacee
 ```
 
 Install dependencies
 
 ```bash
-  cd frontend && pnpm install
-  cd og && pnpm install
+cd frontend && pnpm install
+cd og && pnpm install
 ```
 
 Start the OG image API
 
 ```bash
-  cd og
-  pnpm dev
+cd og
+pnpm dev
 ```
 
 Start the website
 
 ```bash
-  cd frontend
-  pnpm dev
+cd frontend
+pnpm dev
 ```
 
 ## Deployment
@@ -65,7 +67,7 @@ Deployment is handled with Docker Compose
 In the project root, run
 
 ```bash
-  docker compose up --build
+docker compose up --build
 ```
 
 This exposes the frontend on `localhost:9001` and the OG image API on `localhost:9002`.
@@ -76,24 +78,15 @@ This exposes the frontend on `localhost:9001` and the OG image API on `localhost
 
 - Livestream support ([Icecast](https://icecast.org/)?)
 
-- Rewrite streaming progress code
-
-  - Right now, switching recordings sometimes overwrites the next recordings progess with last recordings progress
-
-- Keyboard shortcut cheatsheet/legend
-
-- Move to selfhosted [Gitea](https://github.com/go-gitea/gitea) instance
-  - Get SSH auth working
-
 ## Color Reference
 
-| Color      | Hex                                                              |
-| ---------- | ---------------------------------------------------------------- |
-| Primary    | ![#a160cd](https://via.placeholder.com/10/a160cd?text=+) #a160cd |
-| Secondary  | ![#75c6e6](https://via.placeholder.com/10/75c6e6?text=+) #75c6e6 |
-| Contrast   | ![#e7eaee](https://via.placeholder.com/10/e7eaee?text=+) #e7eaee |
-| Text       | ![#bdc3cb](https://via.placeholder.com/10/bdc3cb?text=+) #bdc3cb |
-| Background | ![#14171c](https://via.placeholder.com/10/14171c?text=+) #14171c |
+| Color                                                                                                                        | Hex       |
+| ---------------------------------------------------------------------------------------------------------------------------- | --------- |
+| <img valign='middle' alt='#a160cd' src='https://readme-swatches.vercel.app/a160cd?style=round&right=4&bottom=0'/> Primary    | `#a160cd` |
+| <img valign='middle' alt='#75c6e6' src='https://readme-swatches.vercel.app/75c6e6?style=round&right=4&bottom=0'/> Secondary  | `#75c6e6` |
+| <img valign='middle' alt='#e7eaee' src='https://readme-swatches.vercel.app/e7eaee?style=round&right=4&bottom=0'/> Contrast   | `#e7eaee` |
+| <img valign='middle' alt='#bdc3cb' src='https://readme-swatches.vercel.app/bdc3cb?style=round&right=4&bottom=0'/> Text       | `#bdc3cb` |
+| <img valign='middle' alt='#14171c' src='https://readme-swatches.vercel.app/14171c?style=round&right=4&bottom=0'/> Background | `#14171c` |
 
 ## Contributing
 
