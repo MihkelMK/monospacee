@@ -80,13 +80,13 @@ This exposes the frontend on `localhost:9001` and the OG image API on `localhost
 
 ## Color Reference
 
-| Color                                                                                                               | Hex       |
-| ------------------------------------------------------------------------------------------------------------------- | --------- |
-| <img valign='middle' alt='#a160cd' src='https://readme-swatches.vercel.app/a160cd?style=round&right=4'/> Primary    | `#a160cd` |
-| <img valign='middle' alt='#75c6e6' src='https://readme-swatches.vercel.app/75c6e6?style=round&right=4'/> Secondary  | `#75c6e6` |
-| <img valign='middle' alt='#e7eaee' src='https://readme-swatches.vercel.app/e7eaee?style=round&right=4'/> Contrast   | `#e7eaee` |
-| <img valign='middle' alt='#bdc3cb' src='https://readme-swatches.vercel.app/bdc3cb?style=round&right=4'/> Text       | `#bdc3cb` |
-| <img valign='middle' alt='#14171c' src='https://readme-swatches.vercel.app/14171c?style=round&right=4'/> Background | `#14171c` |
+| Color                                                                                                                        | Hex       |
+| ---------------------------------------------------------------------------------------------------------------------------- | --------- |
+| <img valign='middle' alt='#a160cd' src='https://readme-swatches.vercel.app/a160cd?style=round&right=4&bottom=0'/> Primary    | `#a160cd` |
+| <img valign='middle' alt='#75c6e6' src='https://readme-swatches.vercel.app/75c6e6?style=round&right=4&bottom=0'/> Secondary  | `#75c6e6` |
+| <img valign='middle' alt='#e7eaee' src='https://readme-swatches.vercel.app/e7eaee?style=round&right=4&bottom=0'/> Contrast   | `#e7eaee` |
+| <img valign='middle' alt='#bdc3cb' src='https://readme-swatches.vercel.app/bdc3cb?style=round&right=4&bottom=0'/> Text       | `#bdc3cb` |
+| <img valign='middle' alt='#14171c' src='https://readme-swatches.vercel.app/14171c?style=round&right=4&bottom=0'/> Background | `#14171c` |
 
 ## Contributing
 
