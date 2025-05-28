@@ -1,8 +1,7 @@
 import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-import { escapeSvelte, mdsvex } from 'mdsvex';
-import { createHighlighter } from 'shiki';
+import { mdsvex } from 'mdsvex';
 import rehypeToc from '@jsdevtools/rehype-toc';
 import remarkSqueezeParagraphs from 'remark-squeeze-paragraphs';
 import remarkCapitalizeHeadings from 'remark-capitalize-headings';
@@ -28,15 +27,6 @@ const addTracklist = (tocNav) => {
 /** @type {import('mdsvex').MdsvexOptions} */
 const mdsvexOptions = {
 	extensions: ['.md'],
-	highlight: {
-		highlighter: async (code, lang = 'text') => {
-			const highlighter = await createHighlighter({ theme: 'one-dark-pro' });
-
-			const html = escapeSvelte(highlighter.codeToHtml(code, { lang }));
-
-			return `{@html \`${html}\`}`;
-		}
-	},
 	rehypePlugins: [
 		rehypeSlug,
 		[rehypeShiftHeading, { shift: 1 }],

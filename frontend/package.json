@@ -13,7 +13,6 @@
 	},
 	"devDependencies": {
 		"@picocss/pico": "^2.0.6",
-		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.18",
 		"@types/cookie": "^0.6.0",
 		"@types/eslint": "^8.56.10",
@@ -55,7 +54,6 @@
 		"rehype-slug": "^6.0.0",
 		"remark-capitalize-headings": "^2.0.1",
 		"remark-sectionize": "^2.0.0",
-		"remark-squeeze-paragraphs": "^6.0.0",
-		"shiki": "^1.10.0"
+		"remark-squeeze-paragraphs": "^6.0.0"
 	}
 }
