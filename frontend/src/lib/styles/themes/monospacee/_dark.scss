@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:color';
 @use './colors.scss' as *;
 @use '@picocss/pico/scss/settings' as *;
 @use '@picocss/pico/scss/helpers/functions';
@@ -6,8 +7,9 @@
 
 // Default: Dark theme
 @mixin theme {
-	#{$css-var-prefix}background-color: #{mix($black, $grey-900, 37.5%)};
-	#{$css-var-prefix}background-color-layer: #{rgb(mix($black, $grey-900, 37.5%), 1)};
+	color-scheme: dark;
+	#{$css-var-prefix}background-color: #{color.mix($black, $grey-900, 37.5%)};
+	#{$css-var-prefix}background-color-layer: #{rgb(color.mix($black, $grey-900, 37.5%), 1)};
 
 	// Text color
 	#{$css-var-prefix}color: #{$grey-200};
@@ -17,7 +19,7 @@
 
 	// Muted colors
 	#{$css-var-prefix}muted-color: #{$grey-500};
-	#{$css-var-prefix}muted-border-color: #{mix($grey-900, $grey-800, 75%)};
+	#{$css-var-prefix}muted-border-color: #{color.mix($grey-900, $grey-800, 75%)};
 
 	// Primary colors
 	#{$css-var-prefix}primary: theme-colors.get('primary', 'dark');
@@ -30,8 +32,14 @@
 	#{$css-var-prefix}primary-hover-underline: var(#{$css-var-prefix}primary-hover);
 	#{$css-var-prefix}primary-focus: theme-colors.get('primary-focus', 'dark');
 	#{$css-var-prefix}primary-inverse: theme-colors.get('primary-inverse', 'dark');
-	#{$css-var-prefix}primary-glow: #{transparentize(theme-colors.get('primary-glow', 'dark'), 0.4)};
-	#{$css-var-prefix}primary-glow-sm: #{transparentize(theme-colors.get('primary-glow', 'dark'), 0.7)};
+	#{$css-var-prefix}primary-glow: #{color.adjust(
+			theme-colors.get('primary-glow', 'dark'),
+			$alpha: -0.4
+		)};
+	#{$css-var-prefix}primary-glow-sm: #{color.adjust(
+			theme-colors.get('primary-glow', 'dark'),
+			$alpha: -0.7
+		)};
 
 	// Secondary colors
 	#{$css-var-prefix}secondary: theme-colors.get('secondary', 'dark');
@@ -46,13 +54,13 @@
 	#{$css-var-prefix}secondary-hover-border: var(#{$css-var-prefix}secondary-hover-background);
 	#{$css-var-prefix}secondary-hover-underline: var(#{$css-var-prefix}secondary-hover);
 	#{$css-var-prefix}secondary-focus: theme-colors.get('secondary-focus', 'dark');
-	#{$css-var-prefix}secondary-glow: #{transparentize(
+	#{$css-var-prefix}secondary-glow: #{color.adjust(
 			theme-colors.get('secondary-glow', 'dark'),
-			0.4
+			$alpha: -0.4
 		)};
-	#{$css-var-prefix}secondary-glow-sm: #{transparentize(
+	#{$css-var-prefix}secondary-glow-sm: #{color.adjust(
 			theme-colors.get('secondary-glow', 'dark'),
-			0.7
+			$alpha: -0.7
 		)};
 
 	// Contrast colors
@@ -65,35 +73,12 @@
 	#{$css-var-prefix}contrast-hover-border: var(#{$css-var-prefix}contrast-hover-background);
 	#{$css-var-prefix}contrast-hover-underline: var(#{$css-var-prefix}contrast-hover);
 	#{$css-var-prefix}contrast-focus: #{rgba($grey-500, 0.25)};
-	#{$css-var-prefix}contrast-inverse: #{mix($black, $grey-900, 50%)};
-	#{$css-var-prefix}contrast-glow: #{transparentize($grey-300, 0.4)};
-	#{$css-var-prefix}contrast-glow-sm: #{transparentize($grey-300, 0.7)};
-
-	// Text Glow
-	.glow {
-		#{$css-var-prefix}glow-color: var(#{$css-var-prefix}primary-glow);
-
-		&.secondary {
-			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}secondary-glow);
-		}
-		&.contrast {
-			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}contrast-glow);
-		}
-
-		&-sm {
-			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}primary-glow-sm);
-
-			&.secondary {
-				#{$css-var-prefix}glow-color: var(#{$css-var-prefix}secondary-glow-sm);
-			}
-			&.contrast {
-				#{$css-var-prefix}glow-color: var(#{$css-var-prefix}contrast-glow-sm);
-			}
-		}
-	}
+	#{$css-var-prefix}contrast-inverse: #{color.mix($black, $grey-900, 50%)};
+	#{$css-var-prefix}contrast-glow: #{color.adjust($grey-300, $alpha: -0.4)};
+	#{$css-var-prefix}contrast-glow-sm: #{color.adjust($grey-300, $alpha: -0.7)};
 
 	// Box shadow
-	#{$css-var-prefix}box-shadow: functions.shadow(mix($black, $grey-950));
+	#{$css-var-prefix}box-shadow: functions.shadow(color.mix($black, $grey-950));
 
 	// Typography
 	@if map.get($modules, 'content/typography') {
@@ -110,8 +95,8 @@
 		#{$css-var-prefix}mark-color: #{$white};
 
 		// Inserted (<ins>) & Deleted (<del>)
-		#{$css-var-prefix}ins-color: #{mix($jade-450, $grey-200)};
-		#{$css-var-prefix}del-color: #{mix($red-500, $grey-200)};
+		#{$css-var-prefix}ins-color: #{color.mix($jade-450, $grey-200)};
+		#{$css-var-prefix}del-color: #{color.mix($red-500, $grey-200)};
 
 		// Blockquote
 		#{$css-var-prefix}blockquote-border-color: var(#{$css-var-prefix}muted-border-color);
@@ -134,7 +119,7 @@
 
 	// Code
 	@if map.get($modules, 'content/code') {
-		#{$css-var-prefix}code-background-color: #{mix($grey-900, $grey-850, 75%)};
+		#{$css-var-prefix}code-background-color: #{color.mix($grey-900, $grey-850, 75%)};
 		#{$css-var-prefix}code-color: #{$grey-400};
 		#{$css-var-prefix}code-kbd-background-color: var(#{$css-var-prefix}color);
 		#{$css-var-prefix}code-kbd-color: var(#{$css-var-prefix}background-color);
@@ -142,37 +127,33 @@
 
 	// Form elements
 	@if map.get($modules, 'forms/basics') {
-		#{$css-var-prefix}form-element-background-color: #{mix($grey-900, $grey-850)};
+		#{$css-var-prefix}form-element-background-color: #{color.mix($grey-900, $grey-850)};
 		#{$css-var-prefix}form-element-selected-background-color: #{$grey-800};
 		#{$css-var-prefix}form-element-border-color: #{$grey-800};
 		#{$css-var-prefix}form-element-color: #{$grey-100};
 		#{$css-var-prefix}form-element-placeholder-color: #{$grey-400};
-		#{$css-var-prefix}form-element-active-background-color: #{mix($grey-900, $grey-850, 75%)};
+		#{$css-var-prefix}form-element-active-background-color: #{color.mix($grey-900, $grey-850, 75%)};
 		#{$css-var-prefix}form-element-active-border-color: var(#{$css-var-prefix}primary-border);
 		#{$css-var-prefix}form-element-focus-color: var(#{$css-var-prefix}primary-border);
 		#{$css-var-prefix}form-element-disabled-opacity: 0.5;
-		#{$css-var-prefix}form-element-invalid-border-color: #{mix($red-500, $grey-600)};
-		#{$css-var-prefix}form-element-invalid-active-border-color: #{mix($red-500, $grey-600, 75%)};
+		#{$css-var-prefix}form-element-invalid-border-color: #{color.mix($red-500, $grey-600)};
+		#{$css-var-prefix}form-element-invalid-active-border-color: #{color.mix(
+				$red-500,
+				$grey-600,
+				75%
+			)};
 		#{$css-var-prefix}form-element-invalid-focus-color: var(
 			#{$css-var-prefix}form-element-invalid-active-border-color
 		);
-		#{$css-var-prefix}form-element-valid-border-color: #{mix($jade-450, $grey-600)};
-		#{$css-var-prefix}form-element-valid-active-border-color: #{mix($jade-450, $grey-600, 75%)};
+		#{$css-var-prefix}form-element-valid-border-color: #{color.mix($jade-450, $grey-600)};
+		#{$css-var-prefix}form-element-valid-active-border-color: #{color.mix(
+				$jade-450,
+				$grey-600,
+				75%
+			)};
 		#{$css-var-prefix}form-element-valid-focus-color: var(
 			#{$css-var-prefix}form-element-valid-active-border-color
 		);
-
-		// Focus for buttons, radio and select
-		input:is(
-				[type='submit'],
-				[type='button'],
-				[type='reset'],
-				[type='checkbox'],
-				[type='radio'],
-				[type='file']
-			) {
-			#{$css-var-prefix}form-element-focus-color: var(#{$css-var-prefix}primary-focus);
-		}
 	}
 
 	// Switch (input[type="checkbox"][role="switch"])
@@ -202,10 +183,10 @@
 
 	// Card (<article>)
 	@if map.get($modules, 'components/card') {
-		#{$css-var-prefix}card-background-color: #{mix($black, $grey-900, 25%)};
+		#{$css-var-prefix}card-background-color: #{color.mix($black, $grey-900, 25%)};
 		#{$css-var-prefix}card-border-color: var(#{$css-var-prefix}card-background-color);
 		#{$css-var-prefix}card-box-shadow: var(#{$css-var-prefix}box-shadow);
-		#{$css-var-prefix}card-sectioning-background-color: #{mix($black, $grey-900, 12.5%)};
+		#{$css-var-prefix}card-sectioning-background-color: #{color.mix($black, $grey-900, 12.5%)};
 	}
 
 	// Dropdown (details.dropdown)
@@ -224,7 +205,7 @@
 
 	// Modal (<dialog>)
 	@if map.get($modules, 'components/modal') {
-		#{$css-var-prefix}modal-overlay-background-color: #{rgba(mix($black, $grey-950), 0.75)};
+		#{$css-var-prefix}modal-overlay-background-color: #{rgba(color.mix($black, $grey-950), 0.75)};
 	}
 
 	// Progress
@@ -237,6 +218,26 @@
 	@if map.get($modules, 'components/tooltip') {
 		#{$css-var-prefix}tooltip-background-color: var(#{$css-var-prefix}contrast-background);
 		#{$css-var-prefix}tooltip-color: var(#{$css-var-prefix}contrast-inverse);
+	}
+
+	// Form validation icons
+	@if map.get($modules, 'forms/basics') {
+		#{$css-var-prefix}icon-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{functions.display-rgb(color.mix($jade-450, $grey-600))}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+		#{$css-var-prefix}icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{functions.display-rgb(color.mix($red-500, $grey-600))}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
+	}
+
+	// Focus for buttons, radio and select
+	@if map.get($modules, 'forms/basics') {
+		input:is(
+				[type='submit'],
+				[type='button'],
+				[type='reset'],
+				[type='checkbox'],
+				[type='radio'],
+				[type='file']
+			) {
+			#{$css-var-prefix}form-element-focus-color: var(#{$css-var-prefix}primary-focus);
+		}
 	}
 
 	// Chevron icons
@@ -253,12 +254,6 @@
 				}
 			}
 		}
-	}
-
-	// Form validation icons
-	@if map.get($modules, 'forms/basics') {
-		#{$css-var-prefix}icon-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{functions.display-rgb(mix($jade-450, $grey-600))}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-		#{$css-var-prefix}icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{functions.display-rgb(mix($red-500, $grey-600))}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
 	}
 
 	// Loading icon (animated)
@@ -281,6 +276,26 @@
 		}
 	}
 
-	// Document
-	color-scheme: dark;
+	// Text Glow
+	.glow {
+		#{$css-var-prefix}glow-color: var(#{$css-var-prefix}primary-glow);
+
+		&.secondary {
+			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}secondary-glow);
+		}
+		&.contrast {
+			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}contrast-glow);
+		}
+
+		&-sm {
+			#{$css-var-prefix}glow-color: var(#{$css-var-prefix}primary-glow-sm);
+
+			&.secondary {
+				#{$css-var-prefix}glow-color: var(#{$css-var-prefix}secondary-glow-sm);
+			}
+			&.contrast {
+				#{$css-var-prefix}glow-color: var(#{$css-var-prefix}contrast-glow-sm);
+			}
+		}
+	}
 }
