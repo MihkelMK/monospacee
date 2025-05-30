@@ -110,7 +110,7 @@
 
 		<nav class="tags">
 			<ul>
-				{#each data.meta.tags as tag}
+				{#each data.meta.tags as tag (data.meta.title + tag)}
 					<li>
 						<small>&num;{tag}</small>
 					</li>

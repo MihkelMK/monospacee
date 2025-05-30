@@ -27,7 +27,7 @@
 	};
 </script>
 
-{#each posts as post}
+{#each posts as post (post.title)}
 	{#if $visiblePostTypes.includes(post.type)}
 		<article
 			transition:fly={{ y: 75, duration: 200, easing: cubicOut }}

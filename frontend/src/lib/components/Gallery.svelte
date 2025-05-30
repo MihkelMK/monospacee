@@ -11,7 +11,7 @@
 
 {#if images}
 	<ul class="gallery">
-		{#each images as { src, alt, title, link }, i}
+		{#each images as { src, alt, title, link }, i (src + String(i))}
 			<li class={title || link ? 'withText' : ''}>
 				<Image {src} {alt} loading={i < 3 ? 'eager' : 'lazy'} />
 				{#if title}

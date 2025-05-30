@@ -12,7 +12,7 @@
 </script>
 
 <ul class={className}>
-	{#each data as { href, icon, label }}
+	{#each data as { href, icon, label } (label + href)}
 		<li>
 			<SocialIcon {iconClassName} {href} {icon} label={label ? label : undefined} />
 		</li>
