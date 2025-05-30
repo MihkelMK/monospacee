@@ -10,38 +10,42 @@
 
 	import Kern from '$lib/components/Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
-	import { recordingPlaying, selectedRecording } from '$lib/store';
+	import { getAudioStore, setAudioStore } from '$lib/store.svelte';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import type { LayoutData } from './$types';
 
-	export let data;
+	interface Props {
+		data: LayoutData;
+		children?: import('svelte').Snippet;
+	}
 
-	let kernSilmNurk = 0;
-	let silmadPaigal = false;
+	let { data, children }: Props = $props();
+
+	setAudioStore();
+
+	const audioStore = getAudioStore();
+	let kernSilmNurk = $state(0);
 	let kernSilmV = "'";
 	let kernSilmP = "'";
-	let kernSuu = '◡';
-	let kern: HTMLElement;
+	let kernSuu = $state('◡');
+	let kern: HTMLElement | undefined = $state();
 
-	let innerWidth: number;
-	let scrolled = false;
-	let watcher: HTMLElement;
+	let innerWidth: number | undefined = $state();
+	let watcher: HTMLElement | undefined = $state();
+	let scrolled = $state(false);
 
 	const muudaSuud = (e: MouseEvent) => {
-		if (innerWidth < 768) return;
-		if (!e) return;
+		if (!innerWidth || !e) return;
 		if (getComputedStyle(e.target as Element).cursor === 'pointer') {
 			kernSuu = 'ₒ';
-			silmadPaigal = false;
 		} else {
 			kernSuu = '◡';
-			silmadPaigal = false;
 		}
 	};
 
 	const liigutaSilmi = (e: MouseEvent) => {
-		if (innerWidth < 768) return;
-		if (silmadPaigal || !e || $recordingPlaying) return;
+		if (!e || !innerWidth || !kern || audioStore.isPlaying) return;
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
 
@@ -55,6 +59,8 @@
 		kernSilmNurk = Math.round(nurk / 30) * 30;
 	};
 
+	let currentTrackLink = $derived(audioStore.selectedRecording?.split('/')[2]?.split('.')[0] || '');
+
 	onMount(() => {
 		if (browser) {
 			const observer = new IntersectionObserver(
@@ -64,7 +70,9 @@
 				{ threshold: 0.2, rootMargin: '5% 0px 0px 0px' }
 			);
 
-			observer.observe(watcher);
+			if (watcher) {
+				observer.observe(watcher);
+			}
 		}
 	});
 </script>
@@ -74,12 +82,14 @@
 <div
 	role="application"
 	class="app"
-	on:mousemove={liigutaSilmi}
-	on:mousemove={throttle(function (e) {
-		muudaSuud(e);
-	}, 100)}
->
-	<div bind:this={watcher} data-scroll-watcher />
+	onmousemove={(event) => {
+		liigutaSilmi(event);
+
+		throttle(function (e: MouseEvent) {
+			muudaSuud(e);
+		}, 100)?.(event);
+	}}>
+	<div bind:this={watcher} data-scroll-watcher></div>
 
 	<header class:scrolled>
 		<nav>
@@ -92,18 +102,19 @@
 						silmaNurk={kernSilmNurk}
 						vasakSilm={kernSilmV}
 						paremSilm={kernSilmP}
-						suu={kernSuu}
-					/>
+						suu={kernSuu} />
 				</li>
 			</ul>
 			<ul>
-				<li><a class="secondary glow" href={`/${$selectedRecording}`}>/mnt/current</a></li>
+				<li>
+					<a class="secondary glow" href={`/${currentTrackLink}`}>/mnt/current</a>
+				</li>
 			</ul>
 		</nav>
 	</header>
 	<div class="container">
 		<PageTransition url={data.url}>
-			<slot />
+			{@render children?.()}
 		</PageTransition>
 	</div>
 	<Player />

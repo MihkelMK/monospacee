@@ -4,9 +4,9 @@
 	"trailingComma": "none",
 	"printWidth": 100,
 	"proseWrap": "never",
-	"plugins": [
-		"prettier-plugin-svelte"
-	],
+	"htmlWhitespaceSensitivity": "ignore",
+	"bracketSameLine": true,
+	"plugins": ["prettier-plugin-svelte"],
 	"overrides": [
 		{
 			"files": "*.svelte",

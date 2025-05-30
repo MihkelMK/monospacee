@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Kern from '$lib/components/Kern.svelte';
-	import { page } from '$app/stores';
 </script>
 
 <section>
 	<Kern suu="-" silmaNurk={0} vasakSilm="ˣ" paremSilm="ˣ" />
-	<p>{$page.status}: {$page.error?.message}</p>
+	<p>{page.status}: {page.error?.message}</p>
 </section>
 
 <style lang="scss">

@@ -1,30 +1,40 @@
 <script lang="ts">
 	import * as config from '$lib/config';
-	import { formatDate, timeStringFromSeconds } from '$lib/utils';
-	import type { PostEvent } from '$lib/types';
+	import { formatDate, recordingPathFromDate } from '$lib/utils';
+	import Tracklist from '$lib/components/Tracklist.svelte';
+	import type { PostType } from '$lib/types';
 	import type { PageData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
-	import { selectedRecording, cueJump, streamingData } from '$lib/store';
+	import { cueJump, getAudioStore } from '$lib/store.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: progress = $streamingData[$selectedRecording].progress;
+	let { data }: Props = $props();
 
-	const loadToPlayer = (slug: string) => {
-		selectedRecording.set(slug);
+	const audioStore = getAudioStore();
+
+	const loadToPlayer = async (date: string) => {
+		const newPath = recordingPathFromDate(date);
+		if (audioStore.selectedRecording !== newPath) {
+			await audioStore.setRecording(newPath);
+		}
 	};
 
-	const getClass = (type: PostEvent) => {
+	const getClass = (type: PostType) => {
 		if (type === 'event') return 'secondary';
 		if (type === 'stream') return 'primary';
 		return 'contrast';
 	};
 
-	const scrubToSong = (start: number, audioUrl: string) => {
-		const cleanSlug = audioUrl.split('.').at(0);
-		if (!cleanSlug) return;
+	const scrubToSong = async (start: number, audioURL: string) => {
+		const date = audioURL.split('.').at(0);
+		if (!date) return;
 
-		if (cleanSlug != $selectedRecording) selectedRecording.set(cleanSlug);
+
+		await loadToPlayer(date);
+
 		cueJump.set(start);
 	};
 </script>
@@ -88,8 +98,7 @@
 			' called ' +
 			data.meta.title +
 			' by the DJ duo, monospacee.'
-	}}
-/>
+	}} />
 
 <article class="post {getClass(data.meta.type)}">
 	<header>
@@ -100,7 +109,7 @@
 
 		<nav class="tags">
 			<ul>
-				{#each data.meta.tags as tag}
+				{#each data.meta.tags as tag (data.meta.title + tag)}
 					<li>
 						<small>&num;{tag}</small>
 					</li>
@@ -109,54 +118,77 @@
 		</nav>
 	</header>
 
-	<main>
+	<main class={data.meta.recording ? 'recorded' : ''}>
 		<h3 id="sisukord">
 			Sisukord
 			{#if data.meta.recording}
 				<button
-					disabled={$selectedRecording === data.meta.date}
+					disabled={audioStore.selectedRecording === recordingPathFromDate(data.meta.date)}
 					data-tooltip="Load to player"
-					on:click={() => loadToPlayer(data.meta.date)}
-				>
-					<iconify-icon inline icon="pixelarticons:playlist" />
+					aria-labelledby="Load to player"
+					onclick={() => loadToPlayer(data.meta.date)}>
+					<iconify-icon inline icon="pixelarticons:playlist"></iconify-icon>
 				</button>
 			{/if}
 			{#if data.meta.youtube}
 				<a
 					role="button"
-					class="contrast"
 					href={`https://www.youtube.com/live/${data.meta.youtube}`}
 					data-tooltip="Watch on youtube"
-				>
-					<iconify-icon inline icon="mdi-youtube" />
+					target="_blank"
+					aria-labelledby="Watch on Youtube">
+					<iconify-icon inline icon="mdi-youtube"></iconify-icon>
 				</a>
 			{/if}
 		</h3>
 
-		<svelte:component this={data.content} />
+		<data.content />
 	</main>
 
-	{#if data.cue}
+	{#if data.streamed?.postCue}
 		<footer>
-			<h3 id="tracklist">Tracklist</h3>
-			<nav>
-				<ul>
-					{#each data.cue.songs as song}
-						<li class={progress >= song.start ? 'played' : ''}>
-							<button on:click={() => scrubToSong(song.start, data.cue.slug)}>
-								<span>[{timeStringFromSeconds(song.start)}]</span>
-								<strong>{song.title}</strong>
-								<small>/ {song.artist}</small>
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</nav>
+			{#await data.streamed.postCue}
+				<h3 id="tracklist">
+					<span>Tracklist</span>
+					<small>[0/0]</small>
+				</h3>
+			{:then cue}
+				{#if cue}
+					{@const recording = '/recordings/' + cue.slug}
+					{@const savedProgress = audioStore.loadProgress(recording)}
+					{@const currentSongIndex = audioStore.getCurrentSongIndex(savedProgress, cue)}
+					<h3 id="tracklist">
+						<span>Tracklist</span>
+						{#if audioStore.selectedRecording === recording && typeof audioStore.currentSongIndex === 'number'}
+							<small>
+								[{audioStore.currentSongIndex + 1}/{cue.songs.length}]
+							</small>
+						{:else if typeof currentSongIndex === 'number'}
+							<small>
+								[{currentSongIndex + 1}/{cue.songs.length}]
+							</small>
+						{:else}
+							<small>[0/{cue.songs.length}]</small>
+						{/if}
+					</h3>
+					<Tracklist {recording} {currentSongIndex} {savedProgress} {cue} scrub={scrubToSong} />
+				{/if}
+			{/await}
 		</footer>
 	{/if}
 </article>
 
 <style lang="scss">
+	footer h3 {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		small {
+			color: var(--muted-color);
+		}
+	}
+
 	.headerButtons {
 		place-self: center;
 		grid-row: span 2;
@@ -181,40 +213,6 @@
 
 		footer {
 			margin-bottom: var(--block-spacing-vertical);
-			ul {
-				flex-direction: column;
-				align-items: start;
-				li {
-					padding: calc(var(--nav-element-spacing-vertical) * 0.5)
-						calc(var(--nav-element-spacing-horizontal) * 0.5);
-					& button {
-						padding: calc(var(--nav-link-spacing-vertical) * 0.125)
-							calc(var(--nav-element-spacing-horizontal) * 0.125);
-						border-radius: calc(var(--border-radius) * 1.5);
-						text-align: start;
-						width: fit-content;
-						--background-color: transparent;
-						--border-color: transparent;
-						--color: var(--accent-color);
-
-						&:hover {
-							--color: var(--accent-hover);
-						}
-					}
-
-					&.played {
-						& button {
-							--color: color-mix(in srgb, var(--accent-color) 60%, rgba(0, 0, 0, 0.3));
-							@media only screen and (prefers-color-scheme: light) {
-								--color: color-mix(in srgb, var(--accent-color) 50%, rgba(255, 255, 255, 0.3));
-							}
-							&:hover {
-								--color: var(--accent-hover);
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 

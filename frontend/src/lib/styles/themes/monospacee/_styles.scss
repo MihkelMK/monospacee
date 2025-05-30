@@ -10,14 +10,15 @@
 
 :root {
 	// Typography
-	#{$css-var-prefix}font-family-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-		'Noto Color Emoji';
-	#{$css-var-prefix}font-family-sans-serif: 'Roboto Mono Variable', 'Share Tech Mono', 'Menlo',
-		'Consolas', 'Roboto Mono', 'Ubuntu Monospace', 'Noto Mono', 'Oxygen Mono', 'Liberation Mono',
-		monospace, system-ui, sans-serif, var(#{$css-var-prefix}font-family-emoji);
-	#{$css-var-prefix}font-family-monospace: 'Share Tech Mono', 'Menlo', 'Consolas', 'Roboto Mono',
-		'Ubuntu Monospace', 'Noto Mono', 'Oxygen Mono', 'Liberation Mono', monospace,
-		var(#{$css-var-prefix}font-family-emoji);
+	#{$css-var-prefix}font-family-emoji:
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	#{$css-var-prefix}font-family-sans-serif:
+		'Roboto Mono Variable', 'Share Tech Mono', 'Menlo', 'Consolas', 'Roboto Mono',
+		'Ubuntu Monospace', 'Noto Mono', 'Oxygen Mono', 'Liberation Mono', monospace, system-ui,
+		sans-serif, var(#{$css-var-prefix}font-family-emoji);
+	#{$css-var-prefix}font-family-monospace:
+		'Share Tech Mono', 'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace', 'Noto Mono',
+		'Oxygen Mono', 'Liberation Mono', monospace, var(#{$css-var-prefix}font-family-emoji);
 	#{$css-var-prefix}font-accent: var(#{$css-var-prefix}font-family-monospace);
 	#{$css-var-prefix}font-family: var(#{$css-var-prefix}font-family-sans-serif);
 	#{$css-var-prefix}line-height: 1.6;
@@ -34,17 +35,6 @@
 	--fs-700: clamp(1.94rem, calc(1.77rem + 0.87vw), 2.44rem);
 	--fs-800: clamp(2.33rem, calc(2.08rem + 1.25vw), 3.05rem);
 	--fs-900: clamp(2.8rem, calc(2.45rem + 1.77vw), 3.82rem);
-
-	// Borders
-	#{$css-var-prefix}border-radius: 0.25rem;
-	#{$css-var-prefix}border-width: 0.0625rem;
-	#{$css-var-prefix}outline-width: 0.125rem;
-
-	// Transitions
-	#{$css-var-prefix}transition: 0.2s ease-in-out;
-
-	// Spacings
-	#{$css-var-prefix}spacing: 1rem;
 
 	// Spacings for typography elements
 	@if map.get($modules, 'content/typography') {
@@ -141,6 +131,19 @@
 		// Inspired by https://codepen.io/aleksander351/pen/KzgKPo
 		#{$css-var-prefix}icon-loading: url("data:image/svg+xml,%3Csvg fill='none' height='24' width='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' %3E%3Cstyle%3E g %7B animation: rotate 2s linear infinite; transform-origin: center center; %7D circle %7B stroke-dasharray: 75,100; stroke-dashoffset: -5; animation: dash 1.5s ease-in-out infinite; stroke-linecap: round; %7D @keyframes rotate %7B 0%25 %7B transform: rotate(0deg); %7D 100%25 %7B transform: rotate(360deg); %7D %7D @keyframes dash %7B 0%25 %7B stroke-dasharray: 1,100; stroke-dashoffset: 0; %7D 50%25 %7B stroke-dasharray: 44.5,100; stroke-dashoffset: -17.5; %7D 100%25 %7B stroke-dasharray: 44.5,100; stroke-dashoffset: -62; %7D %7D %3C/style%3E%3Cg%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='#{functions.display-rgb($zinc-400)}' stroke-width='4' /%3E%3C/g%3E%3C/svg%3E");
 	}
+
+	& {
+		// Borders
+		#{$css-var-prefix}border-radius: 0.25rem;
+		#{$css-var-prefix}border-width: 0.0625rem;
+		#{$css-var-prefix}outline-width: 0.125rem;
+
+		// Transitions
+		#{$css-var-prefix}transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+		// Spacings
+		#{$css-var-prefix}spacing: 1rem;
+	}
 }
 
 // Responsives spacings
@@ -225,6 +228,20 @@
 
 // Typography
 @if map.get($modules, 'content/typography') {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	small,
+	strong,
+	span,
+	label {
+		transition: color var(#{$css-var-prefix}transition);
+	}
+
 	// Small
 	small {
 		#{$css-var-prefix}font-size: 0.875em;
@@ -436,8 +453,8 @@ input:not(
 }
 
 .glow {
-	text-shadow: var(#{$css-var-prefix}glow_color) 0px 0px 20px;
+	text-shadow: var(#{$css-var-prefix}glow-color) 0px 0px 20px;
 	&-sm {
-		text-shadow: var(#{$css-var-prefix}glow_color) 0px 0px 15px;
+		text-shadow: var(#{$css-var-prefix}glow-color) 0px 0px 15px;
 	}
 }

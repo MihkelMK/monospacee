@@ -1,69 +1,71 @@
 <script lang="ts">
-	import type { Song } from '$lib/types';
-	import { trimString } from '$lib/utils';
-	import { createEventDispatcher } from 'svelte';
+	import { getAudioStore } from '$lib/store.svelte';
+	import { trimString, timeToPercent } from '$lib/utils.js';
 
-	export let totalTrackTime: number;
-	export let currentTime: number;
-	export let songIndex: number;
-	export let audioNotLoaded: boolean;
-	export let isPlaying: boolean;
-	export let songs: Song[];
+	const { loading, updateProgress, seekToSong } = $props<{
+		loading: boolean;
+		updateProgress: (time: number) => boolean;
+		seekToSong: (trackIndex: number) => void;
+	}>();
 
-	const dispatch = createEventDispatcher();
-	const timeToPercent = (time: number, totalTime: number) =>
-		Math.min((time * 100) / totalTime, 100);
+	const audioStore = getAudioStore();
 
-	let scrubTime: number;
-	let scrubbing = false;
+	let scrubbing = $state(false);
+	let opacity = $derived(audioStore.isPlaying ? '1' : '0.6');
+	let scrubTime = $state(0);
+	let shownProgress = $derived.by(() => {
+		// The Math.abs check keeps the progress bar from flickering
+		// after the user has scrubbed time.
+		// The first currentTime update still has the old, pre scrub time
+		if (scrubbing || Math.abs(scrubTime - audioStore.currentTime) > 4) {
+			return timeToPercent(scrubTime, audioStore.duration);
+		} else {
+			return timeToPercent(audioStore.currentTime, audioStore.duration);
+		}
+	});
 
-	$: scrubTime = scrubbing ? scrubTime : currentTime;
-	$: opacity = isPlaying ? '1' : '0.6';
-	$: progress = scrubTime ? scrubTime * (100 / totalTrackTime) : 0;
+	$effect(() => {
+		if (!scrubbing) {
+			scrubTime = audioStore.currentTime;
+		}
+	});
 </script>
 
 <div class="player_progress">
-	{#if songs && totalTrackTime}
-		{#each songs as song, i}
+	{#if audioStore.cue?.songs && audioStore.duration}
+		{#each audioStore.cue?.songs as song, i (song.title + String(i))}
 			<label
-				style="--startsAt:{timeToPercent(song.start, totalTrackTime)}%;"
-				class="player_progress_step {i === songIndex ? 'player_progress_step_active' : ''}"
-				data-placement={timeToPercent(song.start, totalTrackTime) < 35
+				style="--startsAt:{timeToPercent(song.start, audioStore.duration)}%;"
+				class="player_progress_step {i === audioStore.currentSongIndex
+					? 'player_progress_step_active'
+					: ''}"
+				data-placement={timeToPercent(song.start, audioStore.duration) < 35
 					? 'right'
-					: timeToPercent(song.start, totalTrackTime) > 65
+					: timeToPercent(song.start, audioStore.duration) > 65
 						? 'left'
 						: 'top'}
-				data-tooltip={trimString(`${song.title} - ${song.artist}`, 40)}
-			>
+				data-tooltip={trimString(`${song.title} - ${song.artist}`, 40)}>
 				<input
-					disabled={audioNotLoaded}
+					disabled={loading}
 					type="radio"
 					aria-label="Skip to song: {song.title}"
-					checked={i === songIndex}
-					on:click={() => dispatch('seekToSong', i)}
-				/>
+					checked={i === audioStore.currentSongIndex}
+					onclick={() => seekToSong(i)} />
 			</label>
 		{/each}
 	{/if}
 	<input
 		aria-label="player progress"
-		disabled={audioNotLoaded}
+		disabled={loading}
 		type="range"
-		max={`${totalTrackTime}`}
+		max={String(audioStore.duration)}
 		min="0"
 		bind:value={scrubTime}
-		on:pointerdown={() => (scrubbing = true)}
-		on:pointerup={() => {
-			dispatch('scrub', scrubTime);
-			scrubbing = false;
-		}}
-		on:touchstart={() => (scrubbing = true)}
-		on:touchend={() => {
-			dispatch('scrub', scrubTime);
-			scrubbing = false;
-		}}
-	/>
-	<span class="player_progress_bar" style="width: {progress}%; opacity:{opacity}" />
+		onpointerdown={() => (scrubbing = true)}
+		onpointerup={() => {
+			scrubbing = updateProgress(scrubTime);
+		}} />
+	<span class="player_progress_bar" style="width: {shownProgress}%; opacity:{opacity}"></span>
 </div>
 
 <style lang="scss">

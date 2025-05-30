@@ -1,48 +1,44 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { getAudioStore } from '$lib/store.svelte';
 
-	let dispatch = createEventDispatcher();
+	const { togglePlay, toggleMute, skip, loading } = $props<{
+		togglePlay: () => void;
+		toggleMute: () => void;
+		skip: (seconds: number) => void;
+		loading: boolean;
+	}>();
 
-	export let isPlaying = false;
-	export let songIndex: number;
-	export let lastSong: number;
-	export let loading: boolean;
-	export let muted = false;
+	const audioStore = getAudioStore();
 </script>
 
 <button
-	aria-label="Previous song"
+	aria-label="Skip back 30 seconds"
 	class="player_button player_button_rewind"
-	on:click={() => dispatch('rewind')}
-	disabled={songIndex === 0 || loading}
->
-	<iconify-icon inline icon="pixelarticons:prev" />
+	onclick={() => skip(-30)}>
+	<iconify-icon inline icon="pixelarticons:prev"></iconify-icon>
 </button>
 
-<button
-	class="player_button player_button_play"
-	aria-label="Play pause audio"
-	on:click={() => dispatch('playPause')}
->
-	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'} />
+<button class="player_button player_button_play" aria-label="Play pause audio" onclick={togglePlay}>
+	<iconify-icon inline icon={audioStore.isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'}>
+	</iconify-icon>
 </button>
 
 <button
 	class="player_button player_button_forward"
-	on:click={() => dispatch('forward')}
-	aria-label="Next song"
-	disabled={songIndex === lastSong || loading}
->
-	<iconify-icon inline icon="pixelarticons:next" />
+	onclick={() => skip(30)}
+	aria-label="Skip forward 30 seconds">
+	<iconify-icon inline icon="pixelarticons:next"></iconify-icon>
 </button>
 
 <button
-	class="player_button player_button_mute {muted ? 'unactive' : ''}"
-	on:click={() => dispatch('mute')}
+	class="player_button player_button_mute {audioStore.isMuted ? 'unactive' : ''}"
+	onclick={toggleMute}
 	disabled={loading}
-	aria-label="Mute audio"
->
-	<iconify-icon inline icon={muted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'} />
+	aria-label="Mute audio">
+	<iconify-icon
+		inline
+		icon={audioStore.isMuted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'}>
+	</iconify-icon>
 </button>
 
 <style lang="scss">
@@ -59,7 +55,6 @@
 		border: none;
 
 		--color: var(--color);
-		transition: color var(--transition);
 
 		@media screen and (max-width: 768px) {
 			--icon_size: 2.7rem;

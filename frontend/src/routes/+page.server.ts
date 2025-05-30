@@ -10,8 +10,7 @@ export async function load({ fetch, setHeaders }) {
 		});
 
 		return { posts, nextFrom };
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	} catch (_) {
+	} catch {
 		throw error(500, 'Error while fetching posts');
 	}
 }

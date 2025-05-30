@@ -1,17 +1,19 @@
 <script lang="ts">
-	import { recordingPlaying } from '$lib/store';
+	import { getAudioStore } from '$lib/store.svelte';
 
-	export let silmaNurk: number = 0;
-	export let suu: string = '◡';
-	export let paremSilm: string = "'";
-	export let vasakSilm: string = "'";
-
-	$: if ($recordingPlaying) {
-		silmaNurk = 0;
+	interface Props {
+		silmaNurk?: number;
+		suu?: string;
+		paremSilm?: string;
+		vasakSilm?: string;
 	}
+
+	let { silmaNurk = $bindable(0), suu = '◡', paremSilm = "'", vasakSilm = "'" }: Props = $props();
+
+	const audioStore = getAudioStore();
 </script>
 
-<span class="maskott {$recordingPlaying ? 'playing' : ''}">
+<span class="maskott {audioStore.isPlaying ? 'playing' : ''}">
 	<span class="noot noot-1 glow contrast">&#9835; &#9833;</span>
 	<span class="noot noot-2 glow contrast">&#9833;</span>
 	<span class="noot noot-3 glow contrast">&#9834;</span>
@@ -22,17 +24,15 @@
 	<span class="noot noot-8 glow contrast">&#9839; &#9834;</span>
 
 	<span class="kern">
-		<span class="kern_sulg kern_sulg_v secondary glow">[</span><!--
---><span
-			class="kern_silm kern_silm_v secondary glow"
-			style="rotate:{silmaNurk}deg;">{$recordingPlaying ? '◕' : vasakSilm}</span
-		><!--
---><span class="kern_suu">{suu}</span><!--
---><span
-			class="kern_silm kern_silm_p secondary glow"
-			style="rotate:{silmaNurk}deg">{$recordingPlaying ? '◕' : paremSilm}</span
-		><!--
---><span class="kern_sulg kern_sulg_p secondary glow">]</span>
+		<span class="kern_sulg kern_sulg_v secondary glow">[</span>
+		<span class="kern_silm kern_silm_v secondary glow" style="rotate:{silmaNurk}deg;">
+			{audioStore.isPlaying ? '◕' : vasakSilm}
+		</span>
+		<span class="kern_suu">{suu}</span>
+		<span class="kern_silm kern_silm_p secondary glow" style="rotate:{silmaNurk}deg">
+			{audioStore.isPlaying ? '◕' : paremSilm}
+		</span>
+		<span class="kern_sulg kern_sulg_p secondary glow">]</span>
 	</span>
 </span>
 
@@ -54,7 +54,7 @@
 		& .kern {
 			&_silm {
 				font-size: 1.75rem;
-				translate: 0 -0.6rem;
+				translate: 0 -0.7rem;
 			}
 		}
 		& .noot {
@@ -62,7 +62,7 @@
 		}
 	}
 	.kern {
-		font-size: 2.25rem;
+		font-size: 0;
 		color: var(--secondary);
 		font-weight: bold;
 		display: inline-block;
@@ -72,11 +72,16 @@
 		animation-play-state: paused;
 		animation-composition: accumulate;
 
+		& span {
+			font-size: 2.25rem;
+		}
+
 		&_silm {
 			transform-origin: center;
 			height: 2rem;
 			font-size: 2rem;
-			width: 1rem;
+			width: 1.2rem;
+			line-height: 3.2rem;
 
 			display: inline-block;
 			animation-play-state: paused;
@@ -91,7 +96,6 @@
 
 		&_suu {
 			font-size: 2rem;
-			margin-left: -0.1rem;
 			animation: float3 2s infinite alternate-reverse cubic-bezier(0.445, 0.05, 0.55, 0.95);
 			animation-delay: 1.5s;
 			display: inline-block;
@@ -100,7 +104,7 @@
 		}
 
 		&_sulg {
-			margin-inline: 0.125rem;
+			margin-right: 0.125rem;
 			animation: float3 2s infinite alternate-reverse cubic-bezier(0.445, 0.05, 0.55, 0.95);
 			display: inline-block;
 			animation-play-state: paused;
@@ -124,7 +128,6 @@
 		animation-timing-function: linear;
 
 		font-size: 1rem;
-		transition: color var(--transition);
 		transition-duration: 1s;
 		opacity: 0;
 

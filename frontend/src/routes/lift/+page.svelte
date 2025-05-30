@@ -1,10 +1,20 @@
-<figure>
-	<figcaption><h2>Fill silence</h2></figcaption>
-	<audio loop preload="metadata" controls src="/human-music.mp3"></audio>
-</figure>
+<script lang="ts">
+	import { getAudioStore } from '$lib/store.svelte';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		const audioStore = getAudioStore();
+		if (audioStore.selectedRecording !== '/human-music.mp3') {
+			audioStore.isPlaying = false;
+			audioStore.setRecording('/human-music.mp3');
+		}
+	});
+</script>
+
+<h2>Fill that awkward silence</h2>
 
 <style>
-	figure {
+	h2 {
 		margin-block: 5rem 2rem;
 		margin-inline: auto;
 		width: fit-content;

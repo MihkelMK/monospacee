@@ -1,46 +1,50 @@
 <script lang="ts">
+	import { getAudioStore } from '$lib/store.svelte';
+	import { timeStringFromSeconds } from '$lib/utils';
 	import Marquee from '../Marquee.svelte';
 
-	export let currTimeDisplay = '';
-	export let totalTimeDisplay = '';
-	export let trackTitle = '';
-	export let recTitle = '';
-	export let isPlaying: boolean;
-	export let loading: boolean;
+	interface Props {
+		loading: boolean;
+	}
 
-	$: displayTitle = !loading;
+	let { loading }: Props = $props();
+
+	const audioStore = getAudioStore();
 </script>
 
-<span class="player_time player_time_current glow-sm {isPlaying ? 'contrast' : 'muted'}"
-	>{currTimeDisplay}</span
->
-{#if displayTitle}
+<span class="player_time player_time_current glow-sm {audioStore.isPlaying ? 'contrast' : 'muted'}">
+	{timeStringFromSeconds(audioStore.currentTime)}
+</span>
+{#if !loading}
 	<span class="player_song">
 		<Marquee
 			class="player_song_scrolling"
 			repeat={5}
 			duration={18}
-			paused={!isPlaying}
-			pauseOnHover
-		>
+			paused={!audioStore.isPlaying}
+			pauseOnHover>
 			<span class="player_song_text">
-				<strong class="glow-sm {isPlaying ? 'contrast' : 'muted'}"
-					>{trackTitle.split('/')[0]}</strong
-				>
-				<span class="glow-sm {isPlaying ? 'secondary' : 'muted'}">/</span>
-				<span class="glow-sm {isPlaying ? 'contrast' : 'muted'}">{trackTitle.split('/')[1]}</span>
+				<strong class="glow-sm {audioStore.isPlaying ? 'contrast' : 'muted'}">
+					{audioStore.currentSong?.title}
+				</strong>
+				<span class="glow-sm {audioStore.isPlaying ? 'secondary' : 'muted'}">/</span>
+				<span class="glow-sm {audioStore.isPlaying ? 'contrast' : 'muted'}">
+					{audioStore.currentSong?.artist}
+				</span>
 			</span>
 		</Marquee>
 	</span>
-	<span class="player_title glow-sm {isPlaying ? 'secondary' : 'contrast'}">{recTitle}</span>
+	<span class="player_title glow-sm {audioStore.isPlaying ? 'secondary' : 'contrast'}">
+		{audioStore.cueTitle}
+	</span>
 {:else}
-	<span class="player_song" aria-busy={loading} />
+	<span class="player_song" aria-busy={loading}></span>
 
-	<span class="player_title glow-sm contrast" aria-busy={loading} />
+	<span class="player_title glow-sm contrast" aria-busy={loading}></span>
 {/if}
-<span class="player_time player_time_total glow-sm {isPlaying ? 'contrast' : 'muted'}"
-	>{totalTimeDisplay}</span
->
+<span class="player_time player_time_total glow-sm {audioStore.isPlaying ? 'contrast' : 'muted'}">
+	{timeStringFromSeconds(audioStore.duration)}
+</span>
 
 <style lang="scss">
 	.player {
@@ -54,8 +58,6 @@
 			font-size: 1.1em;
 			font-weight: bold;
 			text-align: center;
-
-			transition: color var(--transition);
 
 			@media screen and (max-width: 768px) {
 				margin: 0;

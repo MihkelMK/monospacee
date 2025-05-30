@@ -4,15 +4,16 @@ export type Post = {
 	date: string;
 	tags?: string[];
 	duration?: string;
-	type: PostEvent;
+	type: PostType;
 	published: boolean;
+	audioSize: string;
 };
 
 export type Cue = {
 	slug: string;
 	songs: Song[];
-	length: string;
-	size: string;
+	length?: string;
+	size?: string;
 };
 
 export type Song = {
@@ -42,7 +43,7 @@ export type ImageSrc = {
 	src: string;
 };
 
-export type PostEvent = 'event' | 'project' | 'stream';
+export type PostType = 'event' | 'project' | 'stream';
 
 export type ImageLink = {
 	href: string;

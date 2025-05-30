@@ -4,7 +4,7 @@ import { escape } from 'html-escaper';
 
 export async function GET({ fetch }) {
 	const response = await fetch('/api/posts');
-	const { posts }: Post = await response.json();
+	const { posts }: { posts: Post[] } = await response.json();
 
 	const headers = {
 		'Content-Type': 'application/xml',
@@ -44,9 +44,9 @@ export async function GET({ fetch }) {
 				<link>${config.url}</link>
 				<atom:link href="${config.url}/rss.xml" rel="self" type="application/rss+xml"/>
 				${posts
-					.filter((post) => post.duration)
+					.filter((post: Post) => post.duration)
 					.map(
-						(post) => `
+						(post: Post) => `
 						<item>
 							<itunes:episodeType>full</itunes:episodeType>
 							<title>${escape(post.title)}</title>

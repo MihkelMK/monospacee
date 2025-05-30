@@ -2,21 +2,25 @@
 	import type { ImageInfo } from '$lib/types';
 	import Image from './Image.svelte';
 
-	export let images: ImageInfo[];
+	interface Props {
+		images: ImageInfo[];
+	}
+
+	let { images }: Props = $props();
 </script>
 
 {#if images}
 	<ul class="gallery">
-		{#each images as { src, alt, title, link }, i}
+		{#each images as { src, alt, title, link }, i (src + String(i))}
 			<li class={title || link ? 'withText' : ''}>
 				<Image {src} {alt} loading={i < 3 ? 'eager' : 'lazy'} />
 				{#if title}
 					<p>{title}</p>
 				{/if}
 				{#if link}
-					<a href={link.href} target="_blank" referrerpolicy="no-referrer"
-						>{link.text ?? 'source'}</a
-					>
+					<a href={link.href} target="_blank" referrerpolicy="no-referrer">
+						{link.text ?? 'source'}
+					</a>
 				{/if}
 			</li>
 		{/each}

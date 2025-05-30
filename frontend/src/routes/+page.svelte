@@ -4,33 +4,38 @@
 
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
-	import type { Post } from '$lib/types';
+	import type { Post, PostType } from '$lib/types';
 	import ArticleList from '$lib/components/ArticleList.svelte';
-	import { feed, visiblePostTypes } from '$lib/store';
+	import { postFeed, visiblePostTypes } from '$lib/store.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import Socials from '$lib/components/Socials.svelte';
+	import type { PageServerData } from './$types';
 
-	export let data;
-	let loading = true;
+	interface Props {
+		data: PageServerData;
+	}
+
+	let { data }: Props = $props();
+	let loading = $state(true);
 
 	const INITIAL_POSTS = 1;
 
 	let nextFrom = data?.nextFrom ?? null;
-	feed.set(data.posts);
+	postFeed.setPosts(data.posts);
 
-	let limit = INITIAL_POSTS;
+	let limit = $state(INITIAL_POSTS);
 
 	function morePostsAvailable() {
-		return limit < $feed.length || nextFrom;
+		return limit < postFeed.posts.length || nextFrom;
 	}
 
-	function toggleVisible(type: string) {
+	function toggleVisible(type: PostType) {
 		if ($visiblePostTypes.includes(type))
 			$visiblePostTypes = $visiblePostTypes.filter((t) => t !== type);
 		else visiblePostTypes.set([...$visiblePostTypes, type]);
 	}
 
-	let footer: HTMLElement;
+	let footer: HTMLElement | undefined = $state();
 
 	onMount(() => {
 		if (browser) {
@@ -51,7 +56,9 @@
 
 			const observer = new IntersectionObserver(handleIntersect, options);
 
-			observer.observe(footer);
+			if (footer) {
+				observer.observe(footer);
+			}
 			loading = false;
 		}
 	});
@@ -60,7 +67,7 @@
 		try {
 			const newLimit = limit + 1;
 
-			if (newLimit <= $feed.length) {
+			if (newLimit <= postFeed.posts.length) {
 				limit = newLimit;
 			} else if (nextFrom) {
 				loading = true;
@@ -74,7 +81,7 @@
 				const newFeed: Post[] = newData.posts;
 				const newNext = newData.nextFrom;
 
-				feed.set([...$feed, ...newFeed]);
+				postFeed.addPosts(newFeed);
 
 				nextFrom = newNext ?? null;
 
@@ -118,8 +125,7 @@
 		description: config.description,
 		image: encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`),
 		imageAlt: 'A graphic design introducing the landing page of by the DJ duo, monospacee.'
-	}}
-/>
+	}} />
 
 <svelte:window
 	use:keybind={{
@@ -133,8 +139,7 @@
 	use:keybind={{
 		binds: ['Control', 's'],
 		on_bind: () => toggleVisible('stream')
-	}}
-/>
+	}} />
 
 <header>
 	<hgroup>
@@ -152,64 +157,58 @@
 		<fieldset>
 			<label
 				for="eventSwitch"
-				class={`${$visiblePostTypes.includes('event') ? 'glow-sm secondary' : ''}`}
-			>
+				class={`${$visiblePostTypes.includes('event') ? 'glow-sm secondary' : ''}`}>
 				<input
 					bind:group={$visiblePostTypes}
 					value="event"
 					type="checkbox"
 					id="eventSwitch"
 					name="postTypes"
-					role="switch"
-				/>
-				<span class={`${$visiblePostTypes.includes('event') ? 'glow secondary' : ''}`}>[E]</span
-				>vents
+					role="switch" />
+				<span class={`${$visiblePostTypes.includes('event') ? 'glow secondary' : ''}`}>[E]</span>
+				vents
 			</label>
 			<label
 				for="projectSwitch"
-				class={`${$visiblePostTypes.includes('project') ? 'glow-sm contrast' : ''}`}
-			>
+				class={`${$visiblePostTypes.includes('project') ? 'glow-sm contrast' : ''}`}>
 				<input
 					bind:group={$visiblePostTypes}
 					value="project"
 					type="checkbox"
 					id="projectSwitch"
 					name="postTypes"
-					role="switch"
-				/>
-				<span class={`${$visiblePostTypes.includes('project') ? 'glow contrast' : ''}`}>[P]</span
-				>rojects
+					role="switch" />
+				<span class={`${$visiblePostTypes.includes('project') ? 'glow contrast' : ''}`}>[P]</span>
+				rojects
 			</label>
 			<label
 				for="streamSwitch"
-				class={`${$visiblePostTypes.includes('stream') ? 'glow-sm primary' : ''}`}
-			>
+				class={`${$visiblePostTypes.includes('stream') ? 'glow-sm primary' : ''}`}>
 				<input
 					bind:group={$visiblePostTypes}
 					value="stream"
 					type="checkbox"
 					id="streamSwitch"
 					name="postTypes"
-					role="switch"
-				/>
-				<span class={`${$visiblePostTypes.includes('stream') ? 'glow primary' : ''}`}>[S]</span
-				>reams
+					role="switch" />
+				<span class={`${$visiblePostTypes.includes('stream') ? 'glow primary' : ''}`}>[S]</span>
+				reams
 			</label>
 		</fieldset>
 	</section>
 	<section class="feed">
-		{#if $feed}
-			<ArticleList posts={$feed.slice(0, limit)} />
+		{#if postFeed.posts}
+			<ArticleList posts={postFeed.posts.slice(0, limit)} />
 		{:else}
-			<article class="post" aria-busy="true" />
+			<article class="post" aria-busy="true"></article>
 		{/if}
 		{#if loading}
-			<article class="post" aria-busy="true" />
+			<article class="post" aria-busy="true"></article>
 		{/if}
 	</section>
 </main>
 
-<footer bind:this={footer} />
+<footer bind:this={footer}></footer>
 
 <style lang="scss">
 	header {
@@ -250,7 +249,6 @@
 		label {
 			span {
 				--accent-color: var(--muted-color);
-				transition: color var(--transition);
 
 				&.secondary {
 					--accent-color: var(--secondary);
