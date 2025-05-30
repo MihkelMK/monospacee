@@ -16,7 +16,7 @@ function getPosts() {
 				?.replace('.md', '')
 				.toLowerCase()
 				.replace(' ', '-')
-				.replace('_', '-');
+				.replace('_', '-') as string;
 
 			const post = { ...metadata, date } satisfies Post;
 			posts.push(post);

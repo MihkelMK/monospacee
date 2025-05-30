@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
-import { Song } from '$lib/types';
-import { Cue } from '$lib/types';
+import type { Song } from '$lib/types';
+import type { Cue } from '$lib/types';
 
 function timecodeToSeconds(timecode: string | undefined) {
 	if (!timecode) return null;
@@ -14,7 +14,7 @@ function timecodeToSeconds(timecode: string | undefined) {
 }
 
 function parseCue(cueFile: string) {
-	const slug = cueFile.match('FILE ".*" WAVE')?.at(0)?.split('"').at(1);
+	const slug = cueFile.match('FILE ".*" WAVE')?.at(0)?.split('"').at(1) as string;
 	const songData = cueFile
 		.split('TRACK')
 		.slice(1)
@@ -30,9 +30,9 @@ function parseCue(cueFile: string) {
 		);
 
 	const songs: Song[] = songData.map((song) => ({
-		title: song.at(0),
-		artist: song.at(1),
-		start: song.at(2)
+		title: song.at(0) as string,
+		artist: song.at(1) as string,
+		start: song.at(2) as number
 	}));
 
 	const cue: Cue = { slug, songs };
@@ -49,6 +49,6 @@ export async function GET({ params, setHeaders }) {
 	const cueStream = cues[file];
 	const cueBody = (await cueStream()) as string;
 
-	const parsedCue: Cue = await parseCue(cueBody);
+	const parsedCue: Cue = parseCue(cueBody);
 	return json(parsedCue);
 }

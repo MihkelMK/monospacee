@@ -4,7 +4,7 @@ import { escape } from 'html-escaper';
 
 export async function GET({ fetch }) {
 	const response = await fetch('/api/posts');
-	const { posts }: Post = await response.json();
+	const { posts }: { posts: Post[] } = await response.json();
 
 	const headers = {
 		'Content-Type': 'application/xml',

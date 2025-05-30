@@ -17,15 +17,14 @@ export async function load({ params, fetch, setHeaders }) {
 		}
 
 		const cueResponse = await fetch(`/api/cues/${params.slug}.cue`);
-		const cue: Cue = cueResponse.json();
+		const cue: Promise<Cue> = cueResponse.json();
 
 		return {
 			content: post.default,
 			meta: post.metadata,
 			postCue: await cue
 		};
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	} catch (_) {
+	} catch {
 		throw error(404, `Could not find ${params.slug}`);
 	}
 }

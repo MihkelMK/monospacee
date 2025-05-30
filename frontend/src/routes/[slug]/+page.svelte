@@ -2,7 +2,7 @@
 	import * as config from '$lib/config';
 	import { formatDate, recordingPathFromDate } from '$lib/utils';
 	import Tracklist from '$lib/components/Tracklist.svelte';
-	import type { PostEvent } from '$lib/types';
+	import type { PostType } from '$lib/types';
 	import type { PageData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { audioStore, cueJump } from '$lib/store.svelte';
@@ -20,7 +20,7 @@
 		}
 	};
 
-	const getClass = (type: PostEvent) => {
+	const getClass = (type: PostType) => {
 		if (type === 'event') return 'secondary';
 		if (type === 'stream') return 'primary';
 		return 'contrast';

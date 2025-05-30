@@ -94,7 +94,7 @@
 	onmousemove={(event) => {
 		liigutaSilmi(event);
 
-		throttle(function (e) {
+		throttle(function (e: MouseEvent) {
 			muudaSuud(e);
 		}, 100)?.(event);
 	}}

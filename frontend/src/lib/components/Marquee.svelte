@@ -31,8 +31,7 @@
 	class={className}
 >
 	<div class="content" class:paused={paused || (pauseOnHover && hovered)}>
-		<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-		{#each { length: repeat } as _}
+		{#each { length: repeat }}
 			<div class="text" style="animation-duration: {duration}s">
 				{@render children?.()}
 			</div>

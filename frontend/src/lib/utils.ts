@@ -17,7 +17,8 @@ export const throttle = (func: (e: any) => void, limit: number) => {
 	};
 };
 
-export function timeToPercent(start: number, total: number) {
+export function timeToPercent(start: number | undefined, total: number | undefined) {
+	if (!start || !total) return 0;
 	return (start / total) * 100 || 0;
 }
 
