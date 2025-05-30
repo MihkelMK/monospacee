@@ -1,23 +1,26 @@
 <script>
+	import Kern from '$lib/components/Kern.svelte';
+
 	/** @type {string} */
 	export let postType;
+
 	const accentColor =
 		postType === 'main'
 			? '#a160cd'
 			: postType === 'event'
-			? '#95d9f4'
-			: postType === 'stream'
-			? '#a160cd'
-			: '#88898c';
+				? '#95d9f4'
+				: postType === 'stream'
+					? '#a160cd'
+					: '#88898c';
 
 	const accentColorLow =
 		postType === 'main'
 			? '#95d9f4'
 			: postType === 'event'
-			? '#bfe8f8'
-			: postType === 'stream'
-			? '#b480d7'
-			: '#e7eaee';
+				? '#bfe8f8'
+				: postType === 'stream'
+					? '#b480d7'
+					: '#e7eaee';
 </script>
 
 <div
@@ -31,58 +34,44 @@
 		flex-direction: column;
 		flex-wrap: nowrap;
     background-image: linear-gradient(30deg, #14171c, #1c2027);
-	"
->
+	">
 	<div
 		style="
-      font-size: 18rem;
+      font-size: 4rem;
       display: flex;
       color: #BDC3CB;
       letter-spacing: -0.025em;
-      line-height: 1.75em;
-      margin-top: 35rem;
-		"
-	>
-		<span style="color: {accentColor}; margin-top: -3rem;">monospacee</span><span
-			style="font-size:16rem; margin-left: 2rem">$</span
-		>
+      top: 17.5rem;
+      position: absolute;
+		">
+		<span style="color: {accentColor}; font-weight: 700; margin-top: -0.15em;">monospacee</span>
+		<span style="color: #BDC3CB; font-size: 3.5rem; margin-left: 0.25rem;">$</span>
 	</div>
 	<div
 		style="
-      font-size: 26rem;
-      font-weight: 700;
+      font-size: 5rem;
       background-image: linear-gradient(30deg, {accentColor}, {accentColorLow});
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
       letter-spacing: -0.05em;
-      line-height: 1em;
-      margin-top: -8rem;
-		"
-	>
+      padding: 0 5rem;
+      line-height: 1.08em;
+      margin-top: 11rem;
+		">
 		~/{postType === 'main' ? '' : `${postType.toLowerCase()}s`}
 	</div>
-
-	<span
+	<div
 		style="
     position: absolute;
-    top: 35rem;
-    left: 31%;
-    gap: 0.1em;
-    font-size: 26rem;
-
-      font-weight: 700;
+    top: 9rem;
+    left: 50%;
+    display: flex;
+    transform: translate(-50%, 0);
+    font-size: 5rem;
+    font-weight: 700;
 		color: {accentColorLow};
-"
-	>
-		<span style="width: 0.5em;">[</span><!--
---><span
-			style="width: 0.6em; font-size: 0.9em; margin-left: -0.2em;">＇</span
-		><!--
---><span style="">-</span><!--
---><span
-			style="width: 0.65em; font-size: 0.9em; margin-left: -0.25em;">＇</span
-		><!--
---><span style="width: 0.5em;">]</span>
-	</span>
+">
+		<Kern og></Kern>
+	</div>
 </div>

@@ -31,6 +31,8 @@
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.4.0",
 		"sass": "^1.89.0",
+		"satori": "^0.13.1",
+		"satori-html": "^0.3.2",
 		"svelte": "5.33.6",
 		"svelte-check": "^4.2.1",
 		"svelte-meta-tags": "^4.3.0",
@@ -43,6 +45,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@resvg/resvg-js": "^2.6.2",
 		"@fontsource-variable/roboto-mono": "^5.2.5",
 		"@fontsource/share-tech-mono": "^5.2.5",
 		"@jsdevtools/rehype-toc": "^3.0.2",

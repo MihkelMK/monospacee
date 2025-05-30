@@ -6,31 +6,46 @@
 		suu?: string;
 		paremSilm?: string;
 		vasakSilm?: string;
+		og?: boolean;
 	}
 
-	let { silmaNurk = $bindable(0), suu = '◡', paremSilm = "'", vasakSilm = "'" }: Props = $props();
+	let {
+		silmaNurk = $bindable(0),
+		suu = '◡',
+		paremSilm = "'",
+		vasakSilm = "'",
+		og = false
+	}: Props = $props();
 
 	const audioStore = getAudioStore();
 </script>
 
-<span class="maskott {audioStore.isPlaying ? 'playing' : ''}">
-	<span class="noot noot-1 glow contrast">&#9835; &#9833;</span>
-	<span class="noot noot-2 glow contrast">&#9833;</span>
-	<span class="noot noot-3 glow contrast">&#9834;</span>
-	<span class="noot noot-4 glow contrast">&#9839; &#9834;</span>
-	<span class="noot noot-5 glow contrast">&#9835; &#9833;</span>
-	<span class="noot noot-6 glow contrast">&#9834;</span>
-	<span class="noot noot-7 glow contrast">&#9833;</span>
-	<span class="noot noot-8 glow contrast">&#9839; &#9834;</span>
+<span class="maskott {audioStore?.isPlaying ? 'playing' : ''}">
+	{#if !og}
+		<span class="noot noot-1 glow contrast">&#9835; &#9833;</span>
+		<span class="noot noot-2 glow contrast">&#9833;</span>
+		<span class="noot noot-3 glow contrast">&#9834;</span>
+		<span class="noot noot-4 glow contrast">&#9839; &#9834;</span>
+		<span class="noot noot-5 glow contrast">&#9835; &#9833;</span>
+		<span class="noot noot-6 glow contrast">&#9834;</span>
+		<span class="noot noot-7 glow contrast">&#9833;</span>
+		<span class="noot noot-8 glow contrast">&#9839; &#9834;</span>
+	{/if}
 
 	<span class="kern">
 		<span class="kern_sulg kern_sulg_v secondary glow">[</span>
 		<span class="kern_silm kern_silm_v secondary glow" style="rotate:{silmaNurk}deg;">
-			{audioStore.isPlaying ? '◕' : vasakSilm}
+			{audioStore?.isPlaying ? '◕' : vasakSilm}
 		</span>
-		<span class="kern_suu">{suu}</span>
+		<span
+			class="kern_suu"
+			style={og
+				? 'display: block; font-size: 0.8em; transform: rotate(90deg) translate(75%, 6%);'
+				: ''}>
+			{og ? ')' : suu}
+		</span>
 		<span class="kern_silm kern_silm_p secondary glow" style="rotate:{silmaNurk}deg">
-			{audioStore.isPlaying ? '◕' : paremSilm}
+			{audioStore?.isPlaying ? '◕' : paremSilm}
 		</span>
 		<span class="kern_sulg kern_sulg_p secondary glow">]</span>
 	</span>
