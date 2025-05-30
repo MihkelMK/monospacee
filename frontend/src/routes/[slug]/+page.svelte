@@ -98,8 +98,7 @@
 			' called ' +
 			data.meta.title +
 			' by the DJ duo, monospacee.'
-	}}
-/>
+	}} />
 
 <article class="post {getClass(data.meta.type)}">
 	<header>
@@ -143,7 +142,7 @@
 			{/if}
 		</h3>
 
-		<svelte:component this={data.content} />
+		<data.content />
 	</main>
 
 	{#if data.postCue}

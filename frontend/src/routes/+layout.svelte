@@ -97,8 +97,7 @@
 		throttle(function (e: MouseEvent) {
 			muudaSuud(e);
 		}, 100)?.(event);
-	}}
->
+	}}>
 	<div bind:this={watcher} data-scroll-watcher></div>
 
 	<header class:scrolled>
@@ -112,8 +111,7 @@
 						silmaNurk={kernSilmNurk}
 						vasakSilm={kernSilmV}
 						paremSilm={kernSilmP}
-						suu={kernSuu}
-					/>
+						suu={kernSuu} />
 				</li>
 			</ul>
 			<ul>
