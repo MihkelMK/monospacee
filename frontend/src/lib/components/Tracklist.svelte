@@ -1,22 +1,42 @@
 <script lang="ts">
-	import { audioStore } from '$lib/store.svelte';
+	import { getAudioStore } from '$lib/store.svelte';
 	import type { Cue, Song } from '$lib/types';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		scrub: (start: number, audioURL: string) => void;
 		cue: Cue;
+		recording: string;
+		currentSongIndex: number | undefined;
+		savedProgress: number | null;
 	}
 
-	let { cue, scrub }: Props = $props();
+	let { cue, recording, currentSongIndex, savedProgress, scrub }: Props = $props();
+
+	const audioStore = getAudioStore();
 
 	let list_element: HTMLUListElement | undefined = $state();
+	let is_tracklist_playing: boolean = $derived(audioStore.selectedRecording === recording);
 
-	function scroll_on_change(last_track: Song | undefined) {
-		if (closest === last_track || !list_element) return;
+	let currentTime = $derived(is_tracklist_playing ? audioStore.currentTime : savedProgress);
+	let closestIndex = $derived(
+		is_tracklist_playing ? audioStore.currentSongIndex : currentSongIndex
+	);
+	let closest = $derived(closestIndex ? cue.songs.at(closestIndex) : undefined);
+	let last_track: Song | undefined = $state();
+
+	function scroll_on_change(closest: Song | undefined, last_track: Song | undefined) {
+		if (!closest || closest === last_track || !list_element) return;
 
 		last_track = closest;
+		scrollToSong(closest);
+	}
+
+	function scrollToSong(song: Song | undefined) {
+		if (!song || !list_element) return;
+
 		const current_list_element = Array.from(list_element.children)
-			.filter((list_element) => list_element.id === String(closest.start))
+			.filter((list_element) => list_element.id === String(song.start))
 			.at(0);
 
 		if (current_list_element) {
@@ -24,51 +44,36 @@
 		}
 	}
 
-	let last_track: Song | undefined = $state();
-
-	let closest = $derived(
-		cue.songs.reduce((prev, curr) => {
-			return curr.start <= audioStore.currentTime && curr.start > prev.start ? curr : prev;
-		})
-	);
-
-	let is_tracklist_playing: boolean = $derived(
-		audioStore.selectedRecording === '/recordings/' + cue.slug
-	);
-
 	$effect(() => {
 		if (is_tracklist_playing) {
-			scroll_on_change(last_track);
+			scroll_on_change(closest, last_track);
 		}
+	});
+
+	onMount(() => {
+		scrollToSong(closest);
 	});
 </script>
 
-<h3 id="tracklist">
-	<span>Tracklist</span>
-	{#if is_tracklist_playing}
-		<small>[{cue.songs.indexOf(closest) + 1}/{cue.songs.length}]</small>
-	{:else}
-		<small>[0/{cue.songs.length}]</small>
-	{/if}
-</h3>
 <nav>
 	<ul bind:this={list_element}>
-		{#each cue.songs as song, i}
+		{#each cue.songs as song, i (song.title + String(song.start))}
 			<li id={String(song.start)}>
 				<button
-					class={!is_tracklist_playing
+					class={!currentTime
 						? ''
-						: closest.start === song.start
+						: closest?.start === song.start
 							? 'current glow-sm'
-							: audioStore.currentTime >= song.start
+							: currentTime >= song.start
 								? 'played'
 								: ''}
-					onclick={() => scrub(song.start, cue.slug)}
-				>
-					<p>
-						<span class="track_info_number">{i + 1}:{' '}</span><strong>{song.title}</strong>
+					onclick={() => scrub(song.start, cue.slug)}>
+					<p class="track_info_number">
+						{i + 1}:
 					</p>
-					<p class="track_info_seperator">/</p>
+					<p class="track_info_title">
+						<strong>{song.title}</strong>
+					</p>
 					<p>{song.artist}</p>
 				</button>
 			</li>
@@ -77,17 +82,8 @@
 </nav>
 
 <style lang="scss">
-	h3 {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-
-		small {
-			color: var(--muted-color);
-		}
-	}
-
 	ul {
+		--tracklist-height: 20rem;
 		--mask: linear-gradient(
 				to bottom,
 				rgba(0, 0, 0, 0) 0,
@@ -102,19 +98,20 @@
 		mask: var(--mask);
 
 		flex-direction: column;
-		height: 20rem;
+		height: var(--tracklist-height);
 		overflow-y: scroll;
 		scroll-snap-type: y mandatory;
 		scroll-behavior: smooth;
 		width: 100%;
+		padding-block: 2rem 1rem;
 
 		li {
-			scroll-snap-align: center;
-			padding: calc(var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
+			scroll-margin-top: calc(
+				var(--tracklist-height) / 2 - var(--nav-element-spacing-vertical) * 2
+			);
+
 			& button {
 				max-width: 40ch;
-				padding: calc(var(--nav-element-spacing-vertical) * 0.75)
-					calc(var(--nav-element-spacing-horizontal) * 2) !important;
 
 				--background-color: transparent;
 				--border-color: transparent;
@@ -124,13 +121,13 @@
 					--color: var(--contrast);
 					font-size: 1em;
 
-					&:first-of-type {
+					&.track_info_title,
+					&.track_info_number {
 						--color: var(--accent-color);
 						font-size: 1.1em;
 					}
 
-					&.track_info_seperator,
-					.track_info_number {
+					&.track_info_number {
 						display: none;
 					}
 				}
@@ -146,7 +143,8 @@
 					& p {
 						margin-bottom: 0;
 						--color: var(--contrast-hover);
-						&:first-of-type {
+						&.track_info_title,
+						&.track_info_number {
 							--color: var(--accent-color);
 						}
 					}
@@ -162,7 +160,8 @@
 				&.played {
 					& p {
 						--color: var(--muted-color);
-						&:first-of-type {
+						&.track_info_title,
+						&.track_info_number {
 							--color: color-mix(in srgb, var(--accent-color) 60%, rgba(0, 0, 0, 0.3));
 							@media only screen and (prefers-color-scheme: light) {
 								--color: color-mix(in srgb, var(--accent-color) 50%, rgba(255, 255, 255, 0.3));
@@ -171,7 +170,8 @@
 					}
 					&:hover p {
 						--color: var(--contrast);
-						&:first-of-type {
+						&.track_info_title,
+						&.track_info_number {
 							--color: var(--accent-hover);
 						}
 					}
@@ -193,18 +193,17 @@
 
 			& li button {
 				max-width: unset;
-				display: flex;
-				gap: 0.5rem;
-				align-items: center;
+				display: grid;
+				gap: 0 0.5rem;
 				text-align: left;
 
 				& p {
-					display: inline;
+					grid-column: 2;
 					width: fit-content;
 					font-size: 1em;
 
-					&.track_info_seperator,
-					.track_info_number {
+					&.track_info_number {
+						grid-column: 1;
 						display: initial;
 					}
 				}

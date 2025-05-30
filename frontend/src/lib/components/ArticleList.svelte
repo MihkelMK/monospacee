@@ -1,16 +1,17 @@
 <script lang="ts">
-	import type { Post, PostEvent } from '$lib/types';
+	import type { Post, PostType } from '$lib/types';
 	import { formatDate, recordingPathFromDate } from '$lib/utils';
 	import { fly } from 'svelte/transition';
-	import { visiblePostTypes } from '$lib/store.svelte';
+	import { getAudioStore, visiblePostTypes } from '$lib/store.svelte';
 	import { cubicOut } from 'svelte/easing';
-	import { audioStore } from '$lib/store.svelte';
 
 	interface Props {
 		posts: Post[];
 	}
 
 	let { posts }: Props = $props();
+
+	const audioStore = getAudioStore();
 
 	const loadToPlayer = (date: string) => {
 		const newPath = recordingPathFromDate(date);
@@ -20,7 +21,7 @@
 		}
 	};
 
-	const getClass = (type: PostEvent) => {
+	const getClass = (type: PostType) => {
 		if (type === 'event') return 'secondary';
 		if (type === 'stream') return 'primary';
 		return 'contrast';
@@ -31,8 +32,7 @@
 	{#if $visiblePostTypes.includes(post.type)}
 		<article
 			transition:fly={{ y: 75, duration: 200, easing: cubicOut }}
-			class="post {getClass(post.type)} {post.duration ? 'playable' : ''}"
-		>
+			class="post {getClass(post.type)} {post.duration ? 'playable' : ''}">
 			<header>
 				<hgroup>
 					<a href={'/' + post.date} data-sveltekit-preload-data="tap" class="title">
@@ -45,8 +45,7 @@
 						disabled={audioStore.selectedRecording === recordingPathFromDate(post.date)}
 						data-tooltip="Load to player"
 						aria-label="Play this recording"
-						onclick={() => loadToPlayer(post.date)}
-					>
+						onclick={() => loadToPlayer(post.date)}>
 						<iconify-icon icon="pixelarticons:playlist"></iconify-icon>
 					</button>
 				{/if}

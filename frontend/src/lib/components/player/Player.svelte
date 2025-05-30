@@ -1,44 +1,25 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import type { Cue, Song } from '$lib/types';
-	import { cueJump, feed, audioStore } from '$lib/store.svelte';
+	import { cueJump, getAudioStore } from '$lib/store.svelte';
 
 	import TrackInfo from './TrackInfo.svelte';
 	import Controls from './Controls.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import { invalidateAll } from '$app/navigation';
 
-	const { cue } = $props<{
-		cue: Cue;
-	}>();
-
-	const getPlayingSong = (time: number) => {
-		if (!cue?.songs || typeof time !== 'number') return;
-
-		const closest = cue.songs.reduce((prev: Song, curr: Song) => {
-			return curr.start <= time && curr.start > prev.start ? curr : prev;
-		});
-
-		return cue.songs.indexOf(closest);
-	};
+	const audioStore = getAudioStore();
 
 	const seekToSong = (index: number) => {
 		if (!audio) return;
 
-		if (index < 0 || !cue?.songs || !cue?.songs.at(index)) return;
-		audio.currentTime = cue.songs.at(index)?.start ?? audio.currentTime;
+		if (index < 0 || !audioStore.cue?.songs || !audioStore.cue?.songs.at(index)) return;
+		audio.currentTime = audioStore.cue.songs.at(index)?.start ?? audio.currentTime;
 	};
 
 	let audio: HTMLAudioElement | null = $state(null);
 	let loadedAudio: string | undefined = $state(undefined);
-
-	let playingSongIndex: number | undefined = $derived(getPlayingSong(audioStore.currentTime));
-	let playingSongTitle: string = $derived(cue?.songs.at(playingSongIndex).title ?? '');
-	let playingSongArtist: string = $derived(cue?.songs.at(playingSongIndex).artist ?? '');
-	let cueTitle: string = $derived(
-		$feed.find((post) => post.date === cue?.slug.split('.')[0])?.title ?? ''
-	);
+	let loading = $derived(!loadedAudio || audioStore.loading);
 
 	function handleTimeUpdate() {
 		if (!audio) return;
@@ -60,6 +41,26 @@
 
 		audio.currentTime = time;
 		return false;
+	}
+
+	function handlePlayPause() {
+		if (!audio) return;
+
+		if (audio.ended) {
+			audio.currentTime = 0;
+		}
+
+		if (audio.paused || audio.ended) {
+			audio.play();
+		} else {
+			audio.pause();
+		}
+	}
+
+	function handleMute() {
+		if (!audio) return;
+
+		audio.muted = !audio.muted;
 	}
 
 	function loadNewSong(selectedRecording: string | null, startAfterLoad: boolean) {
@@ -111,6 +112,7 @@
 				loadedAudio = '/' + audio?.src.split('/').slice(-2).join('/') || undefined;
 			});
 		}
+
 		cueJump.subscribe((time: number | undefined) => {
 			if (time !== undefined && audio) {
 				audio.currentTime = time;
@@ -124,65 +126,30 @@
 	});
 </script>
 
-<!-- <svelte:window -->
-<!-- 	use:keybind={{ -->
-<!-- 		binds: ['Control', 'k'], -->
-<!-- 		on_bind: playPauseAudio -->
-<!-- 	}} -->
-<!-- 	use:keybind={{ -->
-<!-- 		binds: ['Control', 'j'], -->
-<!-- 		on_bind: rewindAudio -->
-<!-- 	}} -->
-<!-- 	use:keybind={{ -->
-<!-- 		binds: ['Control', 'l'], -->
-<!-- 		on_bind: forwardAudio -->
-<!-- 	}} -->
-<!-- 	use:keybind={{ -->
-<!-- 		binds: ['Control', 'm'], -->
-<!-- 		on_bind: mute -->
-<!-- 	}} -->
-<!-- /> -->
 <audio
 	loop={audioStore.selectedRecording === '/human-music.mp3'}
 	bind:this={audio}
 	preload="auto"
-	onplay={() => (audioStore.isPlaying = true)}
-	onpause={() => (audioStore.isPlaying = false)}
-	onended={() => (audioStore.isPlaying = false)}
+	autoplay={false}
+	onplay={() => audioStore.setPlay(true)}
+	onpause={() => audioStore.setPlay(false)}
+	onended={() => audioStore.setPlay(false)}
 	ontimeupdate={handleTimeUpdate}
 	ondurationchange={handleDurationChange}
-	onvolumechange={handleVolumeChange}
-></audio>
+	onvolumechange={handleVolumeChange}>
+</audio>
 
 <footer class="container">
 	<Controls
-		togglePlay={() => audioStore.togglePlay()}
-		toggleMute={() => audioStore.toggleMute()}
-		skip={(seconds) => (audio.currentTime += seconds)}
-		isPlaying={audioStore.isPlaying}
-		isMuted={audioStore.isMuted}
-		loading={!loadedAudio}
-	></Controls>
+		togglePlay={handlePlayPause}
+		toggleMute={handleMute}
+		skip={(seconds) => {
+			if (audio) audio.currentTime += seconds;
+		}}
+		loading={!loadedAudio || audioStore.loading}></Controls>
 
-	<ProgressBar
-		duration={audioStore.duration}
-		currentTime={audioStore.currentTime}
-		songs={cue?.songs}
-		{playingSongIndex}
-		isPlaying={audioStore.isPlaying}
-		loading={!loadedAudio}
-		{updateProgress}
-		{seekToSong}
-	></ProgressBar>
-	<TrackInfo
-		loading={!loadedAudio}
-		isPlaying={audioStore.isPlaying}
-		currentTime={audioStore.currentTime}
-		duration={audioStore.duration}
-		trackTitle={playingSongTitle}
-		trackArtist={playingSongArtist}
-		{cueTitle}
-	/>
+	<ProgressBar {loading} {updateProgress} {seekToSong}></ProgressBar>
+	<TrackInfo {loading} />
 </footer>
 
 <style lang="scss">

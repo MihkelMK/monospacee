@@ -22,7 +22,9 @@ export async function load({ params, fetch, setHeaders }) {
 		return {
 			content: post.default,
 			meta: post.metadata,
-			postCue: await cue
+			streamed: {
+				postCue: cue
+			}
 		};
 	} catch {
 		throw error(404, `Could not find ${params.slug}`);

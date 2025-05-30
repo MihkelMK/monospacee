@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { audioStore } from '$lib/store.svelte';
+	import { getAudioStore } from '$lib/store.svelte';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
+		const audioStore = getAudioStore();
 		if (audioStore.selectedRecording !== '/human-music.mp3') {
 			audioStore.isPlaying = false;
 			audioStore.setRecording('/human-music.mp3');

@@ -10,7 +10,7 @@
 
 	import Kern from '$lib/components/Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
-	import { audioStore } from '$lib/store.svelte';
+	import { getAudioStore, setAudioStore } from '$lib/store.svelte';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import type { LayoutData } from './$types';
@@ -22,32 +22,30 @@
 
 	let { data, children }: Props = $props();
 
+	setAudioStore();
+
+	const audioStore = getAudioStore();
 	let kernSilmNurk = $state(0);
-	let silmadPaigal = false;
 	let kernSilmV = "'";
 	let kernSilmP = "'";
 	let kernSuu = $state('◡');
 	let kern: HTMLElement | undefined = $state();
 
 	let innerWidth: number | undefined = $state();
-	let scrolled = $state(false);
 	let watcher: HTMLElement | undefined = $state();
+	let scrolled = $state(false);
 
 	const muudaSuud = (e: MouseEvent) => {
-		if (!innerWidth || innerWidth < 768) return;
-		if (!e) return;
+		if (!innerWidth || !e) return;
 		if (getComputedStyle(e.target as Element).cursor === 'pointer') {
 			kernSuu = 'ₒ';
-			silmadPaigal = false;
 		} else {
 			kernSuu = '◡';
-			silmadPaigal = false;
 		}
 	};
 
 	const liigutaSilmi = (e: MouseEvent) => {
-		if (!innerWidth || !kern || innerWidth < 768) return;
-		if (silmadPaigal || !e || audioStore.isPlaying) return;
+		if (!e || !innerWidth || !kern || audioStore.isPlaying) return;
 		const hiirX = e.clientX;
 		const hiirY = e.clientY;
 
@@ -61,14 +59,7 @@
 		kernSilmNurk = Math.round(nurk / 30) * 30;
 	};
 
-	let currentTrack = $state(data.selected);
-	let currentTrackLink = $derived(currentTrack?.split('/')[2]?.split('.')[0] || '');
-
-	$effect(() => {
-		if (audioStore.selectedRecording) {
-			currentTrack = audioStore.selectedRecording;
-		}
-	});
+	let currentTrackLink = $derived(audioStore.selectedRecording?.split('/')[2]?.split('.')[0] || '');
 
 	onMount(() => {
 		if (browser) {
@@ -126,7 +117,7 @@
 			{@render children?.()}
 		</PageTransition>
 	</div>
-	<Player cue={data.cue} />
+	<Player />
 </div>
 
 <style lang="scss">

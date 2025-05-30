@@ -1,100 +1,56 @@
 <script lang="ts">
-	import type { Song } from '$lib/types.js';
+	import { getAudioStore } from '$lib/store.svelte';
 	import { trimString, timeToPercent } from '$lib/utils.js';
 
-	// interface Props {
-	// 	totalTrackTime: number;
-	// 	currentTime: number;
-	// 	songIndex: number;
-	// 	audioNotLoaded: boolean;
-	// 	isPlaying: boolean;
-	// 	songs: Song[];
-	// 	seekToSong: (index: number) => void;
-	// 	scrub: (time: number) => void;
-	// }
-	//
-	// let {
-	// 	totalTrackTime,
-	// 	currentTime,
-	// 	songIndex = $bindable(),
-	// 	audioNotLoaded,
-	// 	isPlaying,
-	// 	songs,
-	// 	seekToSong,
-	// 	scrub
-	// }: Props = $props();
-	//
-	// const timeToPercent = (time: number, totalTime: number) =>
-	// 	Math.min((time * 100) / totalTime, 100);
-	//
-	// let scrubTime: number | undefined = $state();
-	// let scrubbing = $state(false);
-	// let progress = $derived(scrubTime ? scrubTime * (100 / totalTrackTime) : 0);
-	//
-	// $effect(() => {
-	// 	scrubTime = scrubbing ? scrubTime : currentTime;
-	// });
-	const {
-		duration,
-		currentTime,
-		songs,
-		playingSongIndex,
-		loading,
-		isPlaying,
-		updateProgress,
-		seekToSong
-	} = $props<{
-		duration: number;
-		currentTime: number;
-		songs: Song[] | undefined;
-		playingSongIndex: number | undefined;
+	const { loading, updateProgress, seekToSong } = $props<{
 		loading: boolean;
-		isPlaying: boolean;
 		updateProgress: (time: number) => boolean;
 		seekToSong: (trackIndex: number) => void;
 	}>();
 
+	const audioStore = getAudioStore();
+
 	let scrubbing = $state(false);
-	let opacity = $derived(isPlaying ? '1' : '0.6');
+	let opacity = $derived(audioStore.isPlaying ? '1' : '0.6');
 	let scrubTime = $state(0);
 	let shownProgress = $derived.by(() => {
 		// The Math.abs check keeps the progress bar from flickering
 		// after the user has scrubbed time.
 		// The first currentTime update still has the old, pre scrub time
-		if (scrubbing || Math.abs(scrubTime - currentTime) > 4) {
-			return timeToPercent(scrubTime, duration);
+		if (scrubbing || Math.abs(scrubTime - audioStore.currentTime) > 4) {
+			return timeToPercent(scrubTime, audioStore.duration);
 		} else {
-			return timeToPercent(currentTime, duration);
+			return timeToPercent(audioStore.currentTime, audioStore.duration);
 		}
 	});
 
 	$effect(() => {
 		if (!scrubbing) {
-			scrubTime = currentTime;
+			scrubTime = audioStore.currentTime;
 		}
 	});
 </script>
 
 <div class="player_progress">
-	{#if songs && duration}
-		{#each songs as song, i}
+	{#if audioStore.cue?.songs && audioStore.duration}
+		{#each audioStore.cue?.songs as song, i (song.title + String(i))}
 			<label
-				style="--startsAt:{timeToPercent(song.start, duration)}%;"
-				class="player_progress_step {i === playingSongIndex ? 'player_progress_step_active' : ''}"
-				data-placement={timeToPercent(song.start, duration) < 35
+				style="--startsAt:{timeToPercent(song.start, audioStore.duration)}%;"
+				class="player_progress_step {i === audioStore.currentSongIndex
+					? 'player_progress_step_active'
+					: ''}"
+				data-placement={timeToPercent(song.start, audioStore.duration) < 35
 					? 'right'
-					: timeToPercent(song.start, duration) > 65
+					: timeToPercent(song.start, audioStore.duration) > 65
 						? 'left'
 						: 'top'}
-				data-tooltip={trimString(`${song.title} - ${song.artist}`, 40)}
-			>
+				data-tooltip={trimString(`${song.title} - ${song.artist}`, 40)}>
 				<input
 					disabled={loading}
 					type="radio"
 					aria-label="Skip to song: {song.title}"
-					checked={i === playingSongIndex}
-					onclick={() => seekToSong(i)}
-				/>
+					checked={i === audioStore.currentSongIndex}
+					onclick={() => seekToSong(i)} />
 			</label>
 		{/each}
 	{/if}
@@ -102,14 +58,13 @@
 		aria-label="player progress"
 		disabled={loading}
 		type="range"
-		max={String(duration)}
+		max={String(audioStore.duration)}
 		min="0"
 		bind:value={scrubTime}
 		onpointerdown={() => (scrubbing = true)}
 		onpointerup={() => {
 			scrubbing = updateProgress(scrubTime);
-		}}
-	/>
+		}} />
 	<span class="player_progress_bar" style="width: {shownProgress}%; opacity:{opacity}"></span>
 </div>
 

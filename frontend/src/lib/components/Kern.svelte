@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { audioStore } from '$lib/store.svelte';
+	import { getAudioStore } from '$lib/store.svelte';
 
 	interface Props {
 		silmaNurk?: number;
@@ -10,11 +10,7 @@
 
 	let { silmaNurk = $bindable(0), suu = '◡', paremSilm = "'", vasakSilm = "'" }: Props = $props();
 
-	$effect(() => {
-		if (audioStore.isPlaying) {
-			silmaNurk = 0;
-		}
-	});
+	const audioStore = getAudioStore();
 </script>
 
 <span class="maskott {audioStore.isPlaying ? 'playing' : ''}">

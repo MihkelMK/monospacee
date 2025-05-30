@@ -1,66 +1,44 @@
 <script lang="ts">
-	// interface Props {
-	// 	isPlaying?: boolean;
-	// 	songIndex: number;
-	// 	lastSong: number;
-	// 	loading: boolean;
-	// 	muted?: boolean;
-	// 	mute: () => void;
-	// 	forward: () => void;
-	// 	rewind: () => void;
-	// 	playPause: () => void;
-	// }
-	//
-	// let {
-	// 	isPlaying = $bindable(),
-	// 	songIndex,
-	// 	lastSong,
-	// 	loading = $bindable(),
-	// 	muted = false,
-	// 	mute,
-	// 	forward,
-	// 	rewind,
-	// 	playPause
-	// }: Props = $props();
-	const { togglePlay, toggleMute, skip, isPlaying, isMuted, loading } = $props<{
+	import { getAudioStore } from '$lib/store.svelte';
+
+	const { togglePlay, toggleMute, skip, loading } = $props<{
 		togglePlay: () => void;
 		toggleMute: () => void;
 		skip: (seconds: number) => void;
-		isPlaying: boolean;
-		isMuted: boolean;
 		loading: boolean;
 	}>();
+
+	const audioStore = getAudioStore();
 </script>
 
 <button
 	aria-label="Skip back 30 seconds"
 	class="player_button player_button_rewind"
-	onclick={() => skip(-30)}
->
+	onclick={() => skip(-30)}>
 	<iconify-icon inline icon="pixelarticons:prev"></iconify-icon>
 </button>
 
 <button class="player_button player_button_play" aria-label="Play pause audio" onclick={togglePlay}>
-	<iconify-icon inline icon={isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'}
-	></iconify-icon>
+	<iconify-icon inline icon={audioStore.isPlaying ? 'pixelarticons:pause' : 'pixelarticons:play'}>
+	</iconify-icon>
 </button>
 
 <button
 	class="player_button player_button_forward"
 	onclick={() => skip(30)}
-	aria-label="Skip forward 30 seconds"
->
+	aria-label="Skip forward 30 seconds">
 	<iconify-icon inline icon="pixelarticons:next"></iconify-icon>
 </button>
 
 <button
-	class="player_button player_button_mute {isMuted ? 'unactive' : ''}"
+	class="player_button player_button_mute {audioStore.isMuted ? 'unactive' : ''}"
 	onclick={toggleMute}
 	disabled={loading}
-	aria-label="Mute audio"
->
-	<iconify-icon inline icon={isMuted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'}
-	></iconify-icon>
+	aria-label="Mute audio">
+	<iconify-icon
+		inline
+		icon={audioStore.isMuted ? 'pixelarticons:volume-x' : 'pixelarticons:volume-2'}>
+	</iconify-icon>
 </button>
 
 <style lang="scss">
