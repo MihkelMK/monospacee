@@ -8,10 +8,9 @@ services:
     restart: unless-stopped
     ports:
       - 9001:3000
-  og:
-    container_name: monospacee-og
-    image: monospacee_og
-    build: ./og
-    restart: unless-stopped
-    ports:
-      - 9002:5174
+    labels:
+      - homepage.group=Websites
+      - homepage.name=Monospacee
+      - homepage.icon=http://192.168.88.21:9001/favicon.png
+      - homepage.href=https://monospac.ee
+      - homepage.siteMonitor=https://monospac.ee
