@@ -109,8 +109,11 @@
 			scroll-margin-top: calc(
 				var(--tracklist-height) / 2 - var(--nav-element-spacing-vertical) * 2
 			);
+			width: 100%;
+			text-align: center;
 
 			& button {
+				width: 100%;
 				max-width: 40ch;
 
 				--background-color: transparent;
@@ -191,20 +194,25 @@
 				100% 100% / 100% 100% repeat-x;
 			align-items: start;
 
-			& li button {
-				max-width: unset;
-				display: grid;
-				gap: 0 0.5rem;
+			& li {
 				text-align: left;
 
-				& p {
-					grid-column: 2;
-					width: fit-content;
-					font-size: 1em;
+				& button {
+					max-width: unset;
+					display: grid;
+					gap: 0 0.5rem;
+					text-align: left;
+					grid-template-columns: auto 1fr;
 
-					&.track_info_number {
-						grid-column: 1;
-						display: initial;
+					& p {
+						grid-column: 2;
+						width: fit-content;
+						font-size: 1em;
+
+						&.track_info_number {
+							grid-column: 1;
+							display: initial;
+						}
 					}
 				}
 			}
