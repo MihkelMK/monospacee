@@ -139,7 +139,7 @@
 	onvolumechange={handleVolumeChange}>
 </audio>
 
-<footer class="container">
+<div class="player">
 	<Controls
 		togglePlay={handlePlayPause}
 		toggleMute={handleMute}
@@ -150,10 +150,11 @@
 
 	<ProgressBar {loading} {updateProgress} {seekToSong}></ProgressBar>
 	<TrackInfo {loading} />
-</footer>
+</div>
 
 <style lang="scss">
-	footer {
+	.player {
+		grid-area: player;
 		display: grid;
 		width: min(90dvw, 50rem);
 		min-width: min(100%, 30rem);
@@ -163,11 +164,7 @@
 			'. current title total .'
 			'mute progress progress progress play';
 		grid-template-columns: 3.5rem 1fr 1fr 1fr 3.5rem;
-		position: fixed;
-		bottom: 0;
 		gap: 0;
-		left: 50%;
-		translate: -50%;
 
 		padding-bottom: 1rem;
 		background: var(--card-background-color);

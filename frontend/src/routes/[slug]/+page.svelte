@@ -6,6 +6,7 @@
 	import type { PageData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { cueJump, getAudioStore } from '$lib/store.svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	interface Props {
 		data: PageData;
@@ -31,7 +32,6 @@
 	const scrubToSong = async (start: number, audioURL: string) => {
 		const date = audioURL.split('.').at(0);
 		if (!date) return;
-
 
 		await loadToPlayer(date);
 
@@ -119,8 +119,8 @@
 	</header>
 
 	<main class={data.meta.recording ? 'recorded' : ''}>
-		<h3 id="sisukord">
-			Sisukord
+		<h3 id="toc">
+			{m['toc']()}
 			{#if data.meta.recording}
 				<button
 					disabled={audioStore.selectedRecording === recordingPathFromDate(data.meta.date)}
@@ -228,7 +228,7 @@
 			gap: var(--grid-spacing-vertical);
 		}
 
-		#sisukord {
+		#toc {
 			color: var(--accent-color);
 			margin-bottom: calc(var(--typography-spacing-vertical) * 0.25);
 
@@ -296,10 +296,14 @@
 		:global(h2) {
 			border-bottom: 0.15rem groove color-mix(in srgb, var(--muted-color) 40%, transparent);
 		}
+
+		:global(blockquote > p) {
+			margin-bottom: 0;
+		}
 	}
 
 	:global(main > section),
-	:global(#sisukord),
+	:global(#toc),
 	:global(nav.toc) {
 		padding-inline: var(--nav-element-spacing-horizontal);
 	}

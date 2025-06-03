@@ -1,8 +1,9 @@
+import { getLocale } from '$lib/paraglide/runtime.js';
 import { error } from '@sveltejs/kit';
 
 export async function load({ fetch, setHeaders }) {
 	try {
-		const response = await fetch('/api/posts?end=10');
+		const response = await fetch(`/api/posts?end=10&lang=${getLocale()}`);
 		const { posts, nextFrom } = await response.json();
 
 		setHeaders({

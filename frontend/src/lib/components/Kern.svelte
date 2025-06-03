@@ -57,7 +57,7 @@
 		position: relative;
 
 		&:not(.playing) .noot {
-			--glow_color: transparent !important;
+			text-shadow: none !important;
 		}
 	}
 	.playing {
@@ -144,6 +144,7 @@
 
 		font-size: 1rem;
 		transition-duration: 1s;
+		transition-property: text-shadow color;
 		opacity: 0;
 
 		&-1 {
