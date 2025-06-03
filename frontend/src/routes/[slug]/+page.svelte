@@ -33,7 +33,6 @@
 		const date = audioURL.split('.').at(0);
 		if (!date) return;
 
-
 		await loadToPlayer(date);
 
 		cueJump.set(start);
@@ -299,6 +298,8 @@
 		}
 
 		:global(blockquote > p) {
+			margin-bottom: 0;
+		}
 	}
 
 	:global(main > section),
