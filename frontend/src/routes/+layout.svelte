@@ -36,6 +36,9 @@
 	let watcher: HTMLElement | undefined = $state();
 	let scrolled = $state(false);
 
+	let otherLocale: 'en' | 'et' = $derived(getLocale() === 'en' ? 'et' : 'en');
+	const localeText = (locale: 'en' | 'et') => (locale === 'en' ? 'english' : 'estonian');
+
 	const muudaSuud = (e: MouseEvent) => {
 		if (!innerWidth || !e) return;
 		if (getComputedStyle(e.target as Element).cursor === 'pointer') {
@@ -80,6 +83,13 @@
 
 <svelte:window bind:innerWidth />
 
+{#snippet langSwitchButton(style: string)}
+	<button class="{style} glow outline languageSwitch" onclick={() => setLocale(otherLocale)}>
+		{getLocale()}
+	</button>
+	<span class="sr-only">Change language to {localeText(otherLocale)}</span>
+{/snippet}
+
 <div
 	role="application"
 	class="app"
@@ -106,9 +116,12 @@
 						suu={kernSuu} />
 				</li>
 			</ul>
+			<ul class="languageSwitchWrapperMobile">
+				{@render langSwitchButton('secondary')}
+			</ul>
 			<ul>
 				<li>
-					<a class="secondary glow" href={`/${currentTrackLink}`}>/mnt/current</a>
+					<a class="secondary glow" href={localizeHref(`/${currentTrackLink}`)}>/mnt/current</a>
 				</li>
 			</ul>
 		</nav>
@@ -118,7 +131,12 @@
 			{@render children?.()}
 		</PageTransition>
 	</div>
-	<Player />
+	<footer>
+		<div class="languageSwitchWrapperPC">
+			{@render langSwitchButton('contrast')}
+		</div>
+		<Player />
+	</footer>
 </div>
 
 <style lang="scss">
@@ -132,6 +150,10 @@
 		@media only screen and (max-width: 768px) {
 			margin-bottom: 15rem;
 		}
+	}
+
+	button.languageSwitch {
+		border: none;
 	}
 
 	header {
@@ -190,7 +212,7 @@
 			& nav {
 				display: grid;
 				grid-template-rows: auto auto;
-				grid-template-columns: 1fr 1fr;
+				grid-template-columns: 1fr 1fr 1fr;
 				place-items: center;
 
 				ul:not(#kernList) li {
@@ -198,7 +220,7 @@
 				}
 
 				#kernList {
-					grid-column: span 2;
+					grid-column: span 3;
 					grid-row: 1;
 					padding: 0 calc(var(--nav-element-spacing-horizontal) * 0.5);
 
@@ -213,6 +235,60 @@
 			pointer-events: auto;
 			max-width: 50ch;
 			margin-inline: auto;
+		}
+	}
+
+	footer {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		place-items: end;
+
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		grid-template-areas: '. player lang';
+
+		.languageSwitchWrapperPC {
+			grid-area: lang;
+			margin-right: 0.25rem;
+			margin-bottom: 0.25rem;
+
+			& button {
+				font-size: 0.9em;
+				color: var(--muted);
+			}
+		}
+
+		@media screen and (max-width: 768px) {
+			grid-template-columns: 1fr;
+			grid-template-areas: 'player';
+		}
+
+		@media screen and (max-width: 1024px) {
+			justify-items: center;
+
+			& .languageSwitchWrapperPC {
+				margin-right: 0;
+
+				& button {
+					padding: var(--form-element-spacing-vertical)
+						calc(var(--form-element-spacing-horizontal) / 2);
+				}
+			}
+		}
+	}
+
+	.languageSwitchWrapperMobile {
+		display: none;
+	}
+
+	@media screen and (max-width: 768px) {
+		.languageSwitchWrapperPC {
+			display: none;
+		}
+
+		.languageSwitchWrapperMobile {
+			display: initial;
 		}
 	}
 </style>
