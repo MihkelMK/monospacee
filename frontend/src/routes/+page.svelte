@@ -10,6 +10,8 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import Socials from '$lib/components/Socials.svelte';
 	import type { PageServerData } from './$types';
+	import { getLocale } from '$lib/paraglide/runtime';
+	import { m } from '$lib/paraglide/messages';
 
 	interface Props {
 		data: PageServerData;
@@ -71,7 +73,7 @@
 				limit = newLimit;
 			} else if (nextFrom) {
 				loading = true;
-				const response = await fetch(`/api/posts?start=${nextFrom}&end=10`, {
+				const response = await fetch(`/api/posts?start=${nextFrom}&end=10&lang=${getLocale()}`, {
 					method: 'GET',
 					credentials: 'same-origin'
 				});
@@ -146,7 +148,7 @@
 		<h1 class="glow-sm">monospacee</h1>
 		<Socials class="landing" data={config.socials} />
 		<h2 class="glow glow-sm contrast" style="margin-top: var(--typography-spacing-top)">
-			GPLv3 litsensiga DJ duo, kelle kerning sobib igale žanrile.
+			{m['landing.subtitle']()}
 		</h2>
 	</hgroup>
 </header>

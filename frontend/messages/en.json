@@ -1,4 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!"
+	"toc": "Table of Contents",
+	"landing": {
+		"subtitle": "GPLv3 licensed DJ duo, whose kerning fits any genre."
+	}
 }

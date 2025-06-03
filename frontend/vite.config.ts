@@ -9,7 +9,8 @@ export default defineConfig({
 		imagetools(),
 		paraglideVitePlugin({
 			project: './project.inlang',
-			outdir: './src/lib/paraglide'
+			outdir: './src/lib/paraglide',
+			strategy: ['url', 'cookie']
 		})
 	],
 	build: {

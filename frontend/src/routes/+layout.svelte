@@ -14,6 +14,7 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import type { LayoutData } from './$types';
+	import { getLocale, localizeHref, setLocale } from '$lib/paraglide/runtime';
 
 	interface Props {
 		data: LayoutData;
@@ -94,7 +95,7 @@
 	<header class:scrolled>
 		<nav>
 			<ul>
-				<li><a class="secondary glow" href="/">/home/page</a></li>
+				<li><a class="secondary glow" href={localizeHref('/')}>/home/page</a></li>
 			</ul>
 			<ul id="kernList">
 				<li bind:this={kern}>

@@ -4,6 +4,7 @@
 	import { fly } from 'svelte/transition';
 	import { getAudioStore, visiblePostTypes } from '$lib/store.svelte';
 	import { cubicOut } from 'svelte/easing';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	interface Props {
 		posts: Post[];
@@ -35,7 +36,7 @@
 			class="post {getClass(post.type)} {post.duration ? 'playable' : ''}">
 			<header>
 				<hgroup>
-					<a href={'/' + post.date} data-sveltekit-preload-data="tap" class="title">
+					<a href={localizeHref('/' + post.date)} data-sveltekit-preload-data="tap" class="title">
 						<h3 class="glow-sm">{post.title}</h3>
 					</a>
 					<h4>{formatDate(post.date)} [{post.type.slice(0, 1).toUpperCase()}]</h4>

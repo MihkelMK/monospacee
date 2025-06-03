@@ -1,9 +1,15 @@
 import { json } from '@sveltejs/kit';
 import type { Post } from '$lib/types';
 
-function getPosts() {
+function getPosts(lang: string) {
 	let posts: Post[] = [];
-	const paths = import.meta.glob('/src/posts/*.md', { eager: true });
+	let paths;
+
+	if (lang === 'et') {
+		paths = import.meta.glob('/src/posts/*.md', { eager: true });
+	} else {
+		paths = import.meta.glob('/src/posts/en/*.md', { eager: true });
+	}
 
 	for (const path in paths) {
 		const file = paths[path];
@@ -35,10 +41,11 @@ export function GET({ url, setHeaders }) {
 		'cache-control': 'max-age=60'
 	});
 
+	const lang = url.searchParams.get('lang') || 'et';
 	const start = Number(url.searchParams.get('start')) || 0;
 	const end = Number(url.searchParams.get('end')) || 0;
 
-	const allPosts = getPosts();
+	const allPosts = getPosts(lang);
 	const posts = allPosts.slice(start, end > 0 ? end : undefined);
 
 	const nextIdx = start + posts.length;
