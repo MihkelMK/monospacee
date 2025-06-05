@@ -19,7 +19,12 @@ export class PostFeed {
 	getCueTitle(slug: string | null) {
 		if (!slug) return '';
 
-		return this.posts.find((post) => post.date === slug.split('.')[0])?.title ?? '';
+		// Typically /recordings/YYYY-MM-DD.mp3
+		// turn into YYYY-MM-DD
+		const file = slug.split('/').at(-1);
+		const date = file ? file.split('.')[0] : slug.split('.')[0];
+
+		return this.posts.find((post) => post.date === date)?.title ?? '';
 	}
 }
 
@@ -35,8 +40,8 @@ export class AudioStore {
 	currentTime: number = $state(0);
 	duration: number = $state(0);
 	volume: number = $state(1);
-	cueTitle: string = $state('');
 	cue: Cue | undefined = $state(undefined);
+	cueTitle: string | undefined = $state();
 
 	progress: number = $derived(timeToPercent(this.currentTime, this.duration));
 
@@ -64,6 +69,7 @@ export class AudioStore {
 		}
 		onDestroy(() => {
 			this.saveProgress();
+			this.saveCueTitle();
 		});
 	}
 
@@ -71,12 +77,23 @@ export class AudioStore {
 		this.loading = true;
 
 		this.saveProgress(); // Save the current progress before switching recordings
-		this.selectedRecording = recording;
+		this.saveCueTitle(); // Save the cue title before switching recordings
+
 		this.isPlaying = false;
+		this.selectedRecording = recording;
 		this.currentTime = this.loadProgress(recording) || 0; // Load the progress for the new recording
-		this.duration = 0;
+		this.duration = 0; // Initialize with 0 to overwrite previous value
 		this.cue = await this.getCue(recording);
-		this.cueTitle = postFeed.getCueTitle(recording);
+
+		// Try to get cue title from postFeed, fall back to what's saved in localStorage
+		// Trying from postFeed first ensures we get the title in the right language
+		const freshCueTitle = postFeed.getCueTitle(recording);
+		if (freshCueTitle) {
+			this.cueTitle = freshCueTitle;
+			this.saveCueTitle();
+		} else {
+			this.cueTitle = this.loadCueTitle(recording);
+		}
 
 		this.loading = false;
 	}
@@ -139,6 +156,7 @@ export class AudioStore {
 			const progressData = JSON.parse(localStorage.getItem('audioProgress') || '{}');
 			progressData['selected'] = this.selectedRecording;
 			progressData[this.selectedRecording] = this.currentTime;
+
 			localStorage.setItem('audioProgress', JSON.stringify(progressData));
 		}
 	}
@@ -157,6 +175,25 @@ export class AudioStore {
 			return progressData[recording] || null;
 		}
 		return null;
+	}
+
+	// Load cue title from local storage
+	loadCueTitle(recording: string | null): string | undefined {
+		if (browser && recording) {
+			const cueTitleData = JSON.parse(localStorage.getItem('cueTitles') || '{}');
+			return cueTitleData[recording] || undefined;
+		}
+		return undefined;
+	}
+
+	// Save the current progress to local storage
+	saveCueTitle() {
+		if (browser && this.selectedRecording && this.cueTitle) {
+			const cueTitleData = JSON.parse(localStorage.getItem('cueTitles') || '{}');
+			cueTitleData[this.selectedRecording] = this.cueTitle;
+
+			localStorage.setItem('cueTitles', JSON.stringify(cueTitleData));
+		}
 	}
 }
 
