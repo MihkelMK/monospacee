@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { getAudioStore } from '$lib/store.svelte';
 
-	const { togglePlay, toggleMute, skip, loading } = $props<{
+	const { togglePlay, toggleMute, skip } = $props<{
 		togglePlay: () => void;
 		toggleMute: () => void;
 		skip: (seconds: number) => void;
-		loading: boolean;
 	}>();
 
 	const audioStore = getAudioStore();
@@ -33,7 +32,6 @@
 <button
 	class="player_button player_button_mute {audioStore.isMuted ? 'unactive' : ''}"
 	onclick={toggleMute}
-	disabled={loading}
 	aria-label="Mute audio">
 	<iconify-icon
 		inline

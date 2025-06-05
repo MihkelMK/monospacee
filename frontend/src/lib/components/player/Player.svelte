@@ -7,6 +7,7 @@
 	import Controls from './Controls.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import { invalidateAll } from '$app/navigation';
+	import { FiniteStateMachine } from 'runed';
 
 	const audioStore = getAudioStore();
 
@@ -19,7 +20,77 @@
 
 	let audio: HTMLAudioElement | null = $state(null);
 	let loadedAudio: string | undefined = $state(undefined);
-	let loading = $derived(!loadedAudio || audioStore.loading);
+
+	type LoadingStates = 'loading' | 'loaded' | 'stalled' | 'waiting' | 'progressing' | 'skipping';
+	type LoadingEvents = 'loading' | 'waiting' | 'stalled' | 'progress' | 'loaded' | 'skip';
+
+	let waitingTimeout: ReturnType<typeof setTimeout> | undefined = $state();
+
+	const loadingFS = new FiniteStateMachine<LoadingStates, LoadingEvents>('loading', {
+		loading: {
+			progress: 'progressing',
+			loading: 'loading',
+			waiting: 'waiting',
+			stalled: 'stalled'
+		},
+		loaded: {
+			loading: 'loading',
+			waiting: 'waiting',
+			stalled: 'stalled',
+			skip: 'skipping'
+		},
+		stalled: {
+			// Skip straight to loaded as in my testing stalled
+			// is the only condition where progress means we are good to go
+			progress: 'loaded',
+			loading: 'loading',
+			waiting: 'waiting'
+		},
+		waiting: {
+			_enter: () => {
+				// Handle case where we instantly scrub to the right place
+				waitingTimeout = setTimeout(() => {
+					loadingFS.send('loaded');
+					console.log('waitingTimeout');
+				}, 1000);
+			},
+			_exit: () => {
+				// Scrub was not instant
+				clearTimeout(waitingTimeout);
+			},
+			progress: 'progressing',
+			loading: 'loading',
+			stalled: 'stalled',
+			loaded: 'loaded'
+		},
+		progressing: {
+			_enter: () => {
+				// Handle cases where most of the audio has been already loaded
+				// But waitingTimeout still gets cancelled (rare)
+				loadingFS.debounce(4000, 'loaded');
+			},
+
+			// Wait for second progress event because sometimes we still get stalled
+			// Not waiting leads to a flash of loaded before being set to loading again
+			progress: 'loaded',
+			waiting: 'waiting',
+			loading: 'loading',
+			stalled: 'stalled',
+			loaded: 'loaded'
+		},
+		skipping: {
+			// Used when skiping +- 30sec along loaded song
+			// Times where this takes significant time are rare
+			// Still, one waiting event is triggered
+			// Having this exception skips the flash of loader spinners
+			_enter: () => {
+				loadingFS.debounce(100, 'loaded');
+			},
+			loaded: 'loaded'
+		}
+	});
+
+	let loading = $derived(loadingFS.current !== 'loaded' && loadingFS.current !== 'skipping');
 
 	function handleTimeUpdate() {
 		if (!audio) return;
@@ -52,8 +123,10 @@
 
 		if (audio.paused || audio.ended) {
 			audio.play();
+			audioStore.setPlay(true);
 		} else {
 			audio.pause();
+			audioStore.setPlay(false);
 		}
 	}
 
@@ -61,6 +134,14 @@
 		if (!audio) return;
 
 		audio.muted = !audio.muted;
+		audioStore.toggleMute();
+	}
+
+	function handleSkip(seconds: number) {
+		if (!audio) return;
+
+		loadingFS.send('skip');
+		audio.currentTime += seconds;
 	}
 
 	function loadNewSong(selectedRecording: string | null, startAfterLoad: boolean) {
@@ -70,9 +151,10 @@
 		if (selectedRecording === currentRelative) return;
 		loadedAudio = undefined;
 
+		loadingFS.send('loading');
 		audio.src = selectedRecording;
-		audio.load();
 		audio.currentTime = audioStore.currentTime;
+		audio.load();
 
 		invalidateAll();
 
@@ -134,20 +216,17 @@
 	onplay={() => audioStore.setPlay(true)}
 	onpause={() => audioStore.setPlay(false)}
 	onended={() => audioStore.setPlay(false)}
+	onloadstart={() => loadingFS.send('loading')}
+	onstalled={() => loadingFS.send('stalled')}
+	onwaiting={() => loadingFS.send('waiting')}
+	onprogress={() => loadingFS.send('progress')}
 	ontimeupdate={handleTimeUpdate}
 	ondurationchange={handleDurationChange}
 	onvolumechange={handleVolumeChange}>
 </audio>
 
 <div class="player">
-	<Controls
-		togglePlay={handlePlayPause}
-		toggleMute={handleMute}
-		skip={(seconds) => {
-			if (audio) audio.currentTime += seconds;
-		}}
-		loading={!loadedAudio || audioStore.loading}></Controls>
-
+	<Controls togglePlay={handlePlayPause} toggleMute={handleMute} skip={handleSkip}></Controls>
 	<ProgressBar {loading} {updateProgress} {seekToSong}></ProgressBar>
 	<TrackInfo {loading} />
 </div>
