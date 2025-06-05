@@ -49,10 +49,7 @@
 		waiting: {
 			_enter: () => {
 				// Handle case where we instantly scrub to the right place
-				waitingTimeout = setTimeout(() => {
-					loadingFS.send('loaded');
-					console.log('waitingTimeout');
-				}, 1000);
+				waitingTimeout = setTimeout(() => loadingFS.send('loaded'), 1000);
 			},
 			_exit: () => {
 				// Scrub was not instant
