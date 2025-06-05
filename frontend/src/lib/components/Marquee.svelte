@@ -28,8 +28,7 @@
 	onmouseover={() => (hovered = true)}
 	onmouseleave={() => (hovered = false)}
 	style="overflow: hidden;"
-	class={className}
->
+	class={className}>
 	<div class="content" class:paused={paused || (pauseOnHover && hovered)}>
 		{#each { length: repeat }}
 			<div class="text" style="animation-duration: {duration}s">
