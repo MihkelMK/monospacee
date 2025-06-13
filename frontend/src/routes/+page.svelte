@@ -167,8 +167,14 @@
 					id="eventSwitch"
 					name="postTypes"
 					role="switch" />
-				<span class={`${$visiblePostTypes.includes('event') ? 'glow secondary' : ''}`}>[E]</span>
-				vents
+				<span style="font-size: 0;">
+					<span
+						style="font-size: initial;"
+						class={`${$visiblePostTypes.includes('event') ? 'glow secondary' : ''}`}>
+						[E]
+					</span>
+					<span style="font-size: initial;">vents</span>
+				</span>
 			</label>
 			<label
 				for="projectSwitch"
@@ -180,8 +186,14 @@
 					id="projectSwitch"
 					name="postTypes"
 					role="switch" />
-				<span class={`${$visiblePostTypes.includes('project') ? 'glow contrast' : ''}`}>[P]</span>
-				rojects
+				<span style="font-size: 0;">
+					<span
+						style="font-size: initial;"
+						class={`${$visiblePostTypes.includes('project') ? 'glow contrast' : ''}`}>
+						[P]
+					</span>
+					<span style="font-size: initial;">rojects</span>
+				</span>
 			</label>
 			<label
 				for="streamSwitch"
@@ -193,8 +205,14 @@
 					id="streamSwitch"
 					name="postTypes"
 					role="switch" />
-				<span class={`${$visiblePostTypes.includes('stream') ? 'glow primary' : ''}`}>[S]</span>
-				reams
+				<span style="font-size: 0;">
+					<span
+						style="font-size: initial;"
+						class={`${$visiblePostTypes.includes('stream') ? 'glow primary' : ''}`}>
+						[S]
+					</span>
+					<span style="font-size: initial;">treams</span>
+				</span>
 			</label>
 		</fieldset>
 	</section>
