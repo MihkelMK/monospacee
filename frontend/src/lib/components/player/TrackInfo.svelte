@@ -51,10 +51,10 @@
 		&_title {
 			grid-area: title;
 			place-self: center;
-			z-index: -1;
 
 			margin-bottom: -0.8rem;
 			margin-top: 1rem;
+			padding-inline: 1rem;
 			font-size: 1.1em;
 			font-weight: bold;
 			text-align: center;
