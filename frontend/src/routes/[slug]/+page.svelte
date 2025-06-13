@@ -228,8 +228,13 @@
 			gap: var(--grid-spacing-vertical);
 		}
 
+		:global(nav.toc) {
+			margin-bottom: 0;
+		}
+
 		#toc {
 			color: var(--accent-color);
+			margin-top: 0;
 			margin-bottom: calc(var(--typography-spacing-vertical) * 0.25);
 
 			& button,
@@ -285,6 +290,9 @@
 		:global(h4),
 		:global(h5),
 		:global(h6) {
+			margin-top: var(--typography-spacing-vertical);
+			margin-bottom: calc(var(--typography-spacing-vertical) / 2);
+
 			scroll-margin-top: min(16rem, 25dvh);
 			position: relative;
 
@@ -297,6 +305,10 @@
 			border-bottom: 0.15rem groove color-mix(in srgb, var(--muted-color) 40%, transparent);
 		}
 
+		:global(blockquote) {
+			margin-top: 0;
+		}
+
 		:global(blockquote > p) {
 			margin-bottom: 0;
 		}
@@ -306,6 +318,10 @@
 	:global(#toc),
 	:global(nav.toc) {
 		padding-inline: var(--nav-element-spacing-horizontal);
+	}
+
+	:global(main > section) {
+		margin-bottom: 0;
 	}
 
 	@keyframes sweep {
