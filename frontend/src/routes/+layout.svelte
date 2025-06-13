@@ -132,9 +132,6 @@
 		</PageTransition>
 	</div>
 	<footer>
-		<div class="languageSwitchWrapperPC">
-			{@render langSwitchButton('contrast')}
-		</div>
 		<Player />
 	</footer>
 </div>
@@ -200,9 +197,12 @@
 			}
 		}
 
-		nav li {
-			font-size: 1.2em;
-			font-family: var(--font-accent);
+		nav {
+			position: relative;
+			& li {
+				font-size: 1.2em;
+				font-family: var(--font-accent);
+			}
 		}
 
 		@media screen and (max-width: 768px) {
@@ -242,53 +242,23 @@
 		position: fixed;
 		bottom: 0;
 		width: 100%;
-		place-items: end;
 
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
-		grid-template-areas: '. player lang';
-
-		.languageSwitchWrapperPC {
-			grid-area: lang;
-			margin-right: 0.25rem;
-			margin-bottom: 0.25rem;
-
-			& button {
-				font-size: 0.9em;
-				color: var(--muted);
-			}
-		}
+		grid-template-areas: '. player .';
 
 		@media screen and (max-width: 768px) {
 			grid-template-columns: 1fr;
 			grid-template-areas: 'player';
 		}
-
-		@media screen and (max-width: 1024px) {
-			justify-items: center;
-
-			& .languageSwitchWrapperPC {
-				margin-right: 0;
-
-				& button {
-					padding: var(--form-element-spacing-vertical)
-						calc(var(--form-element-spacing-horizontal) / 2);
-				}
-			}
-		}
 	}
 
-	.languageSwitchWrapperMobile {
-		display: none;
-	}
-
-	@media screen and (max-width: 768px) {
-		.languageSwitchWrapperPC {
-			display: none;
-		}
-
+	@media screen and (min-width: 769px) {
 		.languageSwitchWrapperMobile {
-			display: initial;
+			position: absolute;
+			bottom: -1rem;
+			left: 50%;
+			translate: calc(-50% - 0.7rem) 0;
 		}
 	}
 </style>
