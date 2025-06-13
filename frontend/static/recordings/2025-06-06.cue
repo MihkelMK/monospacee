@@ -1,0 +1,5 @@
+FILE "2025-06-06.mp3" WAVE
+  TRACK 01 AUDIO
+    TITLE "'◡'"
+    PERFORMER "Tracklist WIP"
+    INDEX 01 00:00:00
