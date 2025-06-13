@@ -239,7 +239,7 @@
 			'track track track track track'
 			'. current title total .'
 			'mute progress progress progress play';
-		grid-template-columns: 3.5rem 1fr 1fr 1fr 3.5rem;
+		grid-template-columns: 3.5rem auto 1fr auto 3.5rem;
 		gap: 0;
 
 		padding-bottom: 1rem;
@@ -252,7 +252,7 @@
 				'track track track track track'
 				'mute current title total play'
 				'progress progress progress progress progress';
-			grid-template-columns: 5rem auto auto auto 5rem;
+			grid-template-columns: 5rem auto 1fr auto 5rem;
 			gap: 0.85rem 0;
 			padding: 0;
 			min-width: 100%;
