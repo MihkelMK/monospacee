@@ -1,13 +1,26 @@
-export async function load({ url }) {
-	let selectedRecording: string = '';
+import { deLocalizeUrl } from '$lib/paraglide/runtime.js';
 
-	if (typeof window !== 'undefined') {
-		const progressData = JSON.parse(localStorage.getItem('audioProgress') || '{}');
-		selectedRecording = progressData['selected'] || '/recordings/2024-06-08.mp3';
+export async function load({ url, fetch }) {
+	const slug = deLocalizeUrl(url).pathname.split('/').at(-1);
+	const cueSlugOnLoad = url.searchParams.has('load');
+
+	// If loading post with ?load
+	// try setting post as selected recording (if that post has a recording file)
+	if (slug && cueSlugOnLoad) {
+		const recordingPath = '/recordings/' + slug + '.mp3';
+		const recordingExists = await fetch(recordingPath, { method: 'HEAD' }).then((res) => {
+			return res.status === 200 || res.status === 204;
+		});
+
+		if (recordingExists) {
+			return {
+				url: url.pathname,
+				selected: recordingPath
+			};
+		}
 	}
 
 	return {
-		url: url.pathname,
-		selected: selectedRecording
+		url: url.pathname
 	};
 }

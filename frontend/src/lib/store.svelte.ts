@@ -61,11 +61,12 @@ export class AudioStore {
 			: undefined
 	);
 
-	constructor() {
+	constructor(recording: string | undefined = undefined) {
 		// Load progress for the initial selected recording (if any) on instantiation
+		// Ensure this runs only in the browser
 		if (browser) {
-			// Ensure this runs only in the browser
-			this.setRecording(this.loadSelection());
+			const selectedRecording = recording ? recording : this.loadSelection();
+			this.setRecording(selectedRecording);
 		}
 		onDestroy(() => {
 			this.saveProgress();
@@ -199,8 +200,8 @@ export class AudioStore {
 
 const AUDIO_STORE_KEY = Symbol('AUDIO');
 
-export function setAudioStore() {
-	return setContext(AUDIO_STORE_KEY, new AudioStore());
+export function setAudioStore(recording: string | undefined = undefined) {
+	return setContext(AUDIO_STORE_KEY, new AudioStore(recording));
 }
 
 export function getAudioStore() {
