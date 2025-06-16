@@ -1,6 +1,9 @@
 # Use this image as the platform to build the app
 FROM node:20 AS build
 
+# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#using-pipes
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # The WORKDIR instruction sets the working directory for everything that will happen next
 WORKDIR /app
 
@@ -10,6 +13,9 @@ COPY package.json .
 RUN pnpm i
 
 COPY . .
+
+# Set latest post in environment
+RUN printf 'PUBLIC_LATEST_POST=%s\n' "$(basename "$(find . src/posts | sort -n | tail -n 1)" ".md")" > .env 
 
 # Build SvelteKit app
 RUN pnpm build
