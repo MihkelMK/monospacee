@@ -1,15 +1,27 @@
-.DS_Store
 node_modules
-/frontend/build
-/frontend/.svelte-kit
-/frontend/package
-/og/build
-/og/.svelte-kit
-/og/package
+
+# Output
+.output
+.vercel
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
 .env
 .env.*
 !.env.example
+!.env.test
+
+# Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-frontend/project.inlang/cache/plugins
-frontend/project.inlang/project_id
+
+# Paraglide
+src/lib/paraglide
+
+# Media files
+static/recordings

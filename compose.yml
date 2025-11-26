@@ -3,8 +3,7 @@ name: monospacee
 services:
   web:
     container_name: monospacee-web
-    image: monospacee
-    build: ./frontend
+    build: .
     restart: unless-stopped
     ports:
       - 9001:3000
