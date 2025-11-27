@@ -1,6 +1,8 @@
-import { json } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 import type { Song } from '$lib/types';
 import type { Cue } from '$lib/types';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 
 function timecodeToSeconds(timecode: string | undefined) {
 	if (!timecode) return null;
@@ -44,11 +46,13 @@ export async function GET({ params, setHeaders }) {
 		'cache-control': 'public, immutable, no-transform, max-age=3600'
 	});
 
-	const file = `/static/recordings/${params.slug}`;
-	const cues = import.meta.glob('/static/recordings/*.cue', { query: '?raw', import: 'default' });
-	const cueStream = cues[file];
-	const cueBody = (await cueStream()) as string;
+	try {
+		const cuePath = join(process.cwd(), 'build/client/recordings', `${params.slug}.cue`);
+		const cueBody = await readFile(cuePath, 'utf-8');
 
-	const parsedCue: Cue = parseCue(cueBody);
-	return json(parsedCue);
+		const parsedCue: Cue = parseCue(cueBody);
+		return json(parsedCue);
+	} catch (err) {
+		throw error(404, 'Cue file not found');
+	}
 }
