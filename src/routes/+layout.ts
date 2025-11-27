@@ -23,12 +23,12 @@ export async function load({ url, fetch }) {
 		recording = await isValidRecording(fetch, slug);
 	}
 
-	if (!recording) {
-		recording = await isValidRecording(fetch, PUBLIC_LATEST_POST);
-	}
+	// Provide fallback recording for initial load (when localStorage is empty)
+	const fallback = await isValidRecording(fetch, PUBLIC_LATEST_POST);
 
 	return {
 		url: url.pathname,
-		selected: recording
+		selected: recording,
+		fallback
 	};
 }

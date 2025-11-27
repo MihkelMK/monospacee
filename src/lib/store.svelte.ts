@@ -61,11 +61,12 @@ export class AudioStore {
 			: undefined
 	);
 
-	constructor(recording: string | undefined = undefined) {
+	constructor(recording: string | undefined = undefined, fallback: string | undefined = undefined) {
 		// Load progress for the initial selected recording (if any) on instantiation
 		// Ensure this runs only in the browser
 		if (browser) {
-			const selectedRecording = recording ? recording : this.loadSelection();
+			// Priority: 1) ?load parameter (recording) 2) localStorage 3) fallback (PUBLIC_LATEST_POST)
+			const selectedRecording = recording || this.loadSelection(fallback);
 			this.setRecording(selectedRecording);
 		}
 		onDestroy(() => {
@@ -162,10 +163,10 @@ export class AudioStore {
 		}
 	}
 
-	loadSelection() {
+	loadSelection(fallback: string | undefined = undefined) {
 		if (browser) {
 			const progressData = JSON.parse(localStorage.getItem('audioProgress') || '{}');
-			return progressData['selected'] || '/recordings/2024-06-08.mp3';
+			return progressData['selected'] || fallback || '/recordings/2024-06-08.mp3';
 		}
 	}
 
@@ -200,8 +201,8 @@ export class AudioStore {
 
 const AUDIO_STORE_KEY = Symbol('AUDIO');
 
-export function setAudioStore(recording: string | undefined = undefined) {
-	return setContext(AUDIO_STORE_KEY, new AudioStore(recording));
+export function setAudioStore(recording: string | undefined = undefined, fallback: string | undefined = undefined) {
+	return setContext(AUDIO_STORE_KEY, new AudioStore(recording, fallback));
 }
 
 export function getAudioStore() {

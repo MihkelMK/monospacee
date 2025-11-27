@@ -23,7 +23,7 @@
 
 	let { data, children }: Props = $props();
 
-	setAudioStore(data?.selected);
+	setAudioStore(data?.selected, data?.fallback);
 
 	const audioStore = getAudioStore();
 	let kernSilmNurk = $state(0);
