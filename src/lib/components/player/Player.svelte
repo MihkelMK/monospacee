@@ -46,6 +46,7 @@
 			// is the only condition where progress means we are good to go
 			progress: 'loaded',
 			loading: 'loading',
+			loaded: 'loaded',
 			waiting: 'waiting'
 		},
 		waiting: {
