@@ -34,6 +34,8 @@
 			stalled: 'stalled'
 		},
 		loaded: {
+			progress: 'loaded',
+			loaded: 'loaded',
 			loading: 'loading',
 			waiting: 'waiting',
 			stalled: 'stalled',
