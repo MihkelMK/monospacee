@@ -1,20 +1,23 @@
 <script lang="ts">
-	import '@fontsource/share-tech-mono';
 	import '@fontsource-variable/roboto-mono';
+	import '@fontsource/share-tech-mono';
 	import '../app.scss';
 
-	import 'iconify-icon';
 	import PageTransition from '$lib/components/PageTransition.svelte';
+	import 'iconify-icon';
 
 	import { angleToMouse, throttle } from '$lib/utils';
 
+	import { browser } from '$app/environment';
+	import { afterNavigate, goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import Kern from '$lib/components/Kern.svelte';
 	import Player from '$lib/components/player/Player.svelte';
+	import { getLocale, localizeHref, setLocale } from '$lib/paraglide/runtime';
 	import { getAudioStore, setAudioStore } from '$lib/store.svelte';
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import type { LayoutData } from './$types';
-	import { getLocale, localizeHref, setLocale } from '$lib/paraglide/runtime';
 
 	interface Props {
 		data: LayoutData;
@@ -64,6 +67,17 @@
 	};
 
 	let currentTrackLink = $derived(audioStore.selectedRecording?.split('/')[2]?.split('.')[0] || '');
+
+	afterNavigate(() => {
+		// Clean up ?load parameter after it's been used
+		if (browser && page.url.searchParams.has('load')) {
+			goto(resolve('/[slug]', { slug: page.url.pathname.replace('/', '') }), {
+				replaceState: true,
+				invalidateAll: false,
+				noScroll: true
+			});
+		}
+	});
 
 	onMount(() => {
 		if (browser) {
