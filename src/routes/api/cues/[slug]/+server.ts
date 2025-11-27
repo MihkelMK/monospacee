@@ -47,7 +47,7 @@ export async function GET({ params, setHeaders }) {
 	});
 
 	try {
-		const cuePath = join(process.cwd(), 'build/client/recordings', `${params.slug}.cue`);
+		const cuePath = join(process.cwd(), 'build/client/recordings', params.slug);
 		const cueBody = await readFile(cuePath, 'utf-8');
 
 		const parsedCue: Cue = parseCue(cueBody);
