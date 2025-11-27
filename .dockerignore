@@ -4,3 +4,4 @@ node_modules
 Dockerfile
 build
 project.inlang/cache
+static/recordings
