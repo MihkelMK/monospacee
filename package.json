@@ -61,16 +61,6 @@
 		"remark-squeeze-paragraphs": "^6.0.0",
 		"runed": "^0.37.0"
 	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@parcel/watcher",
-			"@sveltejs/kit",
-			"core-js",
-			"esbuild",
-			"sharp",
-			"svelte-preprocess"
-		]
-	}
 	"engines": {
 		"node": "^24.0.0"
 	},

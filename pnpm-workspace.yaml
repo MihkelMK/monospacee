@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@sveltejs/kit'
+  - core-js
+  - esbuild
+  - sharp
+  - svelte-preprocess
