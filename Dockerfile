@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine3.23 AS base
 
 #
 # INSTALL STAGE - Production dependencies only
@@ -9,7 +9,7 @@ RUN corepack enable
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Fetch deps with caching
 RUN --mount=type=cache,id=monospacee-pnpm-store,target=/root/.local/share/pnpm/store \
@@ -31,7 +31,7 @@ RUN corepack enable
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Fetch deps with caching
 RUN --mount=type=cache,id=monospacee-pnpm-store,target=/root/.local/share/pnpm/store \
