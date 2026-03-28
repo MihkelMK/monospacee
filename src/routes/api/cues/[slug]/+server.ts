@@ -52,7 +52,7 @@ export async function GET({ params, setHeaders }) {
 
 		const parsedCue: Cue = parseCue(cueBody);
 		return json(parsedCue);
-	} catch (err) {
+	} catch {
 		throw error(404, 'Cue file not found');
 	}
 }
