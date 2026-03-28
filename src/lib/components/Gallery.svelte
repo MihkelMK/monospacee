@@ -18,7 +18,7 @@
 					<p>{title}</p>
 				{/if}
 				{#if link}
-					<a href={link.href} target="_blank" referrerpolicy="no-referrer">
+					<a href={link.href} rel="external" target="_blank" referrerpolicy="no-referrer">
 						{link.text ?? 'source'}
 					</a>
 				{/if}
