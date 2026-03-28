@@ -12,7 +12,7 @@ import Og from './OG.svelte';
 const fontData = read(robotoMono500 as unknown as string).arrayBuffer();
 const fontDataBold = read(robotoMono700 as unknown as string).arrayBuffer();
 
-export const GET = async ({ url, params, setHeaders }) => {
+export const GET = async ({ url, params }) => {
 	const size = params.size || 'small';
 	const type = url.searchParams.get('type') || '';
 
@@ -47,13 +47,21 @@ export const GET = async ({ url, params, setHeaders }) => {
 		}
 	});
 
-	const image = resvg.render();
+	const body = new ReadableStream({
+		async start(controller) {
+			return () => {
+				const image = resvg.render();
 
-	setHeaders({ 'cache-control': 'public, immutable, no-transform, max-age=86400' });
+				controller.enqueue(image);
+				controller.close();
+			};
+		}
+	});
 
-	return new Response(image.asPng(), {
+	return new Response(body, {
 		headers: {
-			'content-type': 'image/png'
+			'content-type': 'image/png',
+			'cache-control': 'public, immutable, no-transform, max-age=86400'
 		}
 	});
 };
