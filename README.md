@@ -17,7 +17,7 @@ Source code is available under the GPLv3 license. Content is available under the
 
 **Frontend:** [SvelteKit](https://github.com/sveltejs/kit), [svelte-img](https://github.com/zerodevx/svelte-img), [TypeScript](https://github.com/microsoft/TypeScript), [Sass](https://github.com/sass/sass), [Pico Css](https://github.com/picocss/pico)
 
-**OG img API:** [SvelteKit](https://github.com/sveltejs/kit), [sveltekit-og](https://github.com/etherCorps/sveltekit-og), [Satori](https://github.com/vercel/satori), [resvg-js](https://github.com/yisibl/resvg-js)
+**OG img API:** [SvelteKit](https://github.com/sveltejs/kit), [Satori](https://github.com/vercel/satori), [resvg-js](https://github.com/yisibl/resvg-js)
 
 **.md posts** [MDsveX](https://github.com/pngwn/MDsveX), [remark](https://github.com/remarkjs/remark), [rehype](https://github.com/rehypejs/rehype), [Shiki](https://github.com/shikijs/shiki), [Curtail](https://github.com/Huluti/Curtail)
 
