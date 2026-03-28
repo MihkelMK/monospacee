@@ -1,9 +1,15 @@
-# Package Managers
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
 
-dist/
-build/
-static/
-.svelte-kit/
+# Ignore files for PNPM, NPM, YARN and BUN
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+bun.lock
+bun.lockb
