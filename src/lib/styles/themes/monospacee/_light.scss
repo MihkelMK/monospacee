@@ -208,13 +208,13 @@
 	@if map.get($modules, 'forms/basics') {
 		// Focus for buttons, radio and select
 		input:is(
-				[type='submit'],
-				[type='button'],
-				[type='reset'],
-				[type='checkbox'],
-				[type='radio'],
-				[type='file']
-			) {
+			[type='submit'],
+			[type='button'],
+			[type='reset'],
+			[type='checkbox'],
+			[type='radio'],
+			[type='file']
+		) {
 			#{$css-var-prefix}form-element-focus-color: var(#{$css-var-prefix}primary-focus);
 		}
 	}

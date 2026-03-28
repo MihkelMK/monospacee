@@ -201,7 +201,10 @@ export class AudioStore {
 
 const AUDIO_STORE_KEY = Symbol('AUDIO');
 
-export function setAudioStore(recording: string | undefined = undefined, fallback: string | undefined = undefined) {
+export function setAudioStore(
+	recording: string | undefined = undefined,
+	fallback: string | undefined = undefined
+) {
 	return setContext(AUDIO_STORE_KEY, new AudioStore(recording, fallback));
 }
 
