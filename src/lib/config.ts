@@ -14,24 +14,24 @@ export const url = dev ? 'http://localhost:5173' : 'https://monospac.ee';
 export const author = 'monospacee';
 
 export const socials: SocialLink[] = [
-	{
-		href: 'https://github.com/MihkelMK/monospacee',
-		icon: 'github',
-		label: 'sourcecode for this page'
-	},
-	{
-		href: 'https://soundcloud.com/monospacee',
-		icon: 'soundcloud',
-		label: 'our soundcloud'
-	},
-	{
-		href: 'https://www.youtube.com/@monospacee/streams',
-		icon: 'youtube',
-		label: 'our youtube'
-	},
-	{
-		href: `${url}/rss.xml`,
-		icon: 'rss-box',
-		label: 'our rss feed'
-	}
+  {
+    href: 'https://github.com/MihkelMK/monospacee',
+    icon: 'github',
+    label: 'sourcecode for this page',
+  },
+  {
+    href: 'https://soundcloud.com/monospacee',
+    icon: 'soundcloud',
+    label: 'our soundcloud',
+  },
+  {
+    href: 'https://www.youtube.com/@monospacee/streams',
+    icon: 'youtube',
+    label: 'our youtube',
+  },
+  {
+    href: `${url}/rss.xml`,
+    icon: 'rss-box',
+    label: 'our rss feed',
+  },
 ];

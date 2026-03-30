@@ -13,55 +13,55 @@ const fontData = read(robotoMono500 as unknown as string).arrayBuffer();
 const fontDataBold = read(robotoMono700 as unknown as string).arrayBuffer();
 
 export const GET = async ({ url, params }) => {
-	const size = params.size || 'small';
-	const type = url.searchParams.get('type') || '';
+  const size = params.size || 'small';
+  const type = url.searchParams.get('type') || '';
 
-	const template = size === 'big' ? OgBig : Og;
-	const width = size === 'big' ? 3000 : 1200;
-	const height = size === 'big' ? 3000 : 630;
+  const template = size === 'big' ? OgBig : Og;
+  const width = size === 'big' ? 3000 : 1200;
+  const height = size === 'big' ? 3000 : 630;
 
-	const result = render(template, { props: { postType: type } });
-	const element = toReactNode(result.head + result.body);
+  const result = render(template, { props: { postType: type } });
+  const element = toReactNode(result.head + result.body);
 
-	const svg = await satori(element, {
-		height,
-		width,
-		fonts: [
-			{
-				name: 'Roboto Mono',
-				data: await fontData,
-				weight: 500
-			},
-			{
-				name: 'Roboto Mono',
-				data: await fontDataBold,
-				weight: 700
-			}
-		]
-	});
+  const svg = await satori(element, {
+    height,
+    width,
+    fonts: [
+      {
+        name: 'Roboto Mono',
+        data: await fontData,
+        weight: 500,
+      },
+      {
+        name: 'Roboto Mono',
+        data: await fontDataBold,
+        weight: 700,
+      },
+    ],
+  });
 
-	const resvg = new Resvg(svg, {
-		fitTo: {
-			mode: 'width',
-			value: width
-		}
-	});
+  const resvg = new Resvg(svg, {
+    fitTo: {
+      mode: 'width',
+      value: width,
+    },
+  });
 
-	const body = new ReadableStream({
-		async start(controller) {
-			return () => {
-				const image = resvg.render();
+  const body = new ReadableStream({
+    async start(controller) {
+      return () => {
+        const image = resvg.render();
 
-				controller.enqueue(image);
-				controller.close();
-			};
-		}
-	});
+        controller.enqueue(image);
+        controller.close();
+      };
+    },
+  });
 
-	return new Response(body, {
-		headers: {
-			'content-type': 'image/png',
-			'cache-control': 'public, immutable, no-transform, max-age=86400'
-		}
-	});
+  return new Response(body, {
+    headers: {
+      'content-type': 'image/png',
+      'cache-control': 'public, immutable, no-transform, max-age=86400',
+    },
+  });
 };

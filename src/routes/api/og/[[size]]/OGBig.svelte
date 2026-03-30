@@ -1,29 +1,17 @@
 <script>
-	import Kern from '$lib/components/Kern.svelte';
+  import Kern from '$lib/components/Kern.svelte';
 
-	/** @type {string} */
-	export let postType;
-	const accentColor =
-		postType === 'main'
-			? '#a160cd'
-			: postType === 'event'
-				? '#95d9f4'
-				: postType === 'stream'
-					? '#a160cd'
-					: '#88898c';
+  /** @type {string} */
+  export let postType;
+  const accentColor =
+    postType === 'main' ? '#a160cd' : postType === 'event' ? '#95d9f4' : postType === 'stream' ? '#a160cd' : '#88898c';
 
-	const accentColorLow =
-		postType === 'main'
-			? '#95d9f4'
-			: postType === 'event'
-				? '#bfe8f8'
-				: postType === 'stream'
-					? '#b480d7'
-					: '#e7eaee';
+  const accentColorLow =
+    postType === 'main' ? '#95d9f4' : postType === 'event' ? '#bfe8f8' : postType === 'stream' ? '#b480d7' : '#e7eaee';
 </script>
 
 <div
-	style="
+  style="
 		height: 100%;
 		width: 100%;
 		display: flex;
@@ -34,8 +22,8 @@
 		flex-wrap: nowrap;
     background-image: linear-gradient(30deg, #14171c, #1c2027);
 	">
-	<div
-		style="
+  <div
+    style="
       font-size: 18rem;
       display: flex;
       color: #BDC3CB;
@@ -43,11 +31,11 @@
       line-height: 1.75em;
       margin-top: 35rem;
 		">
-		<span style="color: {accentColor}; margin-top: -3rem;">monospacee</span>
-		<span style="font-size:16rem; margin-left: 2rem">$</span>
-	</div>
-	<div
-		style="
+    <span style="color: {accentColor}; margin-top: -3rem;">monospacee</span>
+    <span style="font-size:16rem; margin-left: 2rem">$</span>
+  </div>
+  <div
+    style="
       font-size: 26rem;
       font-weight: 700;
       background-image: linear-gradient(30deg, {accentColor}, {accentColorLow});
@@ -58,11 +46,11 @@
       line-height: 1em;
       margin-top: -8rem;
 		">
-		~/{postType === 'main' ? '' : `${postType.toLowerCase()}s`}
-	</div>
+    ~/{postType === 'main' ? '' : `${postType.toLowerCase()}s`}
+  </div>
 
-	<div
-		style="
+  <div
+    style="
     position: absolute;
     top: 50%;
     left: 50%;
@@ -72,6 +60,6 @@
     font-weight: 700;
 		color: {accentColorLow};
 ">
-		<Kern og></Kern>
-	</div>
+    <Kern og></Kern>
+  </div>
 </div>

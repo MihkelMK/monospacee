@@ -1,20 +1,14 @@
 <script lang="ts">
-	interface Props {
-		href: string;
-		icon: string;
-		label?: string;
-		iconClassName?: string;
-	}
+  interface Props {
+    href: string;
+    icon: string;
+    label?: string;
+    iconClassName?: string;
+  }
 
-	let { href, icon, label = 'our' + icon, iconClassName = '' }: Props = $props();
+  let { href, icon, label = 'our' + icon, iconClassName = '' }: Props = $props();
 </script>
 
-<a
-	class={iconClassName}
-	{href}
-	rel="external"
-	target="_blank"
-	referrerpolicy="no-referrer"
-	aria-label={label}>
-	<iconify-icon inline icon="mdi:{icon}"></iconify-icon>
+<a class={iconClassName} {href} rel="external" target="_blank" referrerpolicy="no-referrer" aria-label={label}>
+  <iconify-icon inline icon="mdi:{icon}"></iconify-icon>
 </a>

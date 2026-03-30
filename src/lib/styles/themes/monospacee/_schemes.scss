@@ -12,26 +12,26 @@
 // Can be forced with data-theme="dark"
 [data-theme='dark'],
 :root:not([data-theme='light']) {
-	@include dark.theme;
+  @include dark.theme;
 }
 
 // Dark color scheme (Auto)
 // Automatically enabled if user has Dark mode enabled
 @media only screen and (prefers-color-scheme: dark) {
-	:root:not([data-theme]) {
-		@include dark.theme;
-	}
+  :root:not([data-theme]) {
+    @include dark.theme;
+  }
 }
 
 // Light color scheme (Forced)
 // Enabled if forced with data-theme="light"
 [data-theme='light'] {
-	@include light.theme;
+  @include light.theme;
 }
 
 #{$parent-selector} progress,
 #{$parent-selector} [type='checkbox'],
 #{$parent-selector} [type='radio'],
 #{$parent-selector} [type='range'] {
-	accent-color: var(#{$css-var-prefix}primary);
+  accent-color: var(#{$css-var-prefix}primary);
 }
