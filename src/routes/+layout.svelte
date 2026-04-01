@@ -1,6 +1,6 @@
 <script lang="ts">
   import '@fontsource-variable/roboto-mono/wght-italic.css';
-  import '@fontsource/share-tech-mono';
+  import '@fontsource/share-tech-mono/index.css';
   import '../app.scss';
 
   import PageTransition from '$lib/components/PageTransition.svelte';
