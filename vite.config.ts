@@ -4,6 +4,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { imagetools } from '@zerodevx/svelte-img/vite';
 
 export default defineConfig({
+  css: { preprocessorOptions: { scss: { quietDeps: true } } },
   plugins: [
     sveltekit(),
     imagetools(),
