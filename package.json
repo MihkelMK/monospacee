@@ -17,7 +17,7 @@
     "@picocss/pico": "^2.1.1",
     "@sveltejs/adapter-node": "^5.4.0",
     "@sveltejs/kit": "^2.49.0",
-    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@types/eslint": "^9.6.1",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/html-escaper": "^3.0.4",
@@ -41,7 +41,7 @@
     "typescript": "^6.0.0",
     "typescript-eslint": "^8.48.0",
     "url": "^0.11.4",
-    "vite": "^7.2.4"
+    "vite": "^8.0.0"
   },
   "type": "module",
   "dependencies": {
