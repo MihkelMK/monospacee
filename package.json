@@ -33,7 +33,7 @@
     "sass": "^1.94.2",
     "satori": "^0.18.3",
     "satori-html": "^0.3.2",
-    "svelte": "5.53.5",
+    "svelte": "5.55.1",
     "svelte-check": "^4.3.4",
     "svelte-meta-tags": "^4.5.0",
     "svelte-preprocess": "^6.0.3",

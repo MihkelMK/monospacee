@@ -1,5 +1,5 @@
 <script lang="ts">
-  import '@fontsource-variable/roboto-mono/wght-italic.css';
+  import '@fontsource-variable/roboto-mono/wght.css';
   import '@fontsource/share-tech-mono/index.css';
   import '../app.scss';
 
