@@ -5,7 +5,6 @@ import { imagetools } from '@zerodevx/svelte-img/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  css: { preprocessorOptions: { scss: { quietDeps: true } } },
   plugins: [
     sveltekit(),
     sveltekitOG(),
@@ -16,4 +15,13 @@ export default defineConfig({
       strategy: ['url', 'cookie'],
     }),
   ],
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true,
+        additionalData: '@use "/src/variables.scss" as *;',
+      },
+    },
+  },
 });

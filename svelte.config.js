@@ -1,15 +1,15 @@
 import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-
 import { mdsvex } from 'mdsvex';
+
 import rehypeToc from '@jsdevtools/rehype-toc';
-import remarkSqueezeParagraphs from 'remark-squeeze-paragraphs';
-import remarkCapitalizeHeadings from 'remark-capitalize-headings';
-import rehypeSlug from 'rehype-slug';
-import rehypeShiftHeading from 'rehype-shift-heading';
 import rehypePresetMinify from 'rehype-preset-minify';
-import sectionize from 'remark-sectionize';
 import rehypeRewrite from 'rehype-rewrite';
+import rehypeShiftHeading from 'rehype-shift-heading';
+import rehypeSlug from 'rehype-slug';
+import remarkCapitalizeHeadings from 'remark-capitalize-headings';
+import sectionize from 'remark-sectionize';
+import remarkSqueezeParagraphs from 'remark-squeeze-paragraphs';
 
 const addTracklist = (tocNav) => {
   const trackListLink = structuredClone(tocNav.children[0].children[0]);
@@ -57,14 +57,7 @@ const mdsvexOptions = {
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   extensions: ['.svelte', '.md'],
-  preprocess: [
-    mdsvex(mdsvexOptions),
-    vitePreprocess({
-      scss: {
-        prependData: '@import "src/variables.scss";',
-      },
-    }),
-  ],
+  preprocess: [mdsvex(mdsvexOptions), vitePreprocess()],
 
   kit: {
     adapter: adapter(),
