@@ -61,8 +61,8 @@
       : [],
     images: [
       {
-        url: encodeURI(`${config.ogUrl}/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`),
-        secureUrl: encodeURI(`${config.ogUrl}/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`),
+        url: encodeURI(`${config.ogUrl}/${data.meta.type}`),
+        secureUrl: encodeURI(`${config.ogUrl}/${data.meta.type}`),
         width: 1200,
         height: 630,
         alt:
@@ -81,7 +81,7 @@
     cardType: 'summary',
     title: data.meta.title,
     description: data.meta.description,
-    image: encodeURI(`${config.ogUrl}/?date=${data.meta.date}&title=${data.meta.title}&type=${data.meta.type}`),
+    image: encodeURI(`${config.ogUrl}/${data.meta.type}`),
     imageAlt:
       'A graphic design introducing the ' + data.meta.type + ' called ' + data.meta.title + ' by the DJ duo, monospacee.',
   }} />

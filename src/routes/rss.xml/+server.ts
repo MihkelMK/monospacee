@@ -27,10 +27,10 @@ export async function GET({ fetch }) {
 					<itunes:email>${config.author}@kasterpalu.ee</itunes:email>
 				</itunes:owner>
 				<itunes:type>episodic</itunes:type>
-				<itunes:image href="${escape(encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`))}"/>
+				<itunes:image href="${escape(encodeURI(`${config.ogUrl}/main/big`))}"/>
 				<image>
 					<url>
-						${escape(encodeURI(`${config.ogUrl}/big?title=${config.description.split('.')[0]}&type=main`))}
+						${escape(encodeURI(`${config.ogUrl}/main/big`))}
 					</url>
 					<title>${config.title}</title>
 					<link>${config.url}</link>
@@ -51,7 +51,7 @@ export async function GET({ fetch }) {
 							<description>${escape(post.description)}</description>
 							<link>${config.url}/${post.date}</link>
 							<itunes:summary>${escape(post.description)}</itunes:summary>
-							<itunes:image href="${escape(encodeURI(`${config.ogUrl}/big?date=${post.date}&title=${post.title}&type=${post.type}`))}"/>
+							<itunes:image href="${escape(encodeURI(`${config.ogUrl}/${post.type}/big`))}"/>
               				<enclosure url="${config.url}/recordings/${post.date}.mp3" type="audio/mpeg" length="${post.audioSize}"/>
 							<guid isPermaLink="false">${config.url}/${post.date}</guid>
 							<pubDate>${new Date(post.date).toUTCString()}</pubDate>
