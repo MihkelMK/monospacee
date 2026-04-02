@@ -16,7 +16,4 @@ export default defineConfig({
       strategy: ['url', 'cookie'],
     }),
   ],
-  build: {
-    rollupOptions: { external: ['@resvg/resvg-js'] },
-  },
 });
