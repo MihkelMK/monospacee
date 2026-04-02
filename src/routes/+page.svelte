@@ -105,8 +105,8 @@
     locale: 'et_EE',
     images: [
       {
-        url: encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`),
-        secureUrl: encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`),
+        url: encodeURI(`${config.ogUrl}/main`),
+        secureUrl: encodeURI(`${config.ogUrl}/main`),
         width: 1200,
         height: 630,
         alt: 'A graphic design introducing the landing page of by the DJ duo, monospacee.',
@@ -119,7 +119,7 @@
     cardType: 'summary',
     title: config.title,
     description: config.description,
-    image: encodeURI(`${config.ogUrl}/?title=${config.description.split('.')[0]}&type=main`),
+    image: encodeURI(`${config.ogUrl}/main`),
     imageAlt: 'A graphic design introducing the landing page of by the DJ duo, monospacee.',
   }} />
 
