@@ -7,7 +7,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     sveltekit(),
-    sveltekitOG(),
+    sveltekitOG({ esmImport: false }),
     imagetools(),
     paraglideVitePlugin({
       project: './project.inlang',
