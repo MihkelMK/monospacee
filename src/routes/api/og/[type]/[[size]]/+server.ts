@@ -4,8 +4,6 @@ import { GoogleFont, resolveFonts } from '@ethercorps/sveltekit-og/fonts';
 import Og from './OG.svelte';
 import OgBig from './OGBig.svelte';
 
-export const prerender = true;
-
 const robotomonoRegular = new GoogleFont('Roboto Mono', {
   weight: 500,
 });
