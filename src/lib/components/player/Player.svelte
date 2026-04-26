@@ -188,6 +188,24 @@
     }
   });
 
+  $effect(() => {
+    if (!('mediaSession' in navigator)) return;
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: audioStore.currentSong?.title ?? '',
+      artist: audioStore.currentSong?.artist ?? '',
+      album: audioStore.cueTitle ?? '',
+    });
+  });
+
+  $effect(() => {
+    if (!('mediaSession' in navigator) || !audioStore.duration) return;
+    navigator.mediaSession.setPositionState({
+      duration: audioStore.duration,
+      position: Math.min(audioStore.currentTime, audioStore.duration),
+      playbackRate: 1,
+    });
+  });
+
   onMount(() => {
     if (audio) {
       audio.addEventListener('canplay', () => {
@@ -204,6 +222,21 @@
 
     if (audioStore.selectedRecording) {
       loadNewSong(audioStore.selectedRecording, false);
+    }
+
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.setActionHandler('play', handlePlayPause);
+      navigator.mediaSession.setActionHandler('pause', handlePlayPause);
+      navigator.mediaSession.setActionHandler('seekbackward', () => handleSkip(-30));
+      navigator.mediaSession.setActionHandler('seekforward', () => handleSkip(30));
+      navigator.mediaSession.setActionHandler('previoustrack', () => seekToSong((audioStore.currentSongIndex ?? 1) - 1));
+      navigator.mediaSession.setActionHandler('nexttrack', () => seekToSong((audioStore.currentSongIndex ?? 0) + 1));
+
+      return () => {
+        (['play', 'pause', 'seekbackward', 'seekforward', 'previoustrack', 'nexttrack'] as MediaSessionAction[]).forEach(
+          (action) => navigator.mediaSession.setActionHandler(action, null)
+        );
+      };
     }
   });
 </script>
