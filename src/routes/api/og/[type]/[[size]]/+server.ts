@@ -2,7 +2,7 @@ import { ImageResponse } from '@ethercorps/sveltekit-og';
 import { GoogleFont, resolveFonts } from '@ethercorps/sveltekit-og/fonts';
 
 import Og from './OG.svelte';
-import OgBig from './OGBig.svelte';
+import OgSquare from './OGSquare.svelte';
 
 const robotomonoRegular = new GoogleFont('Roboto Mono', {
   weight: 500,
@@ -13,12 +13,12 @@ const robotomonoBold = new GoogleFont('Roboto Mono', {
 });
 
 export const GET = async ({ params }) => {
-  const size = params.size || 'small';
+  const size = params.size || 'landscape';
   const type = params.type || '';
 
-  const template = size === 'big' ? OgBig : Og;
-  const width = size === 'big' ? 3000 : 1200;
-  const height = size === 'big' ? 3000 : 630;
+  const template = size === 'big' || size === 'small' ? OgSquare : Og;
+  const width = size === 'big' ? 3000 : size === 'small' ? 512 : 1200;
+  const height = size === 'big' ? 3000 : size === 'small' ? 512 : 630;
 
   const resolvedFontOptions = await resolveFonts([robotomonoRegular, robotomonoBold]);
 

@@ -26,6 +26,15 @@ export class PostFeed {
 
     return this.posts.find((post) => post.date === date)?.title ?? '';
   }
+
+  getCuePostType(slug: string | null): PostType | undefined {
+    if (!slug) return undefined;
+
+    const file = slug.split('/').at(-1);
+    const date = file ? file.split('.')[0] : slug.split('.')[0];
+
+    return this.posts.find((post) => post.date === date)?.type;
+  }
 }
 
 export const cueJump: Writable<number | undefined> = writable(undefined);
@@ -42,6 +51,7 @@ export class AudioStore {
   volume: number = $state(1);
   cue: Cue | undefined = $state(undefined);
   cueTitle: string | undefined = $state();
+  cuePostType: PostType | undefined = $state();
 
   progress: number = $derived(timeToPercent(this.currentTime, this.duration));
 
@@ -94,6 +104,8 @@ export class AudioStore {
     } else {
       this.cueTitle = this.loadCueTitle(recording);
     }
+
+    this.cuePostType = postFeed.getCuePostType(recording);
 
     this.loading = false;
   }

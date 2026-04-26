@@ -8,6 +8,7 @@
   import ProgressBar from './ProgressBar.svelte';
   import { invalidateAll } from '$app/navigation';
   import { FiniteStateMachine } from 'runed';
+  import { ogUrl } from '$lib/config';
 
   const audioStore = getAudioStore();
 
@@ -194,6 +195,9 @@
       title: audioStore.currentSong?.title ?? '',
       artist: audioStore.currentSong?.artist ?? '',
       album: audioStore.cueTitle ?? '',
+      artwork: audioStore.cuePostType
+        ? [{ src: `${ogUrl}/${audioStore.cuePostType}/small`, sizes: '512x512', type: 'image/png' }]
+        : [],
     });
   });
 
