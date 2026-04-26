@@ -55,10 +55,10 @@ importers:
         version: 0.37.1(@sveltejs/kit@2.57.1(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.55.4(@typescript-eslint/types@8.58.2))(vite@8.0.8(@types/node@24.12.2)(sass@1.99.0)))(svelte@5.55.4(@typescript-eslint/types@8.58.2))(typescript@6.0.2)(vite@8.0.8(@types/node@24.12.2)(sass@1.99.0)))(svelte@5.55.4(@typescript-eslint/types@8.58.2))
     devDependencies:
       '@eslint/compat':
-        specifier: ^2.0.0
+        specifier: 2.0.5
         version: 2.0.5(eslint@10.2.0)
       '@eslint/js':
-        specifier: ^10.0.0
+        specifier: 10.0.1
         version: 10.0.1(eslint@10.2.0)
       '@picocss/pico':
         specifier: ^2.1.1
@@ -73,7 +73,7 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0(svelte@5.55.4(@typescript-eslint/types@8.58.2))(vite@8.0.8(@types/node@24.12.2)(sass@1.99.0))
       '@types/eslint':
-        specifier: ^9.6.1
+        specifier: 9.6.1
         version: 9.6.1
       '@types/eslint-config-prettier':
         specifier: ^6.11.3
@@ -88,13 +88,13 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2(rollup@4.60.1)(svelte@5.55.4(@typescript-eslint/types@8.58.2))
       eslint:
-        specifier: ^10.0.0
+        specifier: 10.2.0
         version: 10.2.0
       eslint-config-prettier:
-        specifier: ^10.1.8
+        specifier: 10.1.8
         version: 10.1.8(eslint@10.2.0)
       eslint-plugin-svelte:
-        specifier: ^3.13.0
+        specifier: 3.17.0
         version: 3.17.0(eslint@10.2.0)(svelte@5.55.4(@typescript-eslint/types@8.58.2))
       globals:
         specifier: ^17.0.0
@@ -103,10 +103,10 @@ importers:
         specifier: ^0.12.6
         version: 0.12.7(svelte@5.55.4(@typescript-eslint/types@8.58.2))
       prettier:
-        specifier: ^3.6.2
+        specifier: 3.8.2
         version: 3.8.2
       prettier-plugin-svelte:
-        specifier: ^3.4.0
+        specifier: 3.5.1
         version: 3.5.1(prettier@3.8.2)(svelte@5.55.4(@typescript-eslint/types@8.58.2))
       sass:
         specifier: ^1.94.2
@@ -127,7 +127,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.2
       typescript-eslint:
-        specifier: ^8.48.0
+        specifier: 8.58.2
         version: 8.58.2(eslint@10.2.0)(typescript@6.0.2)
       url:
         specifier: ^0.11.4
