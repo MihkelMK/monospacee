@@ -45,7 +45,7 @@
     "@ethercorps/sveltekit-og": "4.2.1",
     "@fontsource-variable/roboto-mono": "5.2.8",
     "@fontsource/share-tech-mono": "5.2.7",
-    "@inlang/paraglide-js": "2.16.0",
+    "@inlang/paraglide-js": "2.18.0",
     "@jsdevtools/rehype-toc": "3.0.2",
     "html-escaper": "3.0.3",
     "iconify-icon": "3.0.2",
