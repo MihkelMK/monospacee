@@ -21,13 +21,17 @@
   let currentTime = $derived(is_tracklist_playing ? audioStore.currentTime : savedProgress);
   let closestIndex = $derived(is_tracklist_playing ? audioStore.currentSongIndex : currentSongIndex);
   let closest = $derived(closestIndex ? cue.songs.at(closestIndex) : undefined);
-  let last_track: Song | undefined = $state();
 
-  function scroll_on_change(closest: Song | undefined, last_track: Song | undefined) {
-    if (!closest || closest === last_track || !list_element) return;
+  function scroll_on_change(closest: Song | undefined) {
+    if (!closest || !list_element) return;
 
-    last_track = closest;
     scrollToSong(closest);
+  }
+
+  function trackClass(song: Song) {
+    if (!currentTime) return '';
+    if (closest?.start === song.start) return 'current glow-sm';
+    return currentTime >= song.start ? 'played' : '';
   }
 
   function scrollToSong(song: Song | undefined) {
@@ -44,7 +48,7 @@
 
   $effect(() => {
     if (is_tracklist_playing) {
-      scroll_on_change(closest, last_track);
+      scroll_on_change(closest);
     }
   });
 
@@ -57,15 +61,7 @@
   <ul bind:this={list_element}>
     {#each cue.songs as song, i (song.title + String(song.start))}
       <li id={String(song.start)}>
-        <button
-          class={!currentTime
-            ? ''
-            : closest?.start === song.start
-              ? 'current glow-sm'
-              : currentTime >= song.start
-                ? 'played'
-                : ''}
-          onclick={() => scrub(song.start, cue.slug)}>
+        <button class={trackClass(song)} onclick={() => scrub(song.start, cue.slug)}>
           <p class="track_info_number">
             {i + 1}:
           </p>

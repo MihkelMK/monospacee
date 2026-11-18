@@ -85,8 +85,7 @@ export function keybind(
 
     // But we've traded that earlier complexity for needing to loop all of
     // our bound key flags.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const [_key, flag] of lookup) {
+    for (const flag of lookup.values()) {
       // If any flag is `false`, we just early return to skip.
       if (!flag) return;
     }

@@ -4,11 +4,12 @@
   /** @type {string} */
   export let postType;
 
-  const accentColor =
-    postType === 'main' ? '#a160cd' : postType === 'event' ? '#95d9f4' : postType === 'stream' ? '#a160cd' : '#88898c';
-
-  const accentColorLow =
-    postType === 'main' ? '#95d9f4' : postType === 'event' ? '#bfe8f8' : postType === 'stream' ? '#b480d7' : '#e7eaee';
+  const accents = new Map([
+    ['main', ['#a160cd', '#95d9f4']],
+    ['event', ['#95d9f4', '#bfe8f8']],
+    ['stream', ['#a160cd', '#b480d7']],
+  ]);
+  const [accentColor, accentColorLow] = accents.get(postType) ?? ['#88898c', '#e7eaee'];
 </script>
 
 <div

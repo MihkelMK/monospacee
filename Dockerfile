@@ -30,7 +30,9 @@ FROM base AS build
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#using-pipes
 SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 
-RUN corepack enable
+# git: @websites/eslint-config is a git dependency, and pnpm clones it for a host it does not know
+RUN corepack enable && \
+  apk add --no-cache git
 
 WORKDIR /app
 
