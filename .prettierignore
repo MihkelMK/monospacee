@@ -13,3 +13,6 @@ package-lock.json
 yarn.lock
 bun.lock
 bun.lockb
+
+# paraglide.js project files, written by its tooling
+project.inlang/

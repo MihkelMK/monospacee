@@ -5,6 +5,8 @@ import globals from 'globals';
 import ts from 'typescript-eslint';
 
 export default ts.config(
+  // paraglide.js project files, written by its tooling
+  { ignores: ['project.inlang/**'] },
   js.configs.recommended,
   ...ts.configs.recommended,
   ...svelte.configs['flat/recommended'],
