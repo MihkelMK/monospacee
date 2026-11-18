@@ -3,3 +3,7 @@ allowBuilds:
   core-js: true
   sharp: true
   esbuild: true
+
+overrides:
+  # GHSA-68fv-2mgg-jv7q: postcss, through vite, resolves 1.2.1. Drop this once it resolves >=1.2.2 on its own.
+  'source-map-js@<1.2.2': '^1.2.2'
