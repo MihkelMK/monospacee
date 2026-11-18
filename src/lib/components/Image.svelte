@@ -5,7 +5,7 @@
   interface Props {
     src: ImageSrc[];
     alt?: string;
-    loading?: 'lazy' | 'eager' | undefined;
+    loading?: 'lazy' | 'eager';
   }
 
   let { src, alt = '', loading = 'lazy' }: Props = $props();

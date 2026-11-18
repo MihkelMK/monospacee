@@ -4,6 +4,10 @@ on:
   pull_request:
     branches:
       - main
+  # Also on main, so main saves the ESLint and tool caches that PRs fall back to.
+  push:
+    branches:
+      - main
 
 jobs:
   check:
@@ -12,24 +16,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - name: Checks
+        uses: https://git.kodu.lenn.uk/websites/ci-actions/pnpm-checks@81003ac5e4137628f8f80b7d7302566c3a052cb0 # v1.3.0
         with:
-          cache: true
+          prepare: pnpm exec paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide
 
-      - name: Setup Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: package.json
+  # Its own job, so it runs alongside the checks instead of after them. It needs neither
+  # the pnpm install nor the type check.
+  opengrep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .env for type checking
-        run: '[ -f .env.example ] && cp .env.example .env || true'
-
-      - name: Compile paraglide
-        run: pnpm exec paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide
-
-      - name: Type check
-        run: pnpm check
+      - name: Scan code
+        uses: https://git.kodu.lenn.uk/websites/ci-actions/opengrep-scan@81003ac5e4137628f8f80b7d7302566c3a052cb0 # v1.3.0

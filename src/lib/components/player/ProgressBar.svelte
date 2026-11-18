@@ -4,11 +4,16 @@
 
   const { loading, updateProgress, seekToSong } = $props<{
     loading: boolean;
-    updateProgress: (time: number) => boolean;
+    updateProgress: (time: number) => void;
     seekToSong: (trackIndex: number) => void;
   }>();
 
   const audioStore = getAudioStore();
+
+  function tooltipPlacement(percent: number) {
+    if (percent < 35) return 'right';
+    return percent > 65 ? 'left' : 'top';
+  }
 
   let scrubbing = $state(false);
   let opacity = $derived(audioStore.isPlaying ? '1' : '0.6');
@@ -34,14 +39,11 @@
 <div class="player_progress">
   {#if audioStore.cue?.songs && audioStore.duration}
     {#each audioStore.cue?.songs as song, i (song.title + String(i))}
+      {@const percent = timeToPercent(song.start, audioStore.duration)}
       <label
-        style="--startsAt:{timeToPercent(song.start, audioStore.duration)}%;"
+        style="--startsAt:{percent}%;"
         class="player_progress_step {i === audioStore.currentSongIndex ? 'player_progress_step_active' : ''}"
-        data-placement={timeToPercent(song.start, audioStore.duration) < 35
-          ? 'right'
-          : timeToPercent(song.start, audioStore.duration) > 65
-            ? 'left'
-            : 'top'}
+        data-placement={tooltipPlacement(percent)}
         data-tooltip={trimString(`${song.title} - ${song.artist}`, 40)}>
         <input
           disabled={loading}
@@ -61,7 +63,8 @@
     bind:value={scrubTime}
     onpointerdown={() => (scrubbing = true)}
     onpointerup={() => {
-      scrubbing = updateProgress(scrubTime);
+      updateProgress(scrubTime);
+      scrubbing = false;
     }} />
   <span class="player_progress_bar" style="width: {shownProgress}%; opacity:{opacity}"></span>
 </div>

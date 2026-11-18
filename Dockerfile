@@ -11,9 +11,12 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Fetch deps with caching
+# Fetch deps with caching.
+# --prod matters: `pnpm fetch` materialises node_modules/.pnpm straight from the
+# lockfile and ignores the manifest, so without it the virtual store keeps every dev
+# package and they ride along into the runtime image.
 RUN --mount=type=cache,id=monospacee-pnpm-store,target=/root/.local/share/pnpm/store \
-  pnpm fetch --frozen-lockfile
+  pnpm fetch --prod --frozen-lockfile
 
 # Install prod deps with caching
 RUN --mount=type=cache,id=monospacee-pnpm-store,target=/root/.local/share/pnpm/store \
@@ -27,7 +30,9 @@ FROM base AS build
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#using-pipes
 SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 
-RUN corepack enable
+# git: @websites/eslint-config is a git dependency, and pnpm clones it for a host it does not know
+RUN corepack enable && \
+  apk add --no-cache git
 
 WORKDIR /app
 
@@ -61,19 +66,30 @@ RUN pnpm build
 #
 FROM base
 
-RUN corepack enable && \
+# Changes every CI run so the cached `apk upgrade` layer below is rebuilt, not reused stale.
+ARG APK_CACHE_BUST
+
+# apk upgrade because the base image is digest-pinned: without it the image keeps
+# whatever package versions were current when that digest was built.
+# npm, corepack and yarn are removed because the runtime only runs `node`, and their bundled dependencies
+# (tar, sigstore, ip-address, ...) are a standing source of CVEs in the scan.
+RUN echo "apk cache bust: ${APK_CACHE_BUST}" && \
+  apk upgrade --no-cache && \
   apk add --no-cache netcat-openbsd && \
+  rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+    /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+    /opt/yarn-v* /usr/local/bin/yarn /usr/local/bin/yarnpkg && \
   addgroup -g 1001 -S nodejs && \
-  adduser -S nodejs -u 1001
+  adduser -S nodejs -u 1001 && \
+  mkdir /app && chown nodejs:nodejs /app
 
 WORKDIR /app
 
-COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=build /app/build ./build
-COPY --from=build /app/package.json ./package.json
-
-# Set ownership and permissions
-RUN chown -R nodejs:nodejs /app
+# --chown on the COPY instead of a later `chown -R`: that would copy every file again
+# into a new layer and double the size of the image (935 MB here).
+COPY --from=prod-deps --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=build --chown=nodejs:nodejs /app/build ./build
+COPY --from=build --chown=nodejs:nodejs /app/package.json ./package.json
 
 # Switch to non-root user for security
 USER nodejs

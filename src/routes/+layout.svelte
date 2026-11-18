@@ -119,6 +119,7 @@
   <header class:scrolled>
     <nav>
       <ul>
+        <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- localizeHref adds the locale, and the app has no base path -->
         <li><a class="secondary glow" href={localizeHref('/')}>/home/page</a></li>
       </ul>
       <ul id="kernList">
@@ -131,6 +132,7 @@
       </ul>
       <ul>
         <li>
+          <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- localizeHref adds the locale, and the app has no base path -->
           <a class="secondary glow" href={localizeHref(`/${currentTrackLink}`)}>/mnt/current</a>
         </li>
       </ul>

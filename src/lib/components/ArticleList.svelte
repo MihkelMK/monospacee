@@ -36,6 +36,7 @@
       class="post {getClass(post.type)} {post.duration ? 'playable' : ''}">
       <header>
         <hgroup>
+          <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- localizeHref adds the locale, and the app has no base path -->
           <a href={localizeHref('/' + post.date)} data-sveltekit-preload-data="tap" class="title">
             <h3 class="glow-sm">{post.title}</h3>
           </a>

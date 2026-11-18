@@ -2,7 +2,7 @@ import { json, error } from '@sveltejs/kit';
 import type { Song } from '$lib/types';
 import type { Cue } from '$lib/types';
 import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { basename, join } from 'path';
 
 function timecodeToSeconds(timecode: string | undefined) {
   if (!timecode) return null;
@@ -44,8 +44,12 @@ export async function GET({ params, setHeaders }) {
     'cache-control': 'public, immutable, no-transform, max-age=3600',
   });
 
+  // An encoded %2F in the slug decodes to a path separator, so it could climb out of the folder
+  if (basename(params.slug) !== params.slug) throw error(404, 'Cue file not found');
+
   try {
     const cuePath = join(process.cwd(), 'build/client/recordings', params.slug);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- the slug is a plain file name, checked above
     const cueBody = await readFile(cuePath, 'utf-8');
 
     const parsedCue: Cue = parseCue(cueBody);

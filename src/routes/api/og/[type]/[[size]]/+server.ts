@@ -16,9 +16,14 @@ export const GET = async ({ params }) => {
   const size = params.size || 'landscape';
   const type = params.type || '';
 
-  const template = size === 'big' || size === 'small' ? OgSquare : Og;
-  const width = size === 'big' ? 3000 : size === 'small' ? 512 : 1200;
-  const height = size === 'big' ? 3000 : size === 'small' ? 512 : 630;
+  const squareSizes = new Map([
+    ['big', 3000],
+    ['small', 512],
+  ]);
+  const square = squareSizes.get(size);
+  const template = square ? OgSquare : Og;
+  const width = square ?? 1200;
+  const height = square ?? 630;
 
   const resolvedFontOptions = await resolveFonts([robotomonoRegular, robotomonoBold]);
 

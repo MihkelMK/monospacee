@@ -109,10 +109,9 @@
   }
 
   function updateProgress(time: number) {
-    if (!audio || !time) return false;
+    if (!audio || !time) return;
 
     audio.currentTime = time;
-    return false;
   }
 
   function handlePlayPause() {
