@@ -1,5 +1,5 @@
-import { dev } from '$app/environment';
-import type { SocialLink } from '$lib/types';
+import { dev } from '$app/env';
+import type { SocialLink } from '#lib/types.ts';
 
 export const title = 'monospacee';
 

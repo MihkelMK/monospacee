@@ -1,14 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import { cueJump, getAudioStore } from '$lib/store.svelte';
+  import { cueJump, getAudioStore } from '#lib/store.svelte.ts';
 
   import TrackInfo from './TrackInfo.svelte';
   import Controls from './Controls.svelte';
   import ProgressBar from './ProgressBar.svelte';
   import { invalidateAll } from '$app/navigation';
   import { FiniteStateMachine } from 'runed';
-  import { ogUrl } from '$lib/config';
+  import { ogUrl } from '#lib/config.ts';
 
   const audioStore = getAudioStore();
 

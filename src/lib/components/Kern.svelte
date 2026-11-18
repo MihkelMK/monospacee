@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getAudioStore } from '$lib/store.svelte';
+  import { getAudioStore } from '#lib/store.svelte.ts';
 
   interface Props {
     silmaNurk?: number;

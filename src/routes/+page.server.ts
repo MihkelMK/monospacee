@@ -1,4 +1,4 @@
-import { getLocale } from '$lib/paraglide/runtime.js';
+import { getLocale } from '#lib/paraglide/runtime.js';
 import { error } from '@sveltejs/kit';
 
 export async function load({ fetch, setHeaders }) {

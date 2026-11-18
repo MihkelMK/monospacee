@@ -1,5 +1,7 @@
 import { config } from '@websites/eslint-config';
-import svelteConfig from './svelte.config.js';
+import { loadConfig } from '@sveltejs/load-config';
+
+const svelteConfig = (await loadConfig('./', { traverse: false }))?.config;
 
 export default config({
   root: import.meta.dirname,

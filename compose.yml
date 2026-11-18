@@ -5,6 +5,8 @@ services:
     container_name: monospacee-web
     build: .
     restart: unless-stopped
+    environment:
+      - ORIGIN=https://monospac.ee
     ports:
       - 9001:3000
     volumes:

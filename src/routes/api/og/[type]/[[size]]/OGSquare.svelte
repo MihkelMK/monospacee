@@ -1,5 +1,5 @@
 <script>
-  import Kern from '$lib/components/Kern.svelte';
+  import Kern from '#lib/components/Kern.svelte';
 
   /** @type {string} */
   export let postType;

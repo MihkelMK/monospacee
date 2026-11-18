@@ -95,7 +95,6 @@ COPY --from=build --chown=nodejs:nodejs /app/package.json ./package.json
 USER nodejs
 
 # Set environment variables for the production container
-ENV ORIGIN=http://localhost:3000
 ENV NODE_ENV=production
 ENV UV_THREADPOOL_SIZE=128
 ENV NODE_OPTIONS=--max-old-space-size=1536

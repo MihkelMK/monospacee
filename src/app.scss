@@ -12,7 +12,7 @@
     'forms/input-search': false,
   )
 );
-@use '$lib/styles/themes/monospacee.scss';
+@use './lib/styles/themes/monospacee.scss';
 
 body {
   min-height: 100vh;

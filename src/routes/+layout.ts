@@ -1,5 +1,5 @@
-import { PUBLIC_LATEST_POST } from '$env/static/public';
-import { deLocalizeUrl } from '$lib/paraglide/runtime.js';
+import { PUBLIC_LATEST_POST } from '$app/env/public';
+import { deLocalizeUrl } from '#lib/paraglide/runtime.js';
 import type { LoadEvent } from '@sveltejs/kit';
 
 const isValidRecording = async (fetch: LoadEvent['fetch'], slug: string) => {

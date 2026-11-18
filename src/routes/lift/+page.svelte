@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { getAudioStore } from '$lib/store.svelte';
+  import { getAudioStore } from '#lib/store.svelte.ts';
   import { onMount } from 'svelte';
 
+  // getContext only works during component init, not inside onMount
+  const audioStore = getAudioStore();
+
   onMount(() => {
-    const audioStore = getAudioStore();
     if (audioStore.selectedRecording !== '/human-music.mp3') {
       audioStore.isPlaying = false;
       audioStore.setRecording('/human-music.mp3');

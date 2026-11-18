@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getAudioStore } from '$lib/store.svelte';
-  import type { Cue, Song } from '$lib/types';
+  import { getAudioStore } from '#lib/store.svelte.ts';
+  import type { Cue, Song } from '#lib/types.ts';
   import { onMount } from 'svelte';
 
   interface Props {

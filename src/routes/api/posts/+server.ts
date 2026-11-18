@@ -1,5 +1,4 @@
-import { json } from '@sveltejs/kit';
-import type { Post } from '$lib/types';
+import type { Post } from '#lib/types.ts';
 
 function getPosts(lang: string) {
   let posts: Post[] = [];
@@ -43,5 +42,5 @@ export function GET({ url, setHeaders }) {
   const nextIdx = start + posts.length;
   const nextFrom = nextIdx < allPosts.length ? nextIdx : null;
 
-  return json({ posts, nextFrom });
+  return Response.json({ posts, nextFrom });
 }
