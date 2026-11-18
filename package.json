@@ -29,7 +29,7 @@
     "globals": "17.14.0",
     "mdsvex": "0.12.7",
     "prettier": "3.10.1",
-    "prettier-plugin-svelte": "3.5.2",
+    "prettier-plugin-svelte": "4.1.1",
     "sass": "1.99.0",
     "svelte": "5.57.0",
     "svelte-check": "4.7.6",
