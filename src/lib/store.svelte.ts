@@ -93,7 +93,10 @@ export class AudioStore {
     this.selectedRecording = recording;
     this.currentTime = this.loadProgress(recording) || 0; // Load the progress for the new recording
     this.duration = 0; // Initialize with 0 to overwrite previous value
-    this.cue = await this.getCue(recording);
+    const cue = await this.getCue(recording);
+    // A newer setRecording call took over while we were fetching; don't overwrite its state
+    if (this.selectedRecording !== recording) return;
+    this.cue = cue;
 
     // Try to get cue title from postFeed, fall back to what's saved in localStorage
     // Trying from postFeed first ensures we get the title in the right language
@@ -191,7 +194,8 @@ export class AudioStore {
 
   // Load cue title from local storage
   loadCueTitle(recording: string | null): string | undefined {
-    if (browser && recording) {
+    // /lift easter egg has no cue title; old builds saved a stale one under this key
+    if (browser && recording && recording !== '/human-music.mp3') {
       const cueTitleData = JSON.parse(localStorage.getItem('cueTitles') || '{}');
       return cueTitleData[recording] || undefined;
     }
