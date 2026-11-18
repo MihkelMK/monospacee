@@ -1,8 +1,8 @@
-import type { Cue, Post, PostType, Song } from '$lib/types';
-import { timeToPercent } from '$lib/utils';
+import type { Cue, Post, PostType, Song } from '#lib/types.ts';
+import { timeToPercent } from '#lib/utils.ts';
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import { setContext, getContext, onDestroy } from 'svelte';
 
 export class PostFeed {

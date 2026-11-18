@@ -1,12 +1,12 @@
 <script lang="ts">
-  import * as config from '$lib/config';
-  import { formatDate, recordingPathFromDate } from '$lib/utils';
-  import Tracklist from '$lib/components/Tracklist.svelte';
-  import type { PostType } from '$lib/types';
+  import * as config from '#lib/config.ts';
+  import { formatDate, recordingPathFromDate } from '#lib/utils.ts';
+  import Tracklist from '#lib/components/Tracklist.svelte';
+  import type { PostType } from '#lib/types.ts';
   import type { PageData } from './$types';
   import { MetaTags } from 'svelte-meta-tags';
-  import { cueJump, getAudioStore } from '$lib/store.svelte';
-  import { m } from '$lib/paraglide/messages';
+  import { cueJump, getAudioStore } from '#lib/store.svelte.ts';
+  import { m } from '#lib/paraglide/messages.js';
 
   interface Props {
     data: PageData;

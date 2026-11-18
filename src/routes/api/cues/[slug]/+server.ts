@@ -1,6 +1,6 @@
-import { json, error } from '@sveltejs/kit';
-import type { Song } from '$lib/types';
-import type { Cue } from '$lib/types';
+import { error } from '@sveltejs/kit';
+import type { Song } from '#lib/types.ts';
+import type { Cue } from '#lib/types.ts';
 import { readFile } from 'fs/promises';
 import { basename, join } from 'path';
 
@@ -53,7 +53,7 @@ export async function GET({ params, setHeaders }) {
     const cueBody = await readFile(cuePath, 'utf-8');
 
     const parsedCue: Cue = parseCue(cueBody);
-    return json(parsedCue);
+    return Response.json(parsedCue);
   } catch {
     throw error(404, 'Cue file not found');
   }

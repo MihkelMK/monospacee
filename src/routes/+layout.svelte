@@ -3,19 +3,19 @@
   import '@fontsource/share-tech-mono/index.css';
   import '../app.scss';
 
-  import PageTransition from '$lib/components/PageTransition.svelte';
+  import PageTransition from '#lib/components/PageTransition.svelte';
   import 'iconify-icon';
 
-  import { angleToMouse, throttle } from '$lib/utils';
+  import { angleToMouse, throttle } from '#lib/utils.ts';
 
-  import { browser } from '$app/environment';
+  import { browser } from '$app/env';
   import { afterNavigate, goto } from '$app/navigation';
   import { resolve } from '$app/paths';
   import { page } from '$app/state';
-  import Kern from '$lib/components/Kern.svelte';
-  import Player from '$lib/components/player/Player.svelte';
-  import { getLocale, localizeHref, setLocale } from '$lib/paraglide/runtime';
-  import { getAudioStore, setAudioStore } from '$lib/store.svelte';
+  import Kern from '#lib/components/Kern.svelte';
+  import Player from '#lib/components/player/Player.svelte';
+  import { getLocale, localizeHref, setLocale } from '#lib/paraglide/runtime.js';
+  import { getAudioStore, setAudioStore } from '#lib/store.svelte.ts';
   import { onMount } from 'svelte';
   import type { LayoutData } from './$types';
 
@@ -68,13 +68,15 @@
 
   let currentTrackLink = $derived(audioStore.selectedRecording?.split('/')[2]?.split('.')[0] || '');
 
-  afterNavigate(() => {
+  afterNavigate(({ shallow, type }) => {
+    if (shallow && type === 'goto') return;
+
     // Clean up ?load parameter after it's been used
     if (browser && page.url.searchParams.has('load')) {
       goto(resolve('/[slug]', { slug: page.url.pathname.replace('/', '') }), {
         replaceState: true,
         invalidateAll: false,
-        noScroll: true,
+        reset: false,
       });
     }
   });

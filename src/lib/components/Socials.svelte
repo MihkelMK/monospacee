@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SocialLink } from '$lib/types';
+  import type { SocialLink } from '#lib/types.ts';
   import SocialIcon from './SocialIcon.svelte';
 
   interface Props {

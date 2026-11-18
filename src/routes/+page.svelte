@@ -1,17 +1,17 @@
 <script lang="ts">
-  import * as config from '$lib/config';
-  import { keybind } from '$lib/utils';
+  import * as config from '#lib/config.ts';
+  import { keybind } from '#lib/utils.ts';
 
-  import { browser } from '$app/environment';
+  import { browser } from '$app/env';
   import { onMount } from 'svelte';
-  import type { Post, PostType } from '$lib/types';
-  import ArticleList from '$lib/components/ArticleList.svelte';
-  import { postFeed, visiblePostTypes } from '$lib/store.svelte';
+  import type { Post, PostType } from '#lib/types.ts';
+  import ArticleList from '#lib/components/ArticleList.svelte';
+  import { postFeed, visiblePostTypes } from '#lib/store.svelte.ts';
   import { MetaTags } from 'svelte-meta-tags';
-  import Socials from '$lib/components/Socials.svelte';
+  import Socials from '#lib/components/Socials.svelte';
   import type { PageServerData } from './$types';
-  import { getLocale } from '$lib/paraglide/runtime';
-  import { m } from '$lib/paraglide/messages';
+  import { getLocale } from '#lib/paraglide/runtime.js';
+  import { m } from '#lib/paraglide/messages.js';
 
   interface Props {
     data: PageServerData;

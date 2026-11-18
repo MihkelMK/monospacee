@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getAudioStore } from '$lib/store.svelte';
-  import { trimString, timeToPercent } from '$lib/utils.js';
+  import { getAudioStore } from '#lib/store.svelte.ts';
+  import { trimString, timeToPercent } from '#lib/utils.js';
 
   const { loading, updateProgress, seekToSong } = $props<{
     loading: boolean;

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Post, PostType } from '$lib/types';
-  import { formatDate, recordingPathFromDate } from '$lib/utils';
+  import type { Post, PostType } from '#lib/types.ts';
+  import { formatDate, recordingPathFromDate } from '#lib/utils.ts';
   import { fly } from 'svelte/transition';
-  import { getAudioStore, visiblePostTypes } from '$lib/store.svelte';
+  import { getAudioStore, visiblePostTypes } from '#lib/store.svelte.ts';
   import { cubicOut } from 'svelte/easing';
-  import { localizeHref } from '$lib/paraglide/runtime';
+  import { localizeHref } from '#lib/paraglide/runtime.js';
 
   interface Props {
     posts: Post[];

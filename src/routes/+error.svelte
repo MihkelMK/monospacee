@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import Kern from '$lib/components/Kern.svelte';
+  import Kern from '#lib/components/Kern.svelte';
 </script>
 
 <section>

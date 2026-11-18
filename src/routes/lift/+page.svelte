@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getAudioStore } from '$lib/store.svelte';
+  import { getAudioStore } from '#lib/store.svelte.ts';
   import { onMount } from 'svelte';
 
   // getContext only works during component init, not inside onMount

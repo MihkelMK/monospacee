@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ImageInfo } from '$lib/types';
+  import type { ImageInfo } from '#lib/types.ts';
   import Image from './Image.svelte';
 
   interface Props {

@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
-import type { Cue } from '$lib/types.js';
-import { getLocale } from '$lib/paraglide/runtime';
+import type { Cue } from '#lib/types.js';
+import { getLocale } from '#lib/paraglide/runtime.js';
 
 export async function load({ params, fetch, setHeaders }) {
   setHeaders({

@@ -1,6 +1,5 @@
-onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - '@sveltejs/kit'
-  - core-js
-  - esbuild
-  - sharp
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  sharp: true
+  esbuild: true

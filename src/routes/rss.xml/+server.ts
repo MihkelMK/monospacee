@@ -1,5 +1,5 @@
-import * as config from '$lib/config';
-import type { Post } from '$lib/types';
+import * as config from '#lib/config.ts';
+import type { Post } from '#lib/types.ts';
 import { escape } from 'html-escaper';
 
 export async function GET({ fetch }) {

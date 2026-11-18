@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getAudioStore } from '$lib/store.svelte';
-  import { timeStringFromSeconds } from '$lib/utils';
+  import { getAudioStore } from '#lib/store.svelte.ts';
+  import { timeStringFromSeconds } from '#lib/utils.ts';
   import Marquee from '../Marquee.svelte';
 
   interface Props {

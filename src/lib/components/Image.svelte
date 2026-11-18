@@ -1,6 +1,6 @@
 <script lang="ts">
   import Img from '@zerodevx/svelte-img';
-  import type { ImageSrc } from '$lib/types';
+  import type { ImageSrc } from '#lib/types.ts';
 
   interface Props {
     src: ImageSrc[];
