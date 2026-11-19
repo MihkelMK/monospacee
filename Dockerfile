@@ -47,7 +47,7 @@ RUN --mount=type=cache,id=monospacee-pnpm-store,target=/root/.local/share/pnpm/s
   pnpm install --frozen-lockfile
 
 # Copy config files (change less frequently - better layer caching)
-COPY svelte.config.js tsconfig.json vite.config.ts ./
+COPY tsconfig.json vite.config.ts ./
 COPY project.inlang ./project.inlang
 
 # Copy source code (changes more frequently)
